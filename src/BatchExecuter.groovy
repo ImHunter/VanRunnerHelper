@@ -53,12 +53,12 @@ class BatchExecuter {
             pb.directory(dir);
 
             // File log = new File("log");
-            // pb.redirectErrorStream(true);
+            pb.redirectErrorStream(true);
             // pb.redirectOutput(Redirect.appendTo(log));
 
             Process proc = pb.start();
             resCode = proc.waitFor();
-            // resCode = proc.exitValue();
+            resCode = proc.exitValue();
 
             proc.text.eachLine {
                 echo it;
