@@ -43,6 +43,8 @@ class BatchExecuter {
 
         File batFile = prepareBatFile(cmdText);
         try {
+
+            echo cmdText;
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C start /wait ${batFile.getName()}");
             ProcessBuilder pb = new ProcessBuilder( (String[]) ["cmd.exe", "/C", "START", "/WAIT", "/B", "${batFile.getName()}"]);
             pb.environment().plus(envVariables); 
@@ -59,6 +61,7 @@ class BatchExecuter {
             // resCode = proc.exitValue();
 
             proc.inputStream.eachLine {
+                echo it;
                 if (resLog==null) {
                     resLog = it
                 } else {
