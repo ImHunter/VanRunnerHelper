@@ -42,7 +42,7 @@ class BatchExecuter {
         setEnvVariables(envVars);
 
         File batFile = prepareBatFile(cmdText);
-        File log = File.createTempFile("bex",".log")
+        File log = File.createTempFile("bex",".log");
 
         try {
 
