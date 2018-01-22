@@ -55,7 +55,7 @@ class BatchExecuter {
             // pb.redirectOutput(Redirect.appendTo(log));
 
             Process proc = pb.start();
-            // resCode = proc.waitFor();
+            proc.waitFor();
             resCode = proc.exitValue();
 
             proc.inputStream.eachLine {
