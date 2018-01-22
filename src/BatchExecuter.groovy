@@ -37,10 +37,15 @@ class BatchExecuter {
         Integer resCode = 0;
 
         setEnvVariables(envVars);
+        
         File batFile = prepareBatFile(cmdText);
+        try {
+            ProcessBuilder pb = new ProcessBuilder(cmdText);
+            pb.environment().plus(envVariables); 
+        } finally {
+            batFile.delete();
+        }
 
-        ProcessBuilder pb = new ProcessBuilder(cmdText);
-        pb.environment().plus(envVariables); 
 
     }
 
