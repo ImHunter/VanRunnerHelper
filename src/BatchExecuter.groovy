@@ -66,7 +66,7 @@ class BatchExecuter {
                 }
             }
 
-            resLog = log.getText();
+            // resLog = log.getText();
 
         } finally {
             batFile.delete();
