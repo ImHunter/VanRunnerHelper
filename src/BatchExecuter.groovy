@@ -79,7 +79,7 @@ class BatchExecuter {
             BufferedReader br = new BufferedReader(new FileReader(log));
             
             String st;
-            while ((st = br.readLine()) != null)
+            while ((st = br.readLine()) != null){
                 // System.out.println(st);
                 resLog = resLog.concat(st);
             }            
