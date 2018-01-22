@@ -59,6 +59,7 @@ class BatchExecuter {
             // File log = new File("log");
             pb.redirectErrorStream(true);
             pb.redirectOutput(Redirect.appendTo(log));
+            echo log;
 
             assert batFile.exists();
 
