@@ -47,7 +47,7 @@ class BatchExecuter {
             Process proc = pb.start();
             resCode = proc.waitfor();
         } finally {
-            batFile.delete();
+            //batFile.delete();
         }
 
         if (returnResultAsLog) {
