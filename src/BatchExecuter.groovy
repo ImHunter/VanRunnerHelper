@@ -35,14 +35,13 @@ class BatchExecuter {
 
     def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
-        String resLog;
+        String resLog = "";
         Integer resCode;
         def res;
 
         setEnvVariables(envVars);
 
         File batFile = prepareBatFile(cmdText);
-        File logFile = File.createTempFile("bex",".log");
 
         try {
 
@@ -53,9 +52,10 @@ class BatchExecuter {
             File dir = new File(batFile.getParent());
             pb.directory(dir);
 
+            File log = File.createTempFile("bex",".log");
             // File log = new File("log");
-            // pb.redirectErrorStream(true);
-            pb.redirectOutput(Redirect.appendTo(logFile));
+            pb.redirectErrorStream(true);
+            pb.redirectOutput(Redirect.appendTo(log));
 
             echo cmdText;
             Process proc = pb.start();
@@ -71,11 +71,11 @@ class BatchExecuter {
             //     }
             // }
 
-            resLog = logFile.getText();
+            resLog = log.getText();
 
         } finally {
             batFile.delete();
-            logFile.delete();
+            log.delete();
         }
 
         if (returnResultAsLog) {
