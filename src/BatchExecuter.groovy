@@ -50,7 +50,7 @@ class BatchExecuter {
             File dir = new File(batFile.getParent());
             pb.directory(dir);
 
-            File log = new File("log");
+            // File log = new File("log");
             pb.redirectErrorStream(true);
             // pb.redirectOutput(Redirect.appendTo(log));
 
