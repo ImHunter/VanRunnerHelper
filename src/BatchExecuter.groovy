@@ -48,7 +48,8 @@ class BatchExecuter {
             File dir = new File(batFile.getParent());
             pb.directory(dir);
             Process proc = pb.start();
-            resCode = proc.waitfor();
+            proc.waitfor();
+            resCode = proc.exitValue();
         } finally {
             // batFile.delete();
         }
