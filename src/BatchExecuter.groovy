@@ -49,7 +49,7 @@ class BatchExecuter {
             pb.directory(dir);
             Process proc = pb.start();
             resCode = proc.waitFor();
-            // resCode = proc.exitValue();
+            resCode = proc.exitValue();
         } finally {
             batFile.delete();
         }
