@@ -58,7 +58,7 @@ class BatchExecuter {
 
             Process proc = pb.start();
             resCode = proc.waitFor();
-            resCode = proc.exitValue();
+            // resCode = proc.exitValue();
 
             proc.getInputStream().eachLine {
                 echo it;
