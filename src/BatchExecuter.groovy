@@ -34,7 +34,7 @@ class BatchExecuter {
 
     def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
-        String[] resLog = [];
+        String resLog;
         Integer resCode = 0;
         def res;
 
@@ -45,11 +45,20 @@ class BatchExecuter {
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C start /wait ${batFile.getName()}");
             ProcessBuilder pb = new ProcessBuilder( (String[]) ["cmd.exe", "/C", "start", "/wait", "${batFile.getName()}"]);
             pb.environment().plus(envVariables); 
+            
             File dir = new File(batFile.getParent());
             pb.directory(dir);
+
+            File log = new File("log");
+            pb.redirectErrorStream(true);
+            pb.redirectOutput(Redirect.appendTo(log));
+
             Process proc = pb.start();
             resCode = proc.waitFor();
             resCode = proc.exitValue();
+
+            resLog = log.getText();
+
         } finally {
             batFile.delete();
         }
