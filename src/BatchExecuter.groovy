@@ -58,7 +58,7 @@ class BatchExecuter {
             resCode = proc.waitFor();
             resCode = proc.exitValue();
 
-            resLog = log.getText("UTF-8");
+            resLog = log.getText("Windows-1251");
 
         } finally {
             batFile.delete();
