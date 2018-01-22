@@ -60,16 +60,14 @@ class BatchExecuter {
             resCode = proc.waitFor();
             resCode = proc.exitValue();
 
-            // proc.text.eachLine {
-            //     echo it;
-            //     if (resLog==null) {
-            //         resLog = it
-            //     } else {
-            //         resLog = resLog.concat("\n${it}")
-            //     }
-            // }
-
-            // resLog = log.getText();
+            proc.getInputStream().eachLine {
+                echo it;
+                if (resLog==null) {
+                    resLog = it
+                } else {
+                    resLog = resLog.concat("\n${it}")
+                }
+            }
 
         } finally {
             batFile.delete();
