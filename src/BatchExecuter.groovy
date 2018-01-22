@@ -60,6 +60,8 @@ class BatchExecuter {
             pb.redirectErrorStream(true);
             pb.redirectOutput(Redirect.appendTo(log));
 
+            assert batFile.exists();
+
             Process proc = pb.start();
             proc.waitFor();
             resCode = proc.exitValue();
