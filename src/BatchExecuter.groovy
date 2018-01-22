@@ -44,7 +44,7 @@ class BatchExecuter {
         try {
             ProcessBuilder pb = new ProcessBuilder("cmd /C start /wait \"${batFile.getName()}\"");
             pb.environment().plus(envVariables); 
-            pb.directory(batFile.getPath());
+            pb.directory(new File(batFile.getPath()));
             Process proc = pb.start();
             resCode = proc.waitfor();
         } finally {
