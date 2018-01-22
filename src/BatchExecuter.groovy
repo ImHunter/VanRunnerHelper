@@ -44,7 +44,7 @@ class BatchExecuter {
         File batFile = prepareBatFile(cmdText);
         try {
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C start /wait ${batFile.getName()}");
-            ProcessBuilder pb = new ProcessBuilder( (String[]) ["cmd.exe", "/C", "start", "/wait", "${batFile.getName()}"]);
+            ProcessBuilder pb = new ProcessBuilder( (String[]) ["cmd.exe", "/C", "START", "/WAIT", "/B", "${batFile.getName()}"]);
             pb.environment().plus(envVariables); 
             
             File dir = new File(batFile.getParent());
@@ -77,7 +77,7 @@ class BatchExecuter {
     private def prepareBatFile(String cmdText) {
         File res = File.createTempFile("bex",".bat");
         res.setText(cmdText);
-        res.append("\nexit");
+        // res.append("\nexit");
         res;
     }
 
