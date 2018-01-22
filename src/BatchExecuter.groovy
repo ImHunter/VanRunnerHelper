@@ -58,7 +58,7 @@ class BatchExecuter {
             log = File.createTempFile("bex",".log");
             // File log = new File("log");
             pb.redirectErrorStream(true);
-            pb.redirectOutput(Redirect.appendTo(log));
+            // pb.redirectOutput(Redirect.appendTo(log));
             echo log;
 
             assert batFile.exists();
