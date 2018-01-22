@@ -58,7 +58,7 @@ class BatchExecuter {
             resCode = proc.waitFor();
             resCode = proc.exitValue();
 
-            resLog = log.getText("UTF-16");
+            resLog = log.getText();
 
         } finally {
             batFile.delete();
