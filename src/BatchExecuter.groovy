@@ -67,7 +67,7 @@ class BatchExecuter {
     private def prepareBatFile(String cmdText) {
         File res = File.createTempFile("bex",".bat");
         res.setText(cmdText);
-        res.append("\nexit");
+        // res.append("\nexit");
         res;
     }
 
