@@ -53,7 +53,7 @@ class BatchExecuter {
             pb.directory(dir);
 
             // File log = new File("log");
-            pb.redirectErrorStream(true);
+            // pb.redirectErrorStream(true);
             // pb.redirectOutput(Redirect.appendTo(log));
 
             Process proc = pb.start();
