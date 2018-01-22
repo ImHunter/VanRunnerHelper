@@ -24,7 +24,8 @@ class BatchExecuter {
     }
 
     def setEnvVariables(Map<String,String> envVars = null) {
-        envVariables = [:];
+        // envVariables = [:];
+        envVariables.clear();
         if (envVars!= null) {
             envVariables.plus(envVars);
         }
@@ -37,7 +38,7 @@ class BatchExecuter {
         Integer resCode = 0;
 
         setEnvVariables(envVars);
-        
+
         File batFile = prepareBatFile(cmdText);
         try {
             ProcessBuilder pb = new ProcessBuilder(cmdText);
