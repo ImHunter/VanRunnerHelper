@@ -39,6 +39,7 @@ class BatchExecuter {
         Integer resCode;
         def res;
 
+        echo cmdText;
         setEnvVariables(envVars);
 
         File batFile = prepareBatFile(cmdText);
@@ -57,7 +58,6 @@ class BatchExecuter {
             pb.redirectErrorStream(true);
             pb.redirectOutput(Redirect.appendTo(log));
 
-            echo cmdText;
             Process proc = pb.start();
             proc.waitFor();
             resCode = proc.exitValue();
