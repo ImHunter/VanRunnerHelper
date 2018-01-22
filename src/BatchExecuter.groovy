@@ -58,7 +58,7 @@ class BatchExecuter {
             log = File.createTempFile("bex",".log");
             // File log = new File("log");
             pb.redirectErrorStream(true);
-            // pb.redirectOutput(Redirect.appendTo(log));
+            pb.redirectOutput(Redirect.appendTo(log));
             echo log;
 
             assert batFile.exists();
@@ -76,7 +76,14 @@ class BatchExecuter {
             //     }
             // }
 
-            resLog = resLog.concat(log.getText());
+            BufferedReader br = new BufferedReader(new FileReader(log));
+            
+            String st;
+            while ((st = br.readLine()) != null)
+                // System.out.println(st);
+                resLog = resLog.concat(st);
+            }            
+            // resLog = resLog.concat(log.getText());
 
         } finally {
             // batFile.delete();
