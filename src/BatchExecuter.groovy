@@ -48,8 +48,8 @@ class BatchExecuter {
             File dir = new File(batFile.getParent());
             pb.directory(dir);
             Process proc = pb.start();
-            proc.waitFor();
-            resCode = proc.exitValue();
+            resCode = proc.waitFor();
+            // resCode = proc.exitValue();
         } finally {
             // batFile.delete();
         }
@@ -67,6 +67,7 @@ class BatchExecuter {
     private def prepareBatFile(String cmdText) {
         File res = File.createTempFile("bex",".bat");
         res.setText(cmdText);
+        res.append("\nexit");
         res;
     }
 
