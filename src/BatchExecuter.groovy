@@ -52,11 +52,13 @@ class BatchExecuter {
 
             File log = new File("log");
             pb.redirectErrorStream(true);
-            pb.redirectOutput(Redirect.appendTo(log));
+            // pb.redirectOutput(Redirect.appendTo(log));
 
             Process proc = pb.start();
             resCode = proc.waitFor();
             resCode = proc.exitValue();
+
+            proc.inputStream.eachLine {resLog = resLog.concat("${it}\n")}
 
             resLog = log.getText();
 
