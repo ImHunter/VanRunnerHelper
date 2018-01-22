@@ -51,7 +51,7 @@ class BatchExecuter {
     }
 
     private def prepareBatFile(String cmdText) {
-        File res = File.createTempFile("bj",".bat");
+        File res = File.createTempFile("bex",".bat");
         res.setText(cmdText);
         res;
     }
