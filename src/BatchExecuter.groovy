@@ -55,14 +55,14 @@ class BatchExecuter {
             // pb.redirectOutput(Redirect.appendTo(log));
 
             Process proc = pb.start();
-            resCode = proc.waitFor();
+            // resCode = proc.waitFor();
             resCode = proc.exitValue();
 
             proc.inputStream.eachLine {
                 if (resLog==null) {
                     resLog = it
                 } else {
-                    resLog = resLog.concat("${it}\n")
+                    resLog = resLog.concat("\n${it}")
                 }
             }
 
