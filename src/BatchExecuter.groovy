@@ -36,7 +36,7 @@ class BatchExecuter {
     def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
         String resLog;
-        Integer resCode = 0;
+        Integer resCode;
         def res;
 
         setEnvVariables(envVars);
