@@ -36,17 +36,27 @@ class BatchExecuter {
 
         String[] resLog = [];
         Integer resCode = 0;
+        def res;
 
         setEnvVariables(envVars);
 
         File batFile = prepareBatFile(cmdText);
         try {
-            ProcessBuilder pb = new ProcessBuilder(cmdText);
+            ProcessBuilder pb = new ProcessBuilder("cmd /C start /wait ${batFile}");
             pb.environment().plus(envVariables); 
+            Process proc = pb.start();
+            resCode = proc.waitfor();
         } finally {
             batFile.delete();
         }
 
+        if (returnResultAsLog) {
+            res = resLog;
+        } else {
+            res = resCode;
+        }
+
+        res;
 
     }
 
