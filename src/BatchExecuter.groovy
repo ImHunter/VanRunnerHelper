@@ -42,7 +42,7 @@ class BatchExecuter {
         setEnvVariables(envVars);
 
         File batFile = prepareBatFile(cmdText);
-        File log = File.createTempFile("bex",".log");
+        File logFile = File.createTempFile("bex",".log");
 
         try {
 
@@ -56,7 +56,7 @@ class BatchExecuter {
 
             // File log = new File("log");
             pb.redirectErrorStream(true);
-            pb.redirectOutput(Redirect.appendTo(log));
+            pb.redirectOutput(Redirect.appendTo(logFile));
 
             Process proc = pb.start();
             resCode = proc.waitFor();
@@ -71,11 +71,11 @@ class BatchExecuter {
             //     }
             // }
 
-            resLog = log.getText();
+            resLog = logFile.getText();
 
         } finally {
             batFile.delete();
-            log.delete();
+            logFile.delete();
         }
 
         if (returnResultAsLog) {
