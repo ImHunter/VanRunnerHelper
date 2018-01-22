@@ -1,5 +1,5 @@
 
-def call(Script String cmdText){
+def call(String cmdText){
     // echo "${connector}"
 
     BatchExecuter executer = new BatchExecuter(this);
