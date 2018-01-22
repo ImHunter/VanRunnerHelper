@@ -38,6 +38,7 @@ class BatchExecuter {
         String resLog = "";
         Integer resCode;
         def res;
+        File log;
 
         echo cmdText;
         setEnvVariables(envVars);
@@ -53,7 +54,7 @@ class BatchExecuter {
             File dir = new File(batFile.getParent());
             pb.directory(dir);
 
-            File log = File.createTempFile("bex",".log");
+            log = File.createTempFile("bex",".log");
             // File log = new File("log");
             pb.redirectErrorStream(true);
             pb.redirectOutput(Redirect.appendTo(log));
