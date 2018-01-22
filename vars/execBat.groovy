@@ -1,8 +1,8 @@
 
-def call(String cmdText){
+def call(String cmdText, Boolean returnResultAsLog = true){
     // echo "${connector}"
 
     BatchExecuter executer = new BatchExecuter(this);
-    executer.execCmd(cmdText, null, false);
+    executer.execCmd(cmdText, null, returnResultAsLog);
 
 }
