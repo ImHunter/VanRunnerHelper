@@ -11,11 +11,12 @@ class BatchExecuter {
 
     // closed vars
     private Script script;
-    private Map<String, String> envVariables = System.getenv();
+    private Map<String, String> envVariables;
 
     // constructor
     BatchExecuter(Script scr) {
         script = scr;
+        envVariables = System.getenv();
     }
 
     ////////////////////////////////////
@@ -28,7 +29,7 @@ class BatchExecuter {
 
     def setEnvVariables(Map<String,String> envVars = null) {
         // envVariables = [:];
-        envVariables.clear();
+        // envVariables.clear();
         if (envVars!= null) {
             envVariables.plus(envVars);
         }
