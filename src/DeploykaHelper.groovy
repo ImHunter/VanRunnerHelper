@@ -54,7 +54,7 @@ class DeploykaHelper {
 
     }
 
-    def execDeploykaCommand(List<> params) {
+    def execDeploykaCommand(List<Object> params) {
         String[] strParams = new String[params.size()];
         Integer i = 0;
         params.forEach{ elem ->
