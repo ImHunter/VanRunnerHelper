@@ -117,7 +117,8 @@ class BatchExecuter {
             Runtime rt = Runtime.getRuntime();
             String[] cmd = ["cmd.exe", "/C", "START", "/WAIT", "/B", batFile.getName()];
             String[] env = [];
-            Process proc = rt.exec(cmd, env, new File(batFile.getParent()));
+            File batDir = new File(batFile.getParent());
+            Process proc = rt.exec(cmd, env, batDir);
             proc.waitFor();
             resCode = proc.exitValue();
 
