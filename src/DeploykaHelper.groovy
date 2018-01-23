@@ -30,7 +30,7 @@ class DeploykaHelper {
 
         def readLog = {InputStream st ->
             String resLog;
-            resLog = new String(st.getBytes(), 'windows-1251');
+            resLog = new String(st.getBytes(), 'IBM866');
             // st.eachLine('Windows-1251'){ln ->
             //     // echo "logln: ${ln}";
             //     if (resLog==null){
