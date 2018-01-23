@@ -108,8 +108,11 @@ class BatchExecuter {
         String[] res = [];
         def curVal;
         if (envMap!=null) {
+            res = String[envMap.count()];
+            def i = 0;
             envMap.each { entry ->
-                curVal = "$entry.key=$entry.value".toString();
+                res[i] = "$entry.key=$entry.value";
+                i++;
                 echo curVal;
                 res.add(curVal);
             }        
