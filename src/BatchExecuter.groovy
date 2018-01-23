@@ -110,6 +110,7 @@ class BatchExecuter {
         if (envMap!=null) {
             envMap.each { entry ->
                 curVal = "$entry.key=$entry.value".toString();
+                echo curVal;
                 res.add(curVal);
             }        
         }
