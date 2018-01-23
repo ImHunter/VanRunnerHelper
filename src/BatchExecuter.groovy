@@ -124,7 +124,7 @@ class BatchExecuter {
 
             // ошибки
             InputStream st = proc.getErrorStream();
-            st.eachLine("KOI-8"){
+            st.eachLine("UTF-7"){
                 echo "err: ${it}"
             }
             st = proc.getInputStream();
