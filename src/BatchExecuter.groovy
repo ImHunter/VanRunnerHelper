@@ -71,7 +71,9 @@ class BatchExecuter {
             Process proc = pb.start();
             // proc.consumeProcessOutput();
             proc.waitFor();
+            proc.consumeProcessOutput();
             resCode = proc.exitValue();
+            echo proc.getText();
             if (resCode>0) {
                 proc.getErrorStream().eachLine(){it, lnr -> 
                     echo it;
