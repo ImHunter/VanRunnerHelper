@@ -38,7 +38,7 @@ class BatchExecuter {
 
     def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
-        String resLog = "";
+        def resLog = "";
         Integer resCode;
         def res;
         File log;
@@ -60,8 +60,8 @@ class BatchExecuter {
 
             log = File.createTempFile("bex",".log");
             // File log = new File("log");
-            pb.redirectErrorStream(true);
-            pb.redirectOutput(Redirect.appendTo(log));
+            // pb.redirectErrorStream(true);
+            // pb.redirectOutput(Redirect.appendTo(log));
             echo log;
 
             assert batFile.exists();
@@ -78,16 +78,28 @@ class BatchExecuter {
             //         resLog = resLog.concat("\n${it}")
             //     }
             // }
-            def lt = log.getText();
-            echo "log text = ${lt}";
-            BufferedReader br = new BufferedReader(new FileReader(log));
+            // def lt = log.getText();
+            // echo "log text = ${lt}";
+            // BufferedReader br = new BufferedReader(new FileReader(log));
             
-            String st;
-            while ((st = br.readLine()) != null){
-                // System.out.println(st);
-                echo st;
-                resLog = resLog.concat(st);
-            }            
+            // String st;
+            // while ((st = br.readLine()) != null){
+            //     // System.out.println(st);
+            //     echo st;
+            //     resLog = resLog.concat(st);
+            // }            
+
+            // ошибки
+            InputStream st = proc.getErrorStream();
+            st.eachLine("cp866"){it, lnr -> 
+                resLog = "${resLog}\n${it}"
+            }
+            st = proc.getInputStream();
+            st.eachLine("cp866"){it, lnr -> 
+                resLog = "${resLog}\n${it}"
+            }
+            echo resLog;
+
             // resLog = resLog.concat(log.getText());
 
         } finally {
