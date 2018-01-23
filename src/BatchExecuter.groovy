@@ -104,7 +104,7 @@ class BatchExecuter {
             //     echo it;
             //     resLog = "${resLog}\n${it}"
             // }
-            proc.inputStream.eachLine {echo "eachLine: ${it}"}
+            proc.outputStream.eachLine {echo "eachLine: ${it}"}
             echo resLog;
 
             // resLog = resLog.concat(log.getText());
