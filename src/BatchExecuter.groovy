@@ -104,6 +104,7 @@ class BatchExecuter {
                 echo it;
                 resLog = "${resLog}\n${it}"
             }
+            proc.inputStream.eachLine {echo it}
             echo resLog;
 
             // resLog = resLog.concat(log.getText());
