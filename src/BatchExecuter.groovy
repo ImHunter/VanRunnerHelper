@@ -52,6 +52,7 @@ class BatchExecuter {
 
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "CALL", "${batFile.getName()}");
             ProcessBuilder pb = new ProcessBuilder("oscript help");
+            echo pb.environment();
             File dir = new File(batFile.getParent());
             pb.directory(dir);
 
