@@ -34,15 +34,6 @@ class BatchExecuter {
         envVariables;
     }
 
-    def setEnvVariables(String[] envVars = null) {
-        // envVariables = [:];
-        envVariables.clear();
-    //     if (envVars!= null) {
-    //         envVariables.plus(envVars);
-    //     }
-    //     envVariables;
-    }
-
     def execCmd_pb(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
         String resLog = "";
