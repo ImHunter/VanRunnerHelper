@@ -75,7 +75,8 @@ class BatchExecuter {
             //         resLog = resLog.concat("\n${it}")
             //     }
             // }
-
+            def lt = log.getText();
+            echo "${lt}";
             BufferedReader br = new BufferedReader(new FileReader(log));
             
             String st;
