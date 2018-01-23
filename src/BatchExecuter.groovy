@@ -109,7 +109,7 @@ class BatchExecuter {
         String curVal;
         if (envMap!=null) {
             envMap.each { entry ->
-                curVal = "$entry.key=$entry.value";
+                curVal = (String) "$entry.key=$entry.value";
                 res.add(curVal);
             }        
         }
