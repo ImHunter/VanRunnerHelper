@@ -108,6 +108,7 @@ class BatchExecuter {
         String[] res;
         def curVal;
         if (envMap!=null) {
+            echo "${envMap}"
             def mapCount = envMap.count();
             res = new String[mapCount];
             def i = 0;
