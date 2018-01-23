@@ -124,7 +124,7 @@ class BatchExecuter {
 
             // ошибки
             InputStream st = proc.getErrorStream();
-            st.eachLine("UTF-8"){
+            st.eachLine("Windows-1251"){
                 echo "err: ${it}"
             }
             st = proc.getInputStream();
