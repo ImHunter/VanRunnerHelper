@@ -11,14 +11,37 @@ class DeploykaHelper {
     private String repoUserName;
     private String repoPassword;
 
+    Integer execCode;
+    String execLog;
+
     DeploykaHelper(Script paramScript, String paramPathToDeployka, String paramPathToServiceEpf) {
         pathToDeployka = paramPathToDeployka;
         pathToServiceEpf = paramPathToServiceEpf;
         script = paramScript;
     }
 
-    def execDeploykaCommand() {
-        
+    def execDeploykaCommand(String[] params) {
+
+        Boolean res;
+        String[] initParams = ["oscript", pathToDeployka];
+
+        try {
+
+            ProcessBuilder pb = new ProcessBuilder(initParams + params);
+
+            Process proc = pb.start();
+            proc.waitFor();
+            execCode = proc.exitValue();
+            execLog = proc.getText();
+
+        } finally {
+            // batFile.delete();
+            // log.delete();
+        }
+
+        res = execCode==0;
+        res;
+
     }
 
     def setDbAuth(String paramDbUserName, String paramDbPassword) {
