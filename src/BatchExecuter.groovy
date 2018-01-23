@@ -43,7 +43,7 @@ class BatchExecuter {
         def res;
         File log;
 
-        echo cmdText;
+        // echo cmdText;
         setEnvVariables(envVars);
 
         File batFile = prepareBatFile(cmdText);
