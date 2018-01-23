@@ -124,11 +124,11 @@ class BatchExecuter {
 
             // ошибки
             InputStream st = proc.getErrorStream();
-            st.eachLine{
+            st.eachLine("UTF-8"){
                 echo it
             }
             st = proc.getInputStream();
-            st.eachLine{
+            st.eachLine("UTF-8"){
                 echo it
             }
 
