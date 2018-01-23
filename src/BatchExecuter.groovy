@@ -72,7 +72,14 @@ class BatchExecuter {
             proc.consumeProcessOutput();
             proc.waitFor();
             resCode = proc.exitValue();
-            echo proc.getText();
+            if (resCode>0) {
+                proc.getErrorStream().eachLine(){it, lnr -> 
+                    echo it;
+                    resLog = "${resLog}\n${it}"
+                }
+            } else {
+                echo proc.getText();
+            }
 
             echo "resCode=${resCode}";
 
@@ -96,12 +103,6 @@ class BatchExecuter {
             // }            
 
             // ошибки
-            if (resCode>0) {
-                proc.getErrorStream().eachLine(){it, lnr -> 
-                    echo it;
-                    resLog = "${resLog}\n${it}"
-                }
-            }
             // st = ;
             // proc.getInputStream().eachLine() {it, lnr -> 
             //     echo it;
