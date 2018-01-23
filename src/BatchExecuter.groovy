@@ -73,17 +73,18 @@ class BatchExecuter {
             proc.waitFor();
             proc.consumeProcessOutput();
             resCode = proc.exitValue();
-            echo proc.getText();
-            if (resCode>0) {
-                proc.getErrorStream().eachLine(){it, lnr -> 
-                    echo it;
-                    resLog = "${resLog}\n${it}"
-                }
-            } else {
-                echo proc.getText();
-            }
+            resLog = proc.getText();
+            // if (resCode>0) {
+            //     proc.getErrorStream().eachLine(){it, lnr -> 
+            //         echo it;
+            //         resLog = "${resLog}\n${it}"
+            //     }
+            // } else {
+            //     echo proc.getText();
+            // }
 
             echo "resCode=${resCode}";
+            echo "resLog=${resLog}";
 
             // proc.getInputStream().eachLine {
             //     echo "res_line: ${it}";
