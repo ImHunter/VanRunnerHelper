@@ -29,24 +29,21 @@ class DeploykaHelper {
     def execDeploykaCommand(String[] params) {
 
         def readLog = {InputStream st ->
-            String res;
+            String resLog;
             st.eachLine(){ln ->
                 echo "logln: ${ln}";
-                if (res==null){
-                    res = ln;
+                if (resLog==null){
+                    resLog = ln;
                 } else {
-                    res = "res\n${ln}".toString();
+                    resLog = "res\n${ln}".toString();
                 }
             }
-            res;
+            resLog;
         }
-
-        echo params;
 
         Boolean res;
         String[] initParams = ["oscript", pathToDeployka];
         String[] fullParams = initParams + params;
-        echo fullParams;
 
         try {
 
