@@ -70,6 +70,8 @@ class BatchExecuter {
             proc.waitFor();
             resCode = proc.exitValue();
 
+            echo "resCode=${resCode}";
+
             // proc.getInputStream().eachLine {
             //     echo "res_line: ${it}";
             //     if (resLog==null) {
