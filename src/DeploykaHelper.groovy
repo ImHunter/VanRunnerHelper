@@ -1,10 +1,12 @@
 
 class DeploykaHelper {
 
-    private String pathToDeployka;
-    private String pathToServiceEpf;
+    String pathToDeployka;
+    String pathToServiceEpf;
     private Script script;
 
+    private String dbServer;
+    private String dbDatabase;
     private String dbUserName;
     private String dbPassword;
 
@@ -52,6 +54,11 @@ class DeploykaHelper {
     def setRepoAuth(String paramRepoUserName, String paramRepoPassword) {
         repoUserName = paramRepoUserName;
         repoPassword = paramRepoPassword;
+    }
+
+    def setServerDatabase(String paramServer, String paramDatabase) {
+        dbServer = paramServer;
+        dbDatabase = paramDatabase;
     }
 
 }
