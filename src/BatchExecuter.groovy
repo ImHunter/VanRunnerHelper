@@ -74,6 +74,7 @@ class BatchExecuter {
             proc.consumeProcessOutput();
             resCode = proc.exitValue();
             resLog = proc.getText();
+            echo proc.getText()
             // if (resCode>0) {
             //     proc.getErrorStream().eachLine(){it, lnr -> 
             //         echo it;
