@@ -28,6 +28,8 @@ class DeploykaHelper {
 
     def execDeploykaCommand(String[] params) {
 
+        echo params;
+
         Boolean res;
         String[] initParams = ["oscript", pathToDeployka];
         String[] fullParams = initParams + params;
