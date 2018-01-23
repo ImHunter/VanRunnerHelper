@@ -93,13 +93,13 @@ class BatchExecuter {
             // }            
 
             // ошибки
-            InputStream st = proc.getErrorStream();
-            st.eachLine("cp866"){it, lnr -> 
+            // InputStream st = ;
+            proc.getErrorStream().eachLine("cp866"){it, lnr -> 
                 echo it;
                 resLog = "${resLog}\n${it}"
             }
-            st = proc.getOutputStream();
-            st.eachLine("cp866"){it, lnr -> 
+            // st = ;
+            proc.getOutputStream().eachLine("cp866"){it, lnr -> 
                 echo it;
                 resLog = "${resLog}\n${it}"
             }
