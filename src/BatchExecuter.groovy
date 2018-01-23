@@ -58,11 +58,11 @@ class BatchExecuter {
             File dir = new File(batFile.getParent());
             pb.directory(dir);
 
-            log = File.createTempFile("bex",".log");
+            // log = File.createTempFile("bex",".log");
             // File log = new File("log");
             // pb.redirectErrorStream(true);
             // pb.redirectOutput(Redirect.appendTo(log));
-            echo log;
+            // echo log;
 
             assert batFile.exists();
 
