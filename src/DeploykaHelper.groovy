@@ -37,6 +37,7 @@ class DeploykaHelper {
         Boolean res;
         String[] initParams = ["oscript", pathToDeployka];
         String[] fullParams = initParams + params;
+        echo fullParams;
 
         try {
 
