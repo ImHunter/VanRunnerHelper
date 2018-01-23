@@ -148,8 +148,8 @@ class BatchExecuter {
                 script.println "println err: ${it} lnr ${lnr}"
             }
             st = proc.getInputStream();
-            st.eachLine("UTF-8"){
-                script.println "inf: ${it}"
+            st.eachLine("cp866"){it, lnr -> 
+                script.println "println info: ${it} lnr ${lnr}"
             }
 
         } finally {
