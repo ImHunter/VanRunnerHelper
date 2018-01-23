@@ -2,6 +2,7 @@ import java.util.Map
 import java.io.File
 import java.lang.ProcessBuilder
 import java.lang.ProcessBuilder.Redirect
+import java.lang.Runtime
 
 class BatchExecuter {
 
@@ -33,7 +34,16 @@ class BatchExecuter {
         envVariables;
     }
 
-    def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
+    def setEnvVariables(String[] envVars = null) {
+        // envVariables = [:];
+        envVariables.clear();
+    //     if (envVars!= null) {
+    //         envVariables.plus(envVars);
+    //     }
+    //     envVariables;
+    }
+
+    def execCmd_pb(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
         String resLog = "";
         Integer resCode;
@@ -86,6 +96,34 @@ class BatchExecuter {
                 resLog = resLog.concat(st);
             }            
             // resLog = resLog.concat(log.getText());
+
+        } finally {
+            // batFile.delete();
+            // log.delete();
+        }
+
+        if (returnResultAsLog) {
+            res = resLog;
+        } else {
+            res = resCode;
+        }
+
+        res;
+
+    }
+
+    def execCmd(String cmdText, Map<String, String> envVars = null, Boolean returnResultAsLog = true) {
+
+        String resLog = "";
+        Integer resCode;
+        def res;
+        
+        setEnvVariables(envVars);
+        File batFile = prepareBatFile(cmdText);
+
+        try {
+
+            def rt = Runtime.getRuntime();
 
         } finally {
             // batFile.delete();
