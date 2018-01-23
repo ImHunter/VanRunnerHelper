@@ -76,7 +76,7 @@ class BatchExecuter {
             //     }
             // }
             def lt = log.getText();
-            echo "${lt}";
+            echo "log text = ${lt}";
             BufferedReader br = new BufferedReader(new FileReader(log));
             
             String st;
