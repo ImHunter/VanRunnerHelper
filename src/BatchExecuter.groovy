@@ -108,7 +108,7 @@ class BatchExecuter {
         String res = [];
         if (envMap!=null) {
             envMap.each { entry ->
-                res.add("$entry.key=$entry.value")
+                res.add("$entry.key=$entry.value".toString())
             }        
         }
         res;
