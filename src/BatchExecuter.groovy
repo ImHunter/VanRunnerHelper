@@ -124,7 +124,7 @@ class BatchExecuter {
 
             // ошибки
             InputStream st = proc.getErrorStream();
-            st.eachLine("Windows-1251"){
+            st.eachLine("KOI-8"){
                 echo "err: ${it}"
             }
             st = proc.getInputStream();
