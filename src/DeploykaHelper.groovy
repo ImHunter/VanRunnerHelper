@@ -58,7 +58,7 @@ class DeploykaHelper {
         String[] strParams = new String[params.size()];
         Integer i = 0;
         params.forEach{
-            strParams[i] = "${it}";
+            strParams[i] = "${it}".toString();
             i++;
         }
         execDeploykaCommand(strParams);
