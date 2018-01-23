@@ -50,74 +50,26 @@ class BatchExecuter {
 
         try {
 
-            // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C start /wait ${batFile.getName()}");
-            // ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "START", "/WAIT", "/B", "${batFile.getName()}");
             ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "CALL", "${batFile.getName()}");
-            // ProcessBuilder pb = new ProcessBuilder("oscript", "-help");
-            // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C START /WAIT /B \"${batFile.getName()}\"");
-            // pb.environment().plus(envVariables); 
-            
             File dir = new File(batFile.getParent());
             pb.directory(dir);
 
-            // log = File.createTempFile("bex",".log");
-            // File log = new File("log");
-            // pb.redirectErrorStream(true);
-            // pb.redirectOutput(Redirect.appendTo(log));
-            // echo log;
-
-            assert batFile.exists();
-
             Process proc = pb.start();
-            // proc.consumeProcessOutput();
             proc.waitFor();
-            // proc.consumeProcessOutput();
             resCode = proc.exitValue();
-            // resLog = proc.getText();
-            // echo proc.getText()
-            if (resCode>0) {
-                resLog = proc.getText();
-                // proc.getErrorStream().eachLine(){it, lnr -> 
-                //     // echo it;
-                //     resLog = "${resLog}\n${it}"
-                // }
-            } else {
-                resLog = proc.getText();
-            }
+            resLog = proc.getText();
+            // if (resCode>0) {
+            //     resLog = proc.getText();
+            //     // proc.getErrorStream().eachLine(){it, lnr -> 
+            //     //     // echo it;
+            //     //     resLog = "${resLog}\n${it}"
+            //     // }
+            // } else {
+            //     resLog = proc.getText();
+            // }
 
             echo "resCode=${resCode}";
             echo "resLog=${resLog}";
-
-            // proc.getInputStream().eachLine {
-            //     echo "res_line: ${it}";
-            //     if (resLog==null) {
-            //         resLog = it
-            //     } else {
-            //         resLog = resLog.concat("\n${it}")
-            //     }
-            // }
-            // def lt = log.getText();
-            // echo "log text = ${lt}";
-            // BufferedReader br = new BufferedReader(new FileReader(log));
-            
-            // String st;
-            // while ((st = br.readLine()) != null){
-            //     // System.out.println(st);
-            //     echo st;
-            //     resLog = resLog.concat(st);
-            // }            
-
-            // ошибки
-            // st = ;
-            // proc.getInputStream().eachLine() {it, lnr -> 
-            //     echo it;
-            //     resLog = "${resLog}\n${it}"
-            // }
-            // echo proc.outputStream;
-            // proc.outputStream.eachLine {echo "eachLine: ${it}"}
-            echo resLog;
-
-            // resLog = resLog.concat(log.getText());
 
         } finally {
             // batFile.delete();
