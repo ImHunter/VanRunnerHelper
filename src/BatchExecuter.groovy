@@ -123,7 +123,12 @@ class BatchExecuter {
             resCode = proc.exitValue();
 
             // ошибки
-            proc.getErrorStream().eachLine{
+            InputStream st = proc.getErrorStream();
+            st.eachLine{
+                echo it
+            }
+            st = proc.getInputStream();
+            st.eachLine{
                 echo it
             }
 
