@@ -3,6 +3,7 @@ import java.io.File
 import java.lang.ProcessBuilder
 import java.lang.ProcessBuilder.Redirect
 import java.lang.Runtime
+import java.lang.System
 
 class BatchExecuter {
 
@@ -103,6 +104,16 @@ class BatchExecuter {
 
     }
 
+    def getEnvArray(Map<String, String> envMap) {
+        String res = [];
+        if (envMap!=null) {
+            envMap.each { entry ->
+                res.add("$entry.key=$entry.value")
+            }        
+        }
+        res;
+    }
+
     def execCmd(String cmdText, Map<String, String> envVars = null, Boolean returnResultAsLog = true) {
 
         String resLog = "";
@@ -116,7 +127,7 @@ class BatchExecuter {
 
             Runtime rt = Runtime.getRuntime();
             String[] cmd = ["cmd.exe", "/A", "/C", "START", "/WAIT", "/B", batFile.getName()];
-            String[] env = [];
+            String[] env = getEnvArray(System.getenv());
             File batDir = new File(batFile.getParent());
             Process proc = rt.exec(cmd, env, batDir);
             proc.waitFor();
