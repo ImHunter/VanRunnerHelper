@@ -105,10 +105,11 @@ class BatchExecuter {
     }
 
     def getEnvArray(Map<String, String> envMap) {
-        String[] res = [];
+        String[] res;
         def curVal;
         if (envMap!=null) {
-            res = new String[envMap.count()];
+            def mapCount = envMap.count();
+            res = new String[mapCount];
             def i = 0;
             envMap.each { entry ->
                 res[i] = "$entry.key=$entry.value";
@@ -116,6 +117,8 @@ class BatchExecuter {
                 echo curVal;
                 res.add(curVal);
             }        
+        } else {
+            res = [];
         }
         res;
     }
