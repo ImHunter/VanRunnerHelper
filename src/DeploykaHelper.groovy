@@ -52,12 +52,13 @@ class DeploykaHelper {
             Process proc = pb.start();
             proc.waitFor();
             execCode = proc.exitValue();
+            execLog = readLog(proc.getIn());
             res = execCode==0;
-            if (res) {
-                execLog = readLog(proc.getIn());
-            } else {
-                execLog = readLog(proc.getErr());
-            }
+            // if (res) {
+            //     execLog = readLog(proc.getIn());
+            // } else {
+            //     execLog = readLog(proc.getErr());
+            // }
 
         } finally {
             // batFile.delete();
