@@ -11,7 +11,7 @@ class BatchExecuter {
 
     // closed vars
     private Script script;
-    private Map<String, String> envVariables = [:];
+    private Map<String, String> envVariables = System.getenv();
 
     // constructor
     BatchExecuter(Script scr) {
@@ -35,7 +35,7 @@ class BatchExecuter {
         envVariables;
     }
 
-    def execCmd_pb(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
+    def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
         String resLog = "";
         Integer resCode;
@@ -123,7 +123,7 @@ class BatchExecuter {
         res;
     }
 
-    def execCmd(String cmdText, Map<String, String> envVars = null, Boolean returnResultAsLog = true) {
+    def execCmd_run(String cmdText, Map<String, String> envVars = null, Boolean returnResultAsLog = true) {
 
         String resLog = "";
         Integer resCode;
