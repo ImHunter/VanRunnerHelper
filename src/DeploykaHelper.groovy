@@ -31,8 +31,9 @@ class DeploykaHelper {
         def readLog = {InputStream st ->
             String res;
             st.eachLine(){ln ->
+                echo "logln: ${ln}";
                 if (res==null){
-                    res = ln
+                    res = ln;
                 } else {
                     res = "res\n${ln}".toString();
                 }
