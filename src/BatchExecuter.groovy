@@ -76,10 +76,11 @@ class BatchExecuter {
             // resLog = proc.getText();
             // echo proc.getText()
             if (resCode>0) {
-                proc.getErrorStream().eachLine(){it, lnr -> 
-                    // echo it;
-                    resLog = "${resLog}\n${it}"
-                }
+                resLog = proc.getText();
+                // proc.getErrorStream().eachLine(){it, lnr -> 
+                //     // echo it;
+                //     resLog = "${resLog}\n${it}"
+                // }
             } else {
                 resLog = proc.getText();
             }
