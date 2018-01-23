@@ -30,7 +30,7 @@ class DeploykaHelper {
 
         def readLog = {InputStream st ->
             String resLog;
-            st.eachLine('UTF-8'){ln ->
+            st.eachLine('Windows-1251'){ln ->
                 echo "logln: ${ln}";
                 if (resLog==null){
                     resLog = ln;
