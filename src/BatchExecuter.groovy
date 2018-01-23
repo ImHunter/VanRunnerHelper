@@ -105,13 +105,13 @@ class BatchExecuter {
     }
 
     def getEnvArray(Map<String, String> envMap) {
-        String[] res = [];
+        String[] res = new String[];
         def curVal;
         if (envMap!=null) {
             envMap.each { entry ->
                 curVal = "$entry.key=$entry.value".toString();
                 echo curVal;
-                res.add(curVal);
+                res << curVal;
             }        
         }
         res;
