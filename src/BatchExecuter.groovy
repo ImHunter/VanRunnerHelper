@@ -114,7 +114,10 @@ class BatchExecuter {
 
         try {
 
-            def rt = Runtime.getRuntime();
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("cmd help");
+            proc.waitFor();
+            resCode = proc.exitValue();
 
         } finally {
             // batFile.delete();
