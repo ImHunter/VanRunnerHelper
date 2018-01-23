@@ -58,21 +58,12 @@ class BatchExecuter {
             proc.waitFor();
             resCode = proc.exitValue();
             resLog = proc.getText();
-            // if (resCode>0) {
-            //     resLog = proc.getText();
-            //     // proc.getErrorStream().eachLine(){it, lnr -> 
-            //     //     // echo it;
-            //     //     resLog = "${resLog}\n${it}"
-            //     // }
-            // } else {
-            //     resLog = proc.getText();
-            // }
 
             echo "resCode=${resCode}";
             echo "resLog=${resLog}";
 
         } finally {
-            // batFile.delete();
+            batFile.delete();
             // log.delete();
         }
 
