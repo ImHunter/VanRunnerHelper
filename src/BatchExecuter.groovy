@@ -120,7 +120,7 @@ class BatchExecuter {
             resCode = proc.exitValue();
 
         } finally {
-            // batFile.delete();
+            batFile.delete();
             // log.delete();
         }
 
