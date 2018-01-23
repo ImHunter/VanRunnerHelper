@@ -99,7 +99,7 @@ class BatchExecuter {
                 resLog = "${resLog}\n${it}"
             }
             // st = ;
-            proc.getOutputStream().eachLine("cp866"){it, lnr -> 
+            proc.getInputStream().eachLine() {it, lnr -> 
                 echo it;
                 resLog = "${resLog}\n${it}"
             }
