@@ -96,11 +96,12 @@ class BatchExecuter {
             // }            
 
             // ошибки
-            // InputStream st = ;
-            // proc.getErrorStream().eachLine(){it, lnr -> 
-            //     echo it;
-            //     resLog = "${resLog}\n${it}"
-            // }
+            if (resCode>0) {
+                proc.getErrorStream().eachLine(){it, lnr -> 
+                    echo it;
+                    resLog = "${resLog}\n${it}"
+                }
+            }
             // st = ;
             // proc.getInputStream().eachLine() {it, lnr -> 
             //     echo it;
