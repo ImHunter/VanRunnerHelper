@@ -82,6 +82,7 @@ class BatchExecuter {
             String st;
             while ((st = br.readLine()) != null){
                 // System.out.println(st);
+                echo st;
                 resLog = resLog.concat(st);
             }            
             // resLog = resLog.concat(log.getText());
