@@ -122,6 +122,11 @@ class BatchExecuter {
             proc.waitFor();
             resCode = proc.exitValue();
 
+            // ошибки
+            proc.getErrorStream().eachLine{
+                echo it
+            }
+
         } finally {
             batFile.delete();
             // log.delete();
