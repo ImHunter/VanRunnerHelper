@@ -113,7 +113,6 @@ class BatchExecuter {
             def i = 0;
             envMap.each { entry ->
                 curVal = entry.key + '=' + entry.value;
-                echo curVal;
                 res[i] = curVal;
                 i++;
                 // res.add(curVal);
@@ -145,8 +144,8 @@ class BatchExecuter {
 
             // ошибки
             InputStream st = proc.getErrorStream();
-            st.eachLine("cp866"){
-                echo "err: ${it}"
+            st.eachLine("cp866"){it, lnr -> 
+                echo "err: ${it} lnr ${lnr}"
             }
             st = proc.getInputStream();
             st.eachLine("UTF-8"){
