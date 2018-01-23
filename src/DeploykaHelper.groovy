@@ -46,6 +46,10 @@ class DeploykaHelper {
 
     }
 
+    def execDeploykaCommand(List params) {
+
+    }
+
     def setDbAuth(String paramDbUserName, String paramDbPassword) {
         dbUserName = paramDbUserName;
         dbPassword = paramDbPassword;
