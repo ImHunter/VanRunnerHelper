@@ -71,7 +71,7 @@ class BatchExecuter {
             Process proc = pb.start();
             // proc.consumeProcessOutput();
             proc.waitFor();
-            proc.consumeProcessOutput();
+            // proc.consumeProcessOutput();
             resCode = proc.exitValue();
             // resLog = proc.getText();
             // echo proc.getText()
