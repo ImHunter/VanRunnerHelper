@@ -51,7 +51,8 @@ class BatchExecuter {
         try {
 
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C start /wait ${batFile.getName()}");
-            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "START", "/WAIT", "/B", "${batFile.getName()}");
+            // ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "START", "/WAIT", "/B", "${batFile.getName()}");
+            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "CALL", "${batFile.getName()}");
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe /C START /WAIT /B \"${batFile.getName()}\"");
             // pb.environment().plus(envVariables); 
             
