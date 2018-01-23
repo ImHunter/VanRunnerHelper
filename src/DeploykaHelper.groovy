@@ -58,7 +58,6 @@ class DeploykaHelper {
         String[] strParams = new String[params.size()];
         Integer i = 0;
         params.each{ elem ->
-            echo "adding ${elem} at pos ${i}"
             strParams[i] = "${elem}".toString();
             i++;
         }
