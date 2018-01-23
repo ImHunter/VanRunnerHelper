@@ -57,7 +57,7 @@ class DeploykaHelper {
     def execDeploykaCommand(List<Object> params) {
         String[] strParams = new String[params.size()];
         Integer i = 0;
-        params.forEach{ elem ->
+        params.each{ elem ->
             echo "adding ${elem} at pos ${i}"
             strParams[i] = "${elem}".toString();
             i++;
