@@ -28,6 +28,11 @@ class DeploykaHelper {
 
     def execDeploykaCommand(String[] params) {
 
+        def readLog(InputStream st) {
+            def res "readLog";
+            res;
+        }
+
         echo params;
 
         Boolean res;
@@ -42,14 +47,18 @@ class DeploykaHelper {
             Process proc = pb.start();
             proc.waitFor();
             execCode = proc.exitValue();
-            execLog = proc.getText();
+            res = execCode==0;
+            if (res) {
+                execLog = readLog(proc.getIn());
+            } else {
+                execLog = readLog(proc.getErr();
+            }
 
         } finally {
             // batFile.delete();
             // log.delete();
         }
 
-        res = execCode==0;
         res;
 
     }
