@@ -115,7 +115,7 @@ class BatchExecuter {
         try {
 
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("cmd help");
+            Process proc = rt.exec("cmd /C help");
             proc.waitFor();
             resCode = proc.exitValue();
 
