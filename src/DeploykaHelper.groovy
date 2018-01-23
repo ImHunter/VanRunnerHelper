@@ -51,7 +51,7 @@ class DeploykaHelper {
             if (res) {
                 execLog = readLog(proc.getIn());
             } else {
-                execLog = readLog(proc.getErr();
+                execLog = readLog(proc.getErr());
             }
 
         } finally {
