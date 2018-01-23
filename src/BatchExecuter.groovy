@@ -100,10 +100,10 @@ class BatchExecuter {
                 resLog = "${resLog}\n${it}"
             }
             // st = ;
-            proc.getInputStream().eachLine() {it, lnr -> 
-                echo it;
-                resLog = "${resLog}\n${it}"
-            }
+            // proc.getInputStream().eachLine() {it, lnr -> 
+            //     echo it;
+            //     resLog = "${resLog}\n${it}"
+            // }
             proc.inputStream.eachLine {echo it}
             echo resLog;
 
