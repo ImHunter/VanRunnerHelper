@@ -69,7 +69,7 @@ class BatchExecuter {
             assert batFile.exists();
 
             Process proc = pb.start();
-            // proc.consumeProcessOutput(proc.getInputStream(), proc.getErrorStream());
+            proc.consumeProcessOutput();
             proc.waitFor();
             resCode = proc.exitValue();
             echo proc.getText();
