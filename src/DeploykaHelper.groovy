@@ -59,6 +59,7 @@ class DeploykaHelper {
         def i = 0;
         params.forEach{
             strParams[i] = it.toString();
+            i++;
         }
         execDeploykaCommand(strParams);
     }
