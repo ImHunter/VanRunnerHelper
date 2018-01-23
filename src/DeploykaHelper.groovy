@@ -22,11 +22,16 @@ class DeploykaHelper {
         script = paramScript;
     }
 
+    def echo(def msg){
+        script.echo "${msg}";
+    }
+
     def execDeploykaCommand(String[] params) {
 
         Boolean res;
         String[] initParams = ["oscript", pathToDeployka];
-        def fullParams = initParams + params;
+        String[] fullParams = initParams + params;
+        echo fullParams;
 
         try {
 
