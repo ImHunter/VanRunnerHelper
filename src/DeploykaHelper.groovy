@@ -26,10 +26,11 @@ class DeploykaHelper {
 
         Boolean res;
         String[] initParams = ["oscript", pathToDeployka];
+        def fullParams = initParams + params;
 
         try {
 
-            ProcessBuilder pb = new ProcessBuilder(initParams + params);
+            ProcessBuilder pb = new ProcessBuilder(fullParams);
 
             Process proc = pb.start();
             proc.waitFor();
