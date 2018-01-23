@@ -28,7 +28,7 @@ class DeploykaHelper {
 
     def execDeploykaCommand(String[] params) {
 
-        def readLog(InputStream st) {
+        def readLog = {InputStream st ->
             def res = "readLog";
             res;
         }
