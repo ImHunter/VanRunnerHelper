@@ -30,7 +30,7 @@ class DeploykaHelper {
 
         def readLog = {InputStream st ->
             String resLog;
-            st.eachLine(){ln ->
+            st.eachLine('UTF-8'){ln ->
                 echo "logln: ${ln}";
                 if (resLog==null){
                     resLog = ln;
@@ -54,11 +54,6 @@ class DeploykaHelper {
             execCode = proc.exitValue();
             execLog = readLog(proc.getIn());
             res = execCode==0;
-            // if (res) {
-            //     execLog = readLog(proc.getIn());
-            // } else {
-            //     execLog = readLog(proc.getErr());
-            // }
 
         } finally {
             // batFile.delete();
