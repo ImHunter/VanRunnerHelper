@@ -9,13 +9,8 @@ class OScriptHelper {
     String resultLog;
     String outputLogEncoding = 'Cp866';
 
-    public OScriptHelper(Script script) {
+    public OScriptHelper(Script script = null) {
         this.script = script;
-    }
-
-    @NonCPS
-    public OScriptHelper() {
-        // this.script = script;
     }
 
     def echo(def msg){
