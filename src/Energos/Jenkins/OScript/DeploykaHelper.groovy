@@ -4,7 +4,7 @@ package Energos.Jenkins.OScript;
 class DeploykaHelper extends OScriptHelper {
 
     String pathToDeployka;
-    Map<String, String> params;
+    Map<String, String> params = [:];
 
     private String KEY_DB_SERVER = 'dbServer';
     private String KEY_DB_DATABASE = 'dbDatabase';
@@ -13,7 +13,7 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_PATH_TO_SERVICE_EPF = 'pathToServiceEpf';
 
     public DeploykaHelper(Script script, String pathToDeployka, String pathToServiceEPF){
-        // super(script);
+        super(script);
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
