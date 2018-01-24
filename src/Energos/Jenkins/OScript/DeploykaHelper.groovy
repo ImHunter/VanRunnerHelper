@@ -12,6 +12,11 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_DB_PWD = 'dbPwd';
     private String KEY_PATH_TO_SERVICE_EPF = 'pathToServiceEpf';
 
+    private String KEY_REPO_PATH = 'repoPath';
+    private String KEY_REPO_USER = 'repoUser';
+    private String KEY_REPO_PWD = 'repoPwd';
+
+
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(paramScript); 
         this.pathToDeployka = pathToDeployka;
@@ -26,12 +31,29 @@ class DeploykaHelper extends OScriptHelper {
         params;
     }
 
-    def setParam(Map<String, String> newParams){
-        params << newParams;
+    def setParam(Map<String, String> newParams, isIgnoreEmptyValues = true){
+        def filtered;
+        if (isIgnoreEmptyValues) {
+            filtered = newParams.findAll { it.value != null }
+        } else {
+            filtered = newParams;
+        }
+        params << filtered;
         params;
     }
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
+        setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer, (KEY_DB_USER):dbUser, (KEY_DB_PWD), dbPwd]);
+        // setParam((KEY_DB_USER), dbUser, dbUser!=null);
+        // setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
+    }
+
+    def setDbAuth(String dbUser, String dbPwd) {
+        setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
+    }
+
+    def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
+        // setParam()
         setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer]);
         setParam((KEY_DB_USER), dbUser, dbUser!=null);
         setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
