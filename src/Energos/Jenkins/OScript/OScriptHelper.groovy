@@ -3,18 +3,20 @@ package Energos.Jenkins.OScript;
 
 class OScriptHelper {
 
-    protected Script script;
+    protected def script;
 
     Integer resultCode;
     String resultLog;
     String outputLogEncoding = 'Cp866';
 
-    public OScriptHelper(Script script = null) {
+    public OScriptHelper(def script) {
         this.script = script;
     }
 
     def echo(def msg){
-        script.echo("${msg}");
+        if (script!=null) {
+            script.echo("${msg}");
+        }
     }
 
     def execScript(String[] params) {

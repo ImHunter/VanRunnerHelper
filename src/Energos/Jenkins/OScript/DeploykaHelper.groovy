@@ -12,8 +12,8 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_DB_PWD = 'dbPwd';
     private String KEY_PATH_TO_SERVICE_EPF = 'pathToServiceEpf';
 
-    public DeploykaHelper(Script paramScript, String pathToDeployka, String pathToServiceEPF = null){
-        super(Script); // Кривой фикс. Пока не знаю, как правильно сделать.
+    public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
+        super(paramScript); // Кривой фикс. Пока не знаю, как правильно сделать.
         // this.script = paramScript;
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
