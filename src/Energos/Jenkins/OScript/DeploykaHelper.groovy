@@ -43,7 +43,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer, (KEY_DB_USER):dbUser, (KEY_DB_PWD), dbPwd]);
+        setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer, (KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
         // setParam((KEY_DB_USER), dbUser, dbUser!=null);
         // setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
     }
