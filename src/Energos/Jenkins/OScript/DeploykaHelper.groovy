@@ -15,7 +15,7 @@ class DeploykaHelper extends OScriptHelper {
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(paramScript); 
         this.pathToDeployka = pathToDeployka;
-        // setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
+        setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
 
     def setParam(String paramKey, String paramValue, Boolean isApply = true){
