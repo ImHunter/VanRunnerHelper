@@ -14,7 +14,7 @@ class DeploykaHelper extends OScriptHelper {
 
     public DeploykaHelper(Script paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(Script); // Кривой фикс. Пока не знаю, как правильно сделать.
-        this.script = paramScript;
+        // this.script = paramScript;
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
