@@ -15,7 +15,7 @@ class DeploykaHelper extends OScriptHelper {
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(paramScript); 
         this.pathToDeployka = pathToDeployka;
-        setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
+        setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF, pathToServiceEPF!=null);
     }
 
     @NonCPS
@@ -37,8 +37,8 @@ class DeploykaHelper extends OScriptHelper {
         setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
     }
 
-    // def setDbAuth(String dbUser, String dbPwd) {
-    //     setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
-    // }
+    def setDbAuth(String dbUser, String dbPwd) {
+        setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
+    }
 
 }
