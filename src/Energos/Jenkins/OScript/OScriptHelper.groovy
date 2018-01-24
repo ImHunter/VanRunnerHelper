@@ -14,7 +14,7 @@ class OScriptHelper {
     }
 
     def echo(def msg){
-        script.echo "${msg}";
+        script.echo("${msg}");
     }
 
     def execScript(String[] params) {
