@@ -12,14 +12,14 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_DB_PWD = 'dbPwd';
     private String KEY_PATH_TO_SERVICE_EPF = 'pathToServiceEpf';
 
-    public DeploykaHelper(Script script, String pathToDeployka, String pathToServiceEPF = null){
+    public DeploykaHelper(Script script, String pathToDeployka, String pathToServiceEPF){
         super(script);
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
 
-    def setParam(def paramKey, def paramValue){
-        params.put(paramKey, paramValue);
+    def setParam(def paramKey, def paramValue, Boolean isApply = true){
+        if (isApply) {params.put(paramKey, paramValue));
         params;
     }
 
