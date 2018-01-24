@@ -26,7 +26,7 @@ class OScriptHelper {
         }
 
         Boolean res;
-        String[] initParams = ["oscript"];
+        String[] initParams = ['oscript'];
         String[] fullParams = initParams + params;
 
         try {
