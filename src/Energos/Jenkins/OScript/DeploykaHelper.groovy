@@ -16,15 +16,15 @@ class DeploykaHelper extends OScriptHelper {
         super(paramScript); // Кривой фикс. Пока не знаю, как правильно сделать.
         // this.script = paramScript;
         this.pathToDeployka = pathToDeployka;
-        setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
+        // setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
 
-    def setParam(def paramKey, def paramValue, Boolean isApply = true){
-        if (isApply) {
-            params.put(paramKey, paramValue);
-        };
-        params;
-    }
+    // def setParam(def paramKey, def paramValue, Boolean isApply = true){
+    //     if (isApply) {
+    //         params.put(paramKey, paramValue);
+    //     };
+    //     params;
+    // }
 
     // // def setParam(Map<String, String> newParams){
 
