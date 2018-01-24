@@ -1,4 +1,4 @@
-import Energos.Jenkins.OScript;
+import Energos.Jenkins.OScript.OScriptHelper;
 
 def call(){
 
