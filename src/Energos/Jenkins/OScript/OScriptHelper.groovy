@@ -31,6 +31,8 @@ class OScriptHelper {
         String[] initParams = ['oscript'];
         String[] fullParams = initParams + params;
 
+        echo "$params";
+
         try {
 
             ProcessBuilder pb = new ProcessBuilder(fullParams);
