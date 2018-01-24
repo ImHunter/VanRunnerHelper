@@ -1,5 +1,5 @@
 
-namespace Energos.Jenkins.OScript;
+package Energos.Jenkins.OScript;
 
 class OScriptHelper {
 
