@@ -9,7 +9,7 @@ class OScriptHelper {
     String resultLog;
     String outputLogEncoding = 'Cp866';
 
-    OScriptHelper(Script script) {
+    public OScriptHelper(Script script) {
         this.script = script;
     }
 
