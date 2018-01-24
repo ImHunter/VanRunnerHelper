@@ -1,7 +1,7 @@
 
 namespace Energos.Jenkins.OScript;
 
-class OScriptHelper {
+class Energos.Jenkins.OScript.OScriptHelper {
 
     protected Script script;
 
