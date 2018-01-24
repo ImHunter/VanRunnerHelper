@@ -4,7 +4,7 @@ package Energos.Jenkins.OScript;
 class DeploykaHelper extends OScriptHelper {
 
     String pathToDeployka;
-    Map<String, String> params = [:];
+    // Map<String, String> params = [:];
 
     private String KEY_DB_SERVER = 'dbServer';
     private String KEY_DB_DATABASE = 'dbDatabase';
@@ -16,28 +16,28 @@ class DeploykaHelper extends OScriptHelper {
         super(); // Кривой фикс. Пока не знаю, как правильно сделать.
         this.script = paramScript;
         this.pathToDeployka = pathToDeployka;
-        setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
+        // setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
 
-    def setParam(def paramKey, def paramValue, Boolean isApply = true){
-        if (isApply) {
-            params.put(paramKey, paramValue);
-        };
-        params;
-    }
-
-    // def setParam(Map<String, String> newParams){
-
+    // def setParam(def paramKey, def paramValue, Boolean isApply = true){
+    //     if (isApply) {
+    //         params.put(paramKey, paramValue);
+    //     };
+    //     params;
     // }
 
-    def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer]);
-        setParam((KEY_DB_USER), dbUser, dbUser!=null);
-        setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
-    }
+    // // def setParam(Map<String, String> newParams){
 
-    def setDbAuth(String dbUser, String dbPwd) {
-        setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
-    }
+    // // }
+
+    // def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
+    //     setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer]);
+    //     setParam((KEY_DB_USER), dbUser, dbUser!=null);
+    //     setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
+    // }
+
+    // def setDbAuth(String dbUser, String dbPwd) {
+    //     setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
+    // }
 
 }
