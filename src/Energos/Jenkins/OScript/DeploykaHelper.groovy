@@ -66,7 +66,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
     }
 
-    def launchUserInterface(Boolen updateMetadata){
+    def launchUserInterface(Boolean updateMetadata){
         execScript(pathToDeployka, "run", connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
             "ЗавершитьРаботуСистемы;${updateMetadata ? 'ЗапуститьОбновлениеИнформационнойБазы;' : ''}", "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
     }
