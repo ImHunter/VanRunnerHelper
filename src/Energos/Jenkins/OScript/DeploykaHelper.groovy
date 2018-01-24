@@ -44,23 +44,18 @@ class DeploykaHelper extends OScriptHelper {
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer, (KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
-        // setParam((KEY_DB_USER), dbUser, dbUser!=null);
-        // setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
     }
 
     def setDbAuth(String dbUser, String dbPwd) {
         setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
     }
 
-    // def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
-    //     // setParam()
-    //     setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer]);
-    //     setParam((KEY_DB_USER), dbUser, dbUser!=null);
-    //     setParam((KEY_DB_PWD), dbPwd, dbPwd!=null);
-    // }
+    def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
+        setParam([(KEY_REPO_PATH):repoPath, (KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
+    }
 
-    // def setDbAuth(String dbUser, String dbPwd) {
-    //     setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
-    // }
+    def setRepoAuth(String repoUser, String repoPwd) {
+        setParam([(KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
+    }
 
 }
