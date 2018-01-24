@@ -37,7 +37,7 @@ class OScriptHelper {
             proc.waitFor();
             resultCode = proc.exitValue();
             resultLog = readLog(proc.getIn());
-            res = execCode==0;
+            res = resultCode==0;
 
         } finally {
             // batFile.delete();
