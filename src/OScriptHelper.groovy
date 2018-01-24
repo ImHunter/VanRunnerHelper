@@ -50,10 +50,21 @@ class OScriptHelper {
 
     def execScript(List<Object> params) {
         String[] strParams = new String[params.size()];
-        Integer i = 0;
-        params.each{ elem ->
-            strParams[i] = "${elem}".toString();
-            i++;
+        0.upto(params.size() - 1) {
+            strParams[it] = params[it].toString();    
+        }
+        // Integer i = 0;
+        // params.each{ elem ->
+        //     strParams[i] = "${elem}".toString();
+        //     i++;
+        // }
+        execScript(strParams);
+    }
+
+    def execScript(Object... args) {
+        String[] strParams = new String[args.length];
+        0.upto(args.length - 1) {
+            strParams[it] = args[it].toString;
         }
         execScript(strParams);
     }
