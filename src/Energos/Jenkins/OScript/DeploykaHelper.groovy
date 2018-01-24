@@ -22,6 +22,8 @@ class DeploykaHelper extends OScriptHelper {
 
     private String connString;
 
+    private enum LockResources{lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs")};
+
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(paramScript); 
@@ -78,6 +80,24 @@ class DeploykaHelper extends OScriptHelper {
 
     def setRAS(String rasServer, String racUtilPath) {
         setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
+    }
+
+    private def setLockStatus(LockResources res, Boolean locked){
+        String op = locked ? "lock" : "unlock";
+        String[] execParams = [pathToDeployka, res.desc, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
+            "-db", "${pv(KEY_DB_DATABASE)}", "-db-user", "${pv(KEY_DB_USER)}", "-db-pwd", "${pv(KEY_DB_PWD)}"];
+        if (res==LockResources.lrUserSeanse) {
+            execParams = execParams + ["-lockuccode", ucCode];
+        }
+        execScript(execParams);
+    }
+
+    def setLockStatusForUsers(Boolean locked) {
+        setLockStatus(LockResources.lrUserSeanse);
+    }
+
+    def setLockStatusForBackgrounds(Boolean locked) {
+        setLockStatus(LockResources.lrBackgrowndWork);
     }
 
 }
