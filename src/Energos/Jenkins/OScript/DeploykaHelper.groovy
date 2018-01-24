@@ -28,7 +28,7 @@ class DeploykaHelper extends OScriptHelper {
         if (isApply) {
             params.put(paramKey, paramValue);
         };
-        params;
+        return params;
     }
 
     def setParam(Map<String, String> newParams, isIgnoreEmptyValues = true){
@@ -39,7 +39,11 @@ class DeploykaHelper extends OScriptHelper {
             filtered = newParams;
         }
         params << filtered;
-        params;
+        return params;
+    }
+
+    def pv(String key){
+        params.get(key);
     }
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
@@ -57,5 +61,9 @@ class DeploykaHelper extends OScriptHelper {
     def setRepoAuth(String repoUser, String repoPwd) {
         setParam([(KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
     }
+
+    // def launchUserInterface(Boolen updateMetadata){
+    //     execS
+    // }
 
 }
