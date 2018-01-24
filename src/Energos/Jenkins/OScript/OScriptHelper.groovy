@@ -40,8 +40,7 @@ class OScriptHelper {
             res = resultCode==0;
 
         } finally {
-            // batFile.delete();
-            // log.delete();
+
         }
 
         res;
@@ -53,11 +52,6 @@ class OScriptHelper {
         0.upto(params.size() - 1) {
             strParams[it] = params[it].toString();    
         }
-        // Integer i = 0;
-        // params.each{ elem ->
-        //     strParams[i] = "${elem}".toString();
-        //     i++;
-        // }
         execScript(strParams);
     }
 
