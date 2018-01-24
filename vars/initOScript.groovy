@@ -1,4 +1,4 @@
-def call(Script script){
+def call(){
 
     new Energos.Jenkins.OScript.OScriptHelper(this);
 
