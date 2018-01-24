@@ -17,6 +17,9 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_REPO_USER = 'repoUser';
     private String KEY_REPO_PWD = 'repoPwd';
 
+    private String KEY_RAS_SERVER = 'ras_server';
+    private String KEY_RAC_UTIL_PATH = 'rac_util_path';
+
     private String connString;
 
 
@@ -71,6 +74,10 @@ class DeploykaHelper extends OScriptHelper {
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
         execScript(pathToDeployka, "run", connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
             launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
+    }
+
+    def setRAS(String rasServer, String racUtilPath) {
+        setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
     }
 
 }
