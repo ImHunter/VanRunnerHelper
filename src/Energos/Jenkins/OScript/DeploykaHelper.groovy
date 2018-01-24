@@ -19,7 +19,9 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setParam(def paramKey, def paramValue, Boolean isApply = true){
-        if (isApply) {params.put(paramKey, paramValue));
+        if (isApply) {
+            params.put(paramKey, paramValue);
+        };
         params;
     }
 
