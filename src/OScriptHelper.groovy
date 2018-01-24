@@ -9,8 +9,8 @@ class OScriptHelper {
     String resultLog;
     String outputLogEncoding = 'Cp866';
 
-    OScriptHelper(Script paramScript) {
-        script = paramScript;
+    OScriptHelper(Script script) {
+        this.script = script;
     }
 
     def echo(def msg){
