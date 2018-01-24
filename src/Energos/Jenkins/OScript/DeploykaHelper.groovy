@@ -18,6 +18,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
 
+    @NonCPS
     def setParam(String paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             params.put(paramKey, paramValue);
