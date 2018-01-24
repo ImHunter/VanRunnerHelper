@@ -1,6 +1,6 @@
 
 package Energos.Jenkins.OScript;
 
-class DeploykaHelper implements OScriptHelper {
-    
+class DeploykaHelper extends OScriptHelper {
+
 }
