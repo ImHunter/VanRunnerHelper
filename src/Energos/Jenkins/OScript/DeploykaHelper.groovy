@@ -5,6 +5,7 @@ class DeploykaHelper extends OScriptHelper {
 
     String pathToDeployka;
     Map<String, String> params = [:];
+    String ucCode = 'blocked';
 
     private String KEY_DB_SERVER = 'dbServer';
     private String KEY_DB_DATABASE = 'dbDatabase';
@@ -15,6 +16,8 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_REPO_PATH = 'repoPath';
     private String KEY_REPO_USER = 'repoUser';
     private String KEY_REPO_PWD = 'repoPwd';
+
+    private String connString;
 
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
@@ -48,6 +51,7 @@ class DeploykaHelper extends OScriptHelper {
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer, (KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
+        connString = "/S${pv(KEY_DB_SERVER)}\\${pv(KEY_DB_DATABASE)}}";
     }
 
     def setDbAuth(String dbUser, String dbPwd) {
@@ -62,8 +66,9 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
     }
 
-    // def launchUserInterface(Boolen updateMetadata){
-    //     execS
-    // }
+    def launchUserInterface(Boolen updateMetadata){
+        execScript(pathToDeployka, "run", connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
+            "ЗавершитьРаботуСистемы;${updateMetadata ? 'ЗапуститьОбновлениеИнформационнойБазы;' : ''}", "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
+    }
 
 }
