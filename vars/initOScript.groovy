@@ -1,5 +1,5 @@
 def call(){
 
-    new OScriptHelper(this);
+    new Energos.Jenkins.OScript.OScriptHelper(this);
 
 }
