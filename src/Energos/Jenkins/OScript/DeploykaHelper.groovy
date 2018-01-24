@@ -12,6 +12,7 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_DB_PWD = 'dbPwd';
     private String KEY_PATH_TO_SERVICE_EPF = 'pathToServiceEpf';
 
+    @NonCPS
     public DeploykaHelper(Script paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(); // Кривой фикс. Пока не знаю, как правильно сделать.
         this.script = paramScript;

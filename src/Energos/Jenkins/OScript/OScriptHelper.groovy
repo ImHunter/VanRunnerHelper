@@ -13,6 +13,7 @@ class OScriptHelper {
         this.script = script;
     }
 
+    @NonCPS
     public OScriptHelper() {
         // this.script = script;
     }
