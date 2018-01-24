@@ -19,12 +19,12 @@ class DeploykaHelper extends OScriptHelper {
         // setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF);
     }
 
-    // def setParam(def paramKey, def paramValue, Boolean isApply = true){
-    //     if (isApply) {
-    //         params.put(paramKey, paramValue);
-    //     };
-    //     params;
-    // }
+    def setParam(String paramKey, String paramValue, Boolean isApply = true){
+        if (isApply) {
+            params.put(paramKey, paramValue);
+        };
+        params;
+    }
 
     // // def setParam(Map<String, String> newParams){
 
