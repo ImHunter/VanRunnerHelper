@@ -1,6 +1,8 @@
 
 package Energos.Jenkins.OScript;
 
+import Energos.Jenkins.OScript.LockResourcesEnum;
+
 class DeploykaHelper extends OScriptHelper {
 
     String pathToDeployka;
@@ -81,7 +83,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
     }
 
-    private def setLockStatus(def res, Boolean locked){
+    private def setLockStatus(LockResourcesEnum res, Boolean locked){
         String op = locked ? "lock" : "unlock";
         String[] execParams = [pathToDeployka, res.desc, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
             "-db", "${pv(KEY_DB_DATABASE)}", "-db-user", "${pv(KEY_DB_USER)}", "-db-pwd", "${pv(KEY_DB_PWD)}"];
