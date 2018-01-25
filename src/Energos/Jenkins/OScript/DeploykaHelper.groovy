@@ -29,19 +29,21 @@ class DeploykaHelper extends OScriptHelper {
     // lrBackgrowndWork("scheduledjobs") 
     // lrUserSeanse, 
     // lrBackgrowndWork 
-    lrUserSeanse {
-        @Override
-        public String toString() {
-            return "session";
-        }
-    },
-    lrBackgrowndWork {
-        @Override
-        public String toString() {
-            return "scheduledjobs";
+        lrUserSeanse {
+            @NonCPS
+            @Override
+            public String toString() {
+                return "session";
+            }
+        },
+        lrBackgrowndWork {
+            @NonCPS
+            @Override
+            public String toString() {
+                return "scheduledjobs";
+            }
         }
     }
-}
 
 
     // private enum LockResources{ lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs") };
