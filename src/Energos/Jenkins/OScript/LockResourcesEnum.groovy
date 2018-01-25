@@ -1,6 +1,6 @@
 package Energos.Jenkins.OScript;
 
-enum LockResourcesUnum{ 
+enum LockResourcesEnum{ 
     lrUserSeanse(0, "session"), 
     lrBackgrowndWork(1, "scheduledjobs") 
 };
