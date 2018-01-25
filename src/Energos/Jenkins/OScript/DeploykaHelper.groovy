@@ -38,6 +38,13 @@ class DeploykaHelper extends OScriptHelper {
             public String toString() {
                 return "scheduledjobs";
             }
+        },
+        lrInfo {
+            @NonCPS
+            @Override
+            public String toString() {
+                return "info";
+            }
         }
     }
 
@@ -128,6 +135,16 @@ class DeploykaHelper extends OScriptHelper {
 
     def setLockStatusForBackgrounds(Boolean locked) {
         setLockStatus(LockResEnum.lrBackgrowndWork, locked);
+    }
+
+    def disconnectUsers(String appFilter = null) {
+        String[] execParams = [LockResEnum.lrUserSeanse, "kill", "-ras", pv(KEY_RAS_SERVER), "-rac", pv(KEY_RAC_UTIL_PATH), 
+            "-db", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-lockuccode", pv(ucCode), "-with-nolock", "y"];
+        if (appFilter!=null) {
+            execParams = execParams + ["-filter", appFilter];
+        execScript(execParams);
+        // deployka("${ADM_RES_SESSIONS} kill -ras ${admConnectToRAS} -rac ${ADM_PATH_TO_RAC} -db ${dbDatabase} -db-user ${dbUser} -db-pwd ${dbPwd} -lockuccode ${ENV_DB_UCCODE} -with-nolock y",
+        //             "Прибиваем все сеансы. Режим: ${CURRENT_MODE}");
     }
 
 }
