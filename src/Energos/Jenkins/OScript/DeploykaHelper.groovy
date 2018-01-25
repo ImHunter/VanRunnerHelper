@@ -138,7 +138,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def kissSessions(String appFilter = null) {
-        String[] execParams = [LockResEnum.lrUserSeanse, "kill", "-ras", pv(KEY_RAS_SERVER), "-rac", pv(KEY_RAC_UTIL_PATH), 
+        String[] execParams = [pathToDeployka, LockResEnum.lrUserSeanse, "kill", "-ras", pv(KEY_RAS_SERVER), "-rac", pv(KEY_RAC_UTIL_PATH), 
             "-db", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-lockuccode", ucCode, "-with-nolock", "y"];
         if (appFilter!=null) {
             execParams = execParams + ["-filter", appFilter];
