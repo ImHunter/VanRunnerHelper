@@ -146,10 +146,8 @@ class DeploykaHelper extends OScriptHelper {
         if (appFilter!=null) {
             execParams = execParams + ["-filter", appFilter];
         }
-        echo execParams;
+        // echo execParams;
         execScript(execParams);
-        // deployka("${ADM_RES_SESSIONS} kill -ras ${admConnectToRAS} -rac ${ADM_PATH_TO_RAC} -db ${dbDatabase} -db-user ${dbUser} -db-pwd ${dbPwd} -lockuccode ${ENV_DB_UCCODE} -with-nolock y",
-        //             "Прибиваем все сеансы. Режим: ${CURRENT_MODE}");
     }
 
     def updateFromPackage(String pathToPackage) {
