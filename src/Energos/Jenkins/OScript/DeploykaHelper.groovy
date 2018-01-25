@@ -142,6 +142,7 @@ class DeploykaHelper extends OScriptHelper {
             "-db", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-lockuccode", pv(ucCode), "-with-nolock", "y"];
         if (appFilter!=null) {
             execParams = execParams + ["-filter", appFilter];
+        }
         execScript(execParams);
         // deployka("${ADM_RES_SESSIONS} kill -ras ${admConnectToRAS} -rac ${ADM_PATH_TO_RAC} -db ${dbDatabase} -db-user ${dbUser} -db-pwd ${dbPwd} -lockuccode ${ENV_DB_UCCODE} -with-nolock y",
         //             "Прибиваем все сеансы. Режим: ${CURRENT_MODE}");
