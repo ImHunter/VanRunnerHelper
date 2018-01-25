@@ -38,9 +38,14 @@ class OScriptHelper {
             ProcessBuilder pb = new ProcessBuilder(fullParams);
 
             Process proc = pb.start();
-            proc.waitFor();
-            resultCode = proc.exitValue();
-            resultLog = readLog(proc.getIn());
+            try {
+                proc.waitFor();
+                resultCode = proc.exitValue();
+                resultLog = readLog(proc.getIn());
+            } catch (e) {
+                resultCode = 1;
+                resultLog = e.getMessage();
+            }
             res = resultCode==0;
 
         } finally {

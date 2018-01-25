@@ -41,6 +41,17 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
+    // enum SettEnum {
+    //     seDbServer,
+    //     seDbDatabase {
+    //         @NonCPS
+    //         @Override
+    //         public String toString() {
+    //             return "-db";
+    //         }
+    //     }       
+    // }
+
 
     // private enum LockResources{ lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs") };
 
