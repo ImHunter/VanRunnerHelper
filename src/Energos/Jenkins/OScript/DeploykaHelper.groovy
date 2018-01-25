@@ -85,7 +85,7 @@ class DeploykaHelper extends OScriptHelper {
         String op = locked ? "lock" : "unlock";
         String[] execParams = [pathToDeployka, res.desc, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
             "-db", "${pv(KEY_DB_DATABASE)}", "-db-user", "${pv(KEY_DB_USER)}", "-db-pwd", "${pv(KEY_DB_PWD)}"];
-        if (res==LockResources.lrUserSeanse) {
+        if (res==LockResourcesEnum.lrUserSeanse) {
             execParams = execParams + ["-lockuccode", ucCode];
         }
         execScript(execParams);
