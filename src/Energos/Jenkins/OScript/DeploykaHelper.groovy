@@ -94,11 +94,11 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setLockStatusForUsers(Boolean locked) {
-        setLockStatus(LockResourcesEnum.lrUserSeanse);
+        setLockStatus(LockResourcesEnum.lrUserSeanse, locked);
     }
 
     def setLockStatusForBackgrounds(Boolean locked) {
-        setLockStatus(LockResourcesEnum.lrBackgrowndWork);
+        setLockStatus(LockResourcesEnum.lrBackgrowndWork, locked);
     }
 
 }
