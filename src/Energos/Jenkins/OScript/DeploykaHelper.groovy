@@ -22,8 +22,7 @@ class DeploykaHelper extends OScriptHelper {
 
     private String connString;
 
-    private enum LockResources{lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs")};
-
+    // private enum LockResources{ lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs") };
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(paramScript); 
