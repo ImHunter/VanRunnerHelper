@@ -28,9 +28,7 @@ class DeploykaHelper extends OScriptHelper {
         lrUserSeanse {
             @NonCPS
             @Override
-            public String toString() {
-                return "session";
-            }
+            public String toString() {return "session";}
         },
         lrBackgrowndWork {
             @NonCPS
@@ -40,6 +38,36 @@ class DeploykaHelper extends OScriptHelper {
             }
         },
         lrInfo {
+            @NonCPS
+            @Override
+            public String toString() {
+                return "info";
+            }
+        }
+    }
+
+    enum DeplCommand {
+        dcRun {
+            @NonCPS
+            @Override
+            public String toString() {return "run";}
+        },
+        dcLoadCfg {
+            @NonCPS
+            @Override
+            public String toString() {return "loadcfg";}
+        },
+        dcSession {
+            @NonCPS
+            @Override
+            public String toString() {return "session";}
+        },
+        dcScheduledJobs {
+            @NonCPS
+            @Override
+            public String toString() {return "scheduledjobs";}
+        },
+        dcInfo {
             @NonCPS
             @Override
             public String toString() {
@@ -111,7 +139,7 @@ class DeploykaHelper extends OScriptHelper {
     def launchUserInterface(Boolean updateMetadata){
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
-        execScript(pathToDeployka, "run", connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
+        execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
             launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
     }
 
@@ -119,9 +147,9 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
     }
 
-    private def setLockStatus(LockResEnum res, Boolean locked){
+    private def setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock";
-        String[] execParams = [pathToDeployka, res, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
+        String[] execParams = [pathToDeployka, command, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
             "-db", "${pv(KEY_DB_DATABASE)}", "-db-user", "${pv(KEY_DB_USER)}", "-db-pwd", "${pv(KEY_DB_PWD)}"];
         if (res==LockResEnum.lrUserSeanse) {
             execParams = execParams + ["-lockuccode", ucCode];
@@ -130,11 +158,11 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setLockStatusForUsers(Boolean locked) {
-        setLockStatus(LockResEnum.lrUserSeanse, locked);
+        setLockStatus(DeplCommand.dcSession, locked);
     }
 
     def setLockStatusForBackgrounds(Boolean locked) {
-        setLockStatus(LockResEnum.lrBackgrowndWork, locked);
+        setLockStatus(DeplCommand.dcScheduledJobs, locked);
     }
 
     def kissSessions(String appFilter = null) {
@@ -147,6 +175,12 @@ class DeploykaHelper extends OScriptHelper {
         execScript(execParams);
         // deployka("${ADM_RES_SESSIONS} kill -ras ${admConnectToRAS} -rac ${ADM_PATH_TO_RAC} -db ${dbDatabase} -db-user ${dbUser} -db-pwd ${dbPwd} -lockuccode ${ENV_DB_UCCODE} -with-nolock y",
         //             "Прибиваем все сеансы. Режим: ${CURRENT_MODE}");
+    }
+
+    def updateFromPackage(String pathToPackage) {
+        String[] execParams = [pathToDeployka, DeplCommand.dcLoadCfg, connString, pathToPackage, "/mode", "-auto", 
+            "-db-user", pv(KEY_DB_USER), "-db-pwd"];
+        execScript(execParams);
     }
 
 }
