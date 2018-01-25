@@ -24,28 +24,6 @@ class DeploykaHelper extends OScriptHelper {
 
     private String connString;
 
-    enum LockResEnum{ 
-        lrUserSeanse {
-            @NonCPS
-            @Override
-            public String toString() {return "session";}
-        },
-        lrBackgrowndWork {
-            @NonCPS
-            @Override
-            public String toString() {
-                return "scheduledjobs";
-            }
-        },
-        lrInfo {
-            @NonCPS
-            @Override
-            public String toString() {
-                return "info";
-            }
-        }
-    }
-
     enum DeplCommand {
         dcRun {
             @NonCPS
@@ -86,9 +64,6 @@ class DeploykaHelper extends OScriptHelper {
     //         }
     //     }       
     // }
-
-
-    // private enum LockResources{ lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs") };
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         super(paramScript); 
