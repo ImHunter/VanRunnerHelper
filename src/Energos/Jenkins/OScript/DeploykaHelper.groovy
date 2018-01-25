@@ -1,7 +1,7 @@
 
 package Energos.Jenkins.OScript;
 
-import Energos.Jenkins.OScript.LockResourcesEnum;
+// import Energos.Jenkins.OScript.LockResourcesEnum;
 
 class DeploykaHelper extends OScriptHelper {
 
@@ -23,6 +23,26 @@ class DeploykaHelper extends OScriptHelper {
     private String KEY_RAC_UTIL_PATH = 'rac_util_path';
 
     private String connString;
+
+    enum LockResourcesEnum{ 
+    // lrUserSeanse("session"), 
+    // lrBackgrowndWork("scheduledjobs") 
+    // lrUserSeanse, 
+    // lrBackgrowndWork 
+    lrUserSeanse {
+        @Override
+        public String toString() {
+            return "session";
+        }
+    },
+    lrBackgrowndWork {
+        @Override
+        public String toString() {
+            return "scheduledjobs";
+        }
+    }
+}
+
 
     // private enum LockResources{ lrUserSeanse(0, "session"), lrBackgrowndWork(1, "scheduledjobs") };
 
