@@ -67,7 +67,7 @@ class OScriptHelper {
     def execScript(Object... args) {
         String[] strParams = new String[args.length];
         0.upto(args.length - 1) {
-            strParams[it] = args[it].toString;
+            strParams[it] = args[it]==null ? null : args[it].toString();
         }
         return execScript(strParams);
     }
