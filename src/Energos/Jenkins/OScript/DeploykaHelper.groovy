@@ -118,6 +118,12 @@ class DeploykaHelper extends OScriptHelper {
             launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
     }
 
+    def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
+        Boolean res = launchUserInterface(updateMetadata);
+        closure(res);
+        return res;
+    }
+
     def setRAS(String rasServer, String racUtilPath) {
         setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
     }
