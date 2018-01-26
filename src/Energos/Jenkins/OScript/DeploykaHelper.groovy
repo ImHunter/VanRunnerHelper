@@ -64,7 +64,7 @@ class DeploykaHelper extends OScriptHelper {
 
         def readFromLog(String log) {
             
-            String paramVal;
+            String paramValue;
 
             isChanged = null;
             paramValue = readParamValue(log, 'CONFIG_STATE');
