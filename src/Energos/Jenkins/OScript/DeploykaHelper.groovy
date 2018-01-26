@@ -68,6 +68,7 @@ class DeploykaHelper extends OScriptHelper {
 
             isChanged = null;
             paramValue = readParamValue(log, 'CONFIG_STATE');
+            echo "value of CONFIG_STATE: ${paramValue}";
             if (paramValue!=null) {
                 if (paramValue.toUpperCase().equals('CONFIG_CHANGED')) {
                     isChanged = true
