@@ -9,6 +9,8 @@ class DeploykaHelper extends OScriptHelper {
     Map<String, String> params = [:];
     String ucCode = 'blocked';
 
+    ConfigInfo configInfo;
+
     private String KEY_DB_SERVER = 'dbServer';
     private String KEY_DB_DATABASE = 'dbDatabase';
     private String KEY_DB_USER = 'dbUser';
@@ -54,6 +56,48 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
+    class ConfigInfo {
+        
+        Boolean isChanged;
+        String shortName;
+        String version;
+
+        def readFromLog(String log) {
+            
+            String paramVal;
+
+            isChanged = null;
+            paramValue = readParamValue(log, 'CONFIG_STATE');
+            if (paramValue!=null) {
+                if (paramValue.toUpperCase().equals('CONFIG_CHANGED')) {
+                    isChanged = true
+                } else {
+                    if (paramValue.toUpperCase().equals('CONFIG_NOT_CHANGED')) {
+                        isChanged = false
+                    }    
+                }
+            }
+            shortName = readParamValue(log, 'SHORT_CONFIG_NAME');
+            version = readParamValue(log, 'CONFIG_VERSION');
+        }
+        private String readParamValue(String log, String paramName) {
+            String retVal;
+            Scanner scanner = new Scanner(log);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                Integer posParam = line.toUpperCase().indexOf(paramName.toUpperCase());
+                if (posParam>=0) {
+                    retVal = line.substring(paramName.length());
+                    if (retVal.startsWith(':'))
+                        retVal = retVal.substring(1);
+                    break;
+                }
+            }
+            scanner.close(); 
+            return retVal;       
+        }
+    }
+
     // enum SettEnum {
     //     seDbServer,
     //     seDbDatabase {
@@ -69,6 +113,7 @@ class DeploykaHelper extends OScriptHelper {
         super(paramScript); 
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF, pathToServiceEPF!=null);
+        configInfo = new ConfigInfo();
     }
 
     @NonCPS
@@ -112,10 +157,13 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def launchUserInterface(Boolean updateMetadata){
+        Boolean retVal;
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
-        return execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
+        retVal = execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
             launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
+        configInfo.readFromLog(resultLog);
+        return retVal;
     }
 
     // @NonCPS
