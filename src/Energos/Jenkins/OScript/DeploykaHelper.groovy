@@ -118,6 +118,7 @@ class DeploykaHelper extends OScriptHelper {
             launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
     }
 
+    @NonCPS
     def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
         Boolean res = launchUserInterface(updateMetadata);
         closure(res);
