@@ -114,7 +114,7 @@ class DeploykaHelper extends OScriptHelper {
     def launchUserInterface(Boolean updateMetadata){
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
-        execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
+        return execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
             launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
     }
 
@@ -129,15 +129,15 @@ class DeploykaHelper extends OScriptHelper {
         if (res==LockResEnum.lrUserSeanse) {
             execParams = execParams + ["-lockuccode", ucCode];
         }
-        execScript(execParams);
+        return execScript(execParams);
     }
 
     def setLockStatusForUsers(Boolean locked) {
-        setLockStatus(DeplCommand.dcSession, locked);
+        return setLockStatus(DeplCommand.dcSession, locked);
     }
 
     def setLockStatusForBackgrounds(Boolean locked) {
-        setLockStatus(DeplCommand.dcScheduledJobs, locked);
+        return setLockStatus(DeplCommand.dcScheduledJobs, locked);
     }
 
     def kissSessions(String appFilter = null) {
@@ -147,13 +147,13 @@ class DeploykaHelper extends OScriptHelper {
             execParams = execParams + ["-filter", appFilter];
         }
         // echo execParams;
-        execScript(execParams);
+        return execScript(execParams);
     }
 
     def updateFromPackage(String pathToPackage) {
         String[] execParams = [pathToDeployka, DeplCommand.dcLoadCfg, connString, pathToPackage, "/mode", "-auto", 
             "-db-user", pv(KEY_DB_USER), "-db-pwd"];
-        execScript(execParams);
+        return execScript(execParams);
     }
 
  }
