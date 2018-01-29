@@ -106,6 +106,13 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     enum ParamsEnum {
+        peDbServer,
+        peDbConnString,
+        pePathToServiceEpf{
+            @NonCPS
+            @Override
+            public String toString() {return "-execute";}
+        },
         peDbDatabase{
             @NonCPS
             @Override
@@ -120,6 +127,22 @@ class DeploykaHelper extends OScriptHelper {
             @NonCPS
             @Override
             public String toString() {return "-db-pwd";}
+        },
+        peRepoPath,
+        peRepoUser{
+            @NonCPS
+            @Override
+            public String toString() {return "-storage-user";}
+        },
+        peRepoPwd{
+            @NonCPS
+            @Override
+            public String toString() {return "-storage-pwd";}
+        },
+        peLaunchParam{
+            @NonCPS
+            @Override
+            public String toString() {return "-command";}
         }
     }
 
@@ -133,8 +156,12 @@ class DeploykaHelper extends OScriptHelper {
 
         // @NonCPS
         // @Override
-        def addValue(def value) {
-            add("${value}".toString());
+        def addValue(Object value) {
+            if (value.getClass()==ParamsEnum.getClass()) {
+                addValue(params.get(param))    
+            } else {
+                add("${value}".toString())
+            };
             return this;
         }
 
@@ -143,8 +170,11 @@ class DeploykaHelper extends OScriptHelper {
         }
 
         def addPair(ParamsEnum param) {
-            return addValue(param)
+            return addValue(param.toString())
                     .addValue(params.get(param));
+        }
+        def addPair(String parKey, String parVal) {
+            return addValue(parKey).addValue(parVal);
         }
     } 
 
@@ -153,7 +183,7 @@ class DeploykaHelper extends OScriptHelper {
         super(paramScript); 
 
         this.pathToDeployka = pathToDeployka;
-        setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF, pathToServiceEPF!=null);
+        setParam(ParamsEnum.pePathToServiceEpf, pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
         execParamsList = new ExecParams();
@@ -161,14 +191,14 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     @NonCPS
-    def setParam(String paramKey, String paramValue, Boolean isApply = true){
+    def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             params.put(paramKey, paramValue);
         };
         return params;
     }
 
-    def setParam(Map<String, String> newParams, isIgnoreEmptyValues = true){
+    def setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered;
         if (isIgnoreEmptyValues) {
             filtered = newParams.findAll { it.value != null }
@@ -179,33 +209,44 @@ class DeploykaHelper extends OScriptHelper {
         return params;
     }
 
-    def pv(String key){
+    def pv(def key){
         params.get(key);
     }
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([(KEY_DB_DATABASE):dbDatabase, (KEY_DB_SERVER):dbServer, (KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
-        connString = "/S${pv(KEY_DB_SERVER)}\\${pv(KEY_DB_DATABASE)}";
+        setParam([ParamsEnum.peDbDatabase:dbDatabase, ParamsEnum.peDbServer:dbServer, ParamsEnum.peDbUser:dbUser, ParamsEnum.peDbPwd:dbPwd]);
+        setParam(ParamsEnum.peDbConnString, "/S${pv(KEY_DB_SERVER)}\\${pv(KEY_DB_DATABASE)}".toString());
     }
 
     def setDbAuth(String dbUser, String dbPwd) {
-        setParam([(KEY_DB_USER):dbUser, (KEY_DB_PWD):dbPwd]);
+        setParam([ParamsEnum.peDbUser:dbUser, ParamsEnum.peDbPwd:dbPwd]]);
     }
 
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
-        setParam([(KEY_REPO_PATH):repoPath, (KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
+        setParam([ParamsEnum.peRepoPath:repoPath, ParamsEnum.peRepoUser:repoUser, ParamsEnum.peRepoPwd:repoPwd]);
     }
 
     def setRepoAuth(String repoUser, String repoPwd) {
-        setParam([(KEY_REPO_USER):repoUser, (KEY_REPO_PWD):repoPwd]);
+        setParam([ParamsEnum.peRepoUser:repoUser, ParamsEnum.peRepoPwd:repoPwd]);
     }
 
     def launchUserInterface(Boolean updateMetadata){
         Boolean retVal;
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
-        retVal = execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
-            launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
+        setParam(ParamsEnum.peLaunchParam, launchParam);
+        // retVal = execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
+        //     launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
+        retVal = execScript(
+                execParams.init()
+                .addCommand(DeplCommand.dcRun)
+                .addValue(ParamsEnum.peDbConnString)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+                .addPair(ParamsEnum.peLaunchParam)
+                .addPair(ParamsEnum.pePathToServiceEpf)
+                .addPair('-uccode', ucCode)
+        );
         configInfo.readFromLog(resultLog);
         return retVal;
     }
