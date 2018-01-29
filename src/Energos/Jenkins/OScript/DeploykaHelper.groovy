@@ -265,6 +265,7 @@ class DeploykaHelper extends OScriptHelper {
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
         setParam(ParamsEnum.peLaunchParam, launchParam);
+        echo ("executing script");
         execScript(
                 execParamsList.init(pathToDeployka)
                 .addCommand(DeplCommand.dcRun)
