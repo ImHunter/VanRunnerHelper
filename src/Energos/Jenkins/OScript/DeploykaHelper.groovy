@@ -158,7 +158,7 @@ class DeploykaHelper extends OScriptHelper {
         @NonCPS
         def init() {
             clear();
-            addValue(pathToDeployka);
+            return addValue(pathToDeployka);
         }
 
         @NonCPS
@@ -237,7 +237,7 @@ class DeploykaHelper extends OScriptHelper {
     @NonCPS
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]);
-        setParam(ParamsEnum.peDbConnString, "/S${pv(KEY_DB_SERVER)}\\${pv(KEY_DB_DATABASE)}".toString());
+        setParam((ParamsEnum.peDbConnString), "/S${pv(KEY_DB_SERVER)}\\${pv(KEY_DB_DATABASE)}".toString());
     }
 
     @NonCPS
