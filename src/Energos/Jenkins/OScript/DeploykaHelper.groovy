@@ -268,7 +268,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam(ParamsEnum.peLaunchParam, launchParam);
 
         echo ("executing script");
-        retVal = execScript(
+        retVal = super.execScript(
                 execParamsList.init(pathToDeployka)
                 .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
