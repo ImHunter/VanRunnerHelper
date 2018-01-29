@@ -269,17 +269,19 @@ class DeploykaHelper extends OScriptHelper {
         return retVal;
     }
 
-    // @NonCPS
+    @NonCPS
     def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
         Boolean res = launchUserInterface(updateMetadata);
         closure(res);
         return res;
     }
 
+    @NonCPS
     def setRAS(String rasServer, String racUtilPath) {
         setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
     }
 
+    @NonCPS
     private def setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock";
         String[] execParams = [pathToDeployka, command, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
@@ -290,14 +292,17 @@ class DeploykaHelper extends OScriptHelper {
         return execScript(execParams);
     }
 
+    @NonCPS
     def setLockStatusForUsers(Boolean locked) {
         return setLockStatus(DeplCommand.dcSession, locked);
     }
 
+    @NonCPS
     def setLockStatusForBackgrounds(Boolean locked) {
         return setLockStatus(DeplCommand.dcScheduledJobs, locked);
     }
 
+    @NonCPS
     def kissSessions(String appFilter = null) {
         String[] execParams = [pathToDeployka, LockResEnum.lrUserSeanse, "kill", "-ras", pv(KEY_RAS_SERVER), "-rac", pv(KEY_RAC_UTIL_PATH), 
             "-db", pv(KEY_DB_DATABASE), "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-lockuccode", ucCode, "-with-nolock", "y"];
@@ -308,6 +313,7 @@ class DeploykaHelper extends OScriptHelper {
         return execScript(execParams);
     }
 
+    @NonCPS
     def updateFromPackage(String pathToPackage) {
         String[] execParams = [pathToDeployka, DeplCommand.dcLoadCfg, connString, pathToPackage, "/mode", "-auto", 
             "-db-user", pv(KEY_DB_USER), "-db-pwd"];
