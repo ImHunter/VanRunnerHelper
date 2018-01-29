@@ -145,6 +145,11 @@ class DeploykaHelper extends OScriptHelper {
             @NonCPS
             @Override
             public String toString() {return "-command";}
+        },
+        peConfigUpdateMode{
+            @NonCPS
+            @Override
+            public String toString() {return "/mode";}
         }
     }
 
@@ -332,11 +337,19 @@ class DeploykaHelper extends OScriptHelper {
         return execScript(execParams);
     }
 
-    @NonCPS
+    // @NonCPS
     def updateFromPackage(String pathToPackage) {
-        String[] execParams = [pathToDeployka, DeplCommand.dcLoadCfg, connString, pathToPackage, "/mode", "-auto", 
-            "-db-user", pv(KEY_DB_USER), "-db-pwd"];
-        return execScript(execParams);
+        // String[] execParams = [pathToDeployka, DeplCommand.dcLoadCfg, connString, pathToPackage, "/mode", "-auto", 
+        //     "-db-user", pv(KEY_DB_USER), "-db-pwd"];
+        return execScript(
+                execParamsList.init(pathToDeployka)
+                .addCommand(DeplCommand.dcLoadCfg)
+                .addValue(ParamsEnum.peDbConnString)
+                .addValue(pathToPackage)
+                .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+        );
     }
 
  }
