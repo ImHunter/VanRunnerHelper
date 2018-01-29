@@ -259,12 +259,14 @@ class DeploykaHelper extends OScriptHelper {
 
     @NonCPS
     def launchUserInterface(Boolean updateMetadata){
+        
         echo "executing launchUserInterface"
-
         Boolean retVal;
+
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
         setParam(ParamsEnum.peLaunchParam, launchParam);
+        
         echo ("executing script");
         execScript(
                 execParamsList.init(pathToDeployka)

@@ -53,7 +53,7 @@ class OScriptHelper {
 
         }
 
-        return res;
+        res;
 
     }
 
@@ -62,7 +62,7 @@ class OScriptHelper {
         0.upto(params.size() - 1) {
             strParams[it] = params[it].toString();    
         }
-        return execScript(strParams);
+        execScript(strParams);
     }
 
     def execScript(Object... args) {
@@ -70,7 +70,7 @@ class OScriptHelper {
         0.upto(args.length - 1) {
             strParams[it] = args[it]==null ? null : args[it].toString();
         }
-        return execScript(strParams);
+        execScript(strParams);
     }
 
 }
