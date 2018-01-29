@@ -165,14 +165,18 @@ class DeploykaHelper extends OScriptHelper {
             return this;
         }
 
+        @NonCPS
         def addCommand(DeplCommand command){
             return addValue(command);
         }
 
+        @NonCPS
         def addPair(ParamsEnum param) {
             return addValue(param.toString())
                     .addValue(params.get(param));
         }
+
+        @NonCPS
         def addPair(String parKey, String parVal) {
             return addValue(parKey).addValue(parVal);
         }
@@ -183,11 +187,11 @@ class DeploykaHelper extends OScriptHelper {
         super(paramScript); 
 
         this.pathToDeployka = pathToDeployka;
-        // setParam(ParamsEnum.pePathToServiceEpf, pathToServiceEPF, pathToServiceEPF!=null);
+        setParam(ParamsEnum.pePathToServiceEpf, pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
-        // execParamsList = new ExecParams();
-        // execParamsList.init();
+        execParamsList = new ExecParams();
+        execParamsList.init();
 
         echo("${ParamsEnum.getClass()}");
         echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
