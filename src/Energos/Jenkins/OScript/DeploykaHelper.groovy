@@ -106,7 +106,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     enum ParamsEnum {
-
+        pe
     }
 
     public class ExecParams<String> extends ArrayList<String>{
@@ -117,6 +117,11 @@ class DeploykaHelper extends OScriptHelper {
             add(pathToDeployka);
         }
 
+        // @NonCPS
+        // @Override
+        public add(def value) {
+            add("${value}".toString());
+        }
     } 
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
