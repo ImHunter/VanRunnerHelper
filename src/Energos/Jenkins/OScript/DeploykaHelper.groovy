@@ -167,7 +167,8 @@ class DeploykaHelper extends OScriptHelper {
             if (value.class==ParamsEnum.class) {
                 addValue(params.get(value))    
             } else {
-                add("${value}".toString())
+                String strVal = "${value}";
+                add(strVal);
             };
             return this;
         }
