@@ -165,10 +165,10 @@ class DeploykaHelper extends OScriptHelper {
         def addValue(def value) {
             echo("value.class: ${value.class}")
             echo("value.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
-            if (value.getClass()==ParamsEnum.getClass()) {
+            if (value.class==ParamsEnum.class) {
                 addValue(params.get(param))    
             } else {
-                add("${value}")
+                add("${value}".toString())
             };
             return this;
         }
@@ -199,9 +199,9 @@ class DeploykaHelper extends OScriptHelper {
         configInfo = new ConfigInfo();
         
         execParamsList = new ExecParams(params);
-        // execParamsList.init();
+        execParamsList.init();
 
-        echo("${ParamsEnum.getClass().toString()==ParamsEnum.pePathToServiceEpf.getClass()}");
+        // echo("${ParamsEnum.getClass().toString()==ParamsEnum.pePathToServiceEpf.getClass()}");
         // echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
 
     }
