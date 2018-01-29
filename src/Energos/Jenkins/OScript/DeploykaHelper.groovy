@@ -156,10 +156,10 @@ class DeploykaHelper extends OScriptHelper {
         }
 
         @NonCPS
-        def init() {
+        def init(String module) {
             clear();
-            def retVal = addValue(pathToDeployka);
-            echo("returns from init: $retVal");
+            def retVal = addValue(module);
+            // echo("returns from init: $retVal");
             return this;
         }
 
@@ -268,7 +268,7 @@ class DeploykaHelper extends OScriptHelper {
         // retVal = execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
         //     launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
         retVal = execScript(
-                execParamsList.init()
+                execParamsList.init(pathToDeployka)
                 .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
