@@ -10,6 +10,7 @@ class DeploykaHelper extends OScriptHelper {
     String ucCode = 'blocked';
 
     ConfigInfo configInfo;
+    ExecParams execParams;
 
     private String KEY_DB_SERVER = 'dbServer';
     private String KEY_DB_DATABASE = 'dbDatabase';
@@ -53,6 +54,11 @@ class DeploykaHelper extends OScriptHelper {
             public String toString() {
                 return "info";
             }
+        },
+        dcFileOperations {
+            @NonCPS
+            @Override
+            public String toString() { return "fileop"; }
         }
     }
 
@@ -99,22 +105,26 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
-    // enum SettEnum {
-    //     seDbServer,
-    //     seDbDatabase {
-    //         @NonCPS
-    //         @Override
-    //         public String toString() {
-    //             return "-db";
-    //         }
-    //     }       
-    // }
+    class ExecParams extends String[] {
+        
+        def init() {
+            clear();
+            add(pathToDeployka);
+            return this;
+        }
+
+    }
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
+        
         super(paramScript); 
+        
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
+        
+        execParams = new ExecParams();
+        execParams.init();
     }
 
     @NonCPS
