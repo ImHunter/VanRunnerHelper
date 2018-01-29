@@ -191,7 +191,7 @@ class DeploykaHelper extends OScriptHelper {
 
         echo(ParamsEnum.getClass());
         echo(ParamsEnum.pePathToServiceEpf.getClass());
-        
+
     }
 
     @NonCPS
@@ -227,7 +227,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setDbAuth(String dbUser, String dbPwd) {
-        setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]]);
+        setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]);
     }
 
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
