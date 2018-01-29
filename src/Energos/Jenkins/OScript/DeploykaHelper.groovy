@@ -111,6 +111,7 @@ class DeploykaHelper extends OScriptHelper {
 
     public class ExecParams<String> extends ArrayList<String>{
 
+        @NonCPS
         def init() {
             clear();
             add(pathToDeployka);
