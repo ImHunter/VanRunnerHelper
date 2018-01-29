@@ -273,6 +273,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair('-uccode', ucCode)
         );
+        echo "reading log: $resultLog"
         configInfo.readFromLog(resultLog);
         echo configInfo.version;
 
