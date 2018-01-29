@@ -146,7 +146,7 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
-    public class ExecParams<String> extends ArrayList<String>{
+    class ExecParams<String> extends ArrayList<String>{
 
         @NonCPS
         def init() {
@@ -191,10 +191,10 @@ class DeploykaHelper extends OScriptHelper {
         configInfo = new ConfigInfo();
         
         execParamsList = new ExecParams(this);
-        execParamsList.init();
+        // execParamsList.init();
 
-        // echo("${ParamsEnum.getClass().toString()}");
-        // echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
+        echo("${ParamsEnum.getClass().toString()}");
+        echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
 
     }
 
