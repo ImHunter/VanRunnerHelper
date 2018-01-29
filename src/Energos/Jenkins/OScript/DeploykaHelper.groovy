@@ -183,7 +183,7 @@ class DeploykaHelper extends OScriptHelper {
         super(paramScript); 
 
         this.pathToDeployka = pathToDeployka;
-        setParam(ParamsEnum.pePathToServiceEpf, pathToServiceEPF, pathToServiceEPF!=null);
+        // setParam(ParamsEnum.pePathToServiceEpf, pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
         execParamsList = new ExecParams();
