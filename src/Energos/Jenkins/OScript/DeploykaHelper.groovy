@@ -222,6 +222,7 @@ class DeploykaHelper extends OScriptHelper {
         return params;
     }
 
+    @NonCPS
     def pv(def key){
         params.get(key);
     }
