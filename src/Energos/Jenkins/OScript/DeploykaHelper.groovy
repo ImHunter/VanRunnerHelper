@@ -199,7 +199,7 @@ class DeploykaHelper extends OScriptHelper {
         configInfo = new ConfigInfo();
         
         execParamsList = new ExecParams(params);
-        execParamsList.init();
+        // execParamsList.init();
 
         // echo("${ParamsEnum.getClass().toString()==ParamsEnum.pePathToServiceEpf.getClass()}");
         // echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
@@ -209,11 +209,12 @@ class DeploykaHelper extends OScriptHelper {
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
-            if (paramKey.class==ParamsEnum.class) {
-                params.put((paramKey), paramValue);
-            } else {
-                params.put(paramKey, paramValue);
-            }
+            // if (paramKey.class==ParamsEnum.class) {
+            //     params.put((paramKey), paramValue);
+            // } else {
+            //     params.put(paramKey, paramValue);
+            // }
+            params.put(paramKey, paramValue);
         };
         return params;
     }
