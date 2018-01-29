@@ -6,7 +6,7 @@ package Energos.Jenkins.OScript;
 class DeploykaHelper extends OScriptHelper {
 
     String pathToDeployka;
-    Map<String, String> params = [:];
+    Map<Object, String> params = [:];
     String ucCode = 'blocked';
 
     ConfigInfo configInfo;
@@ -106,7 +106,21 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     enum ParamsEnum {
-        pe
+        peDbDatabase{
+            @NonCPS
+            @Override
+            public String toString() {return "-db";}
+        },
+        peDbUser{
+            @NonCPS
+            @Override
+            public String toString() {return "-db-user";}
+        },
+        peDbPwd{
+            @NonCPS
+            @Override
+            public String toString() {return "-db-pwd";}
+        }
     }
 
     public class ExecParams<String> extends ArrayList<String>{
@@ -114,14 +128,23 @@ class DeploykaHelper extends OScriptHelper {
         @NonCPS
         def init() {
             clear();
-            add(pathToDeployka);
+            addValue(pathToDeployka);
         }
 
         // @NonCPS
         // @Override
-        def add(def value) {
+        def addValue(def value) {
             add("${value}".toString());
             return this;
+        }
+
+        def addCommand(DeplCommand command){
+            return addValue(command);
+        }
+
+        def addPair(ParamsEnum param) {
+            return addValue(param)
+                    .addValue(params.get(param));
         }
     } 
 
