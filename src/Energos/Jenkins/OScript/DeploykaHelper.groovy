@@ -119,8 +119,9 @@ class DeploykaHelper extends OScriptHelper {
 
         // @NonCPS
         // @Override
-        public add(def value) {
+        def add(def value) {
             add("${value}".toString());
+            return this;
         }
     } 
 
