@@ -266,9 +266,9 @@ class DeploykaHelper extends OScriptHelper {
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
         setParam(ParamsEnum.peLaunchParam, launchParam);
-        
+
         echo ("executing script");
-        execScript(
+        retVal = execScript(
                 execParamsList.init(pathToDeployka)
                 .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
@@ -278,7 +278,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair('-uccode', ucCode)
         );
-        echo ("reading log: ${resultLog}");
+        echo ("retVal: $retVal\nreading log: ${resultLog}");
         configInfo.readFromLog(resultLog);
         echo configInfo.version;
 
