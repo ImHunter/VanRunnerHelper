@@ -257,7 +257,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):repoPwd]);
     }
 
-    @NonCPS
+    // @NonCPS
     def launchUserInterface(Boolean updateMetadata){
         
         echo "executing launchUserInterface"
@@ -287,7 +287,7 @@ class DeploykaHelper extends OScriptHelper {
         retVal;
     }
 
-    @NonCPS
+    // @NonCPS
     def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
         echo "executing launchUserInterfaceWith"
         Boolean res = launchUserInterface(updateMetadata);
