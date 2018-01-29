@@ -32,7 +32,7 @@ class OScriptHelper {
         String[] initParams = ['oscript'];
         String[] fullParams = initParams + params;
 
-        echo "$fullParams";
+        // echo "$fullParams";
 
         try {
 
