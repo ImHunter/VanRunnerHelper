@@ -193,8 +193,8 @@ class DeploykaHelper extends OScriptHelper {
         execParamsList = new ExecParams();
         execParamsList.init();
 
-        echo("${ParamsEnum.getClass()}");
-        echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
+        // echo("${ParamsEnum.getClass()}");
+        // echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
 
     }
 
