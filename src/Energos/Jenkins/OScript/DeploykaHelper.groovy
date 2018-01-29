@@ -214,20 +214,20 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([ParamsEnum.peDbDatabase : dbDatabase, ParamsEnum.peDbServer:dbServer, ParamsEnum.peDbUser:dbUser, ParamsEnum.peDbPwd:dbPwd]);
+        setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]);
         setParam(ParamsEnum.peDbConnString, "/S${pv(KEY_DB_SERVER)}\\${pv(KEY_DB_DATABASE)}".toString());
     }
 
     def setDbAuth(String dbUser, String dbPwd) {
-        setParam([ParamsEnum.peDbUser:dbUser, ParamsEnum.peDbPwd:dbPwd]]);
+        setParam(([ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]]);
     }
 
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
-        setParam([ParamsEnum.peRepoPath:repoPath, ParamsEnum.peRepoUser:repoUser, ParamsEnum.peRepoPwd:repoPwd]);
+        setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):repoPwd]);
     }
 
     def setRepoAuth(String repoUser, String repoPwd) {
-        setParam([ParamsEnum.peRepoUser:repoUser, ParamsEnum.peRepoPwd:repoPwd]);
+        setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):repoPwd]);
     }
 
     def launchUserInterface(Boolean updateMetadata){
