@@ -46,6 +46,7 @@ class OScriptHelper {
             } catch (e) {
                 resultCode = 1;
                 resultLog = e.getMessage();
+                throw (e);
             }
             res = resultCode==0;
 
