@@ -187,7 +187,7 @@ class DeploykaHelper extends OScriptHelper {
         configInfo = new ConfigInfo();
         
         execParamsList = new ExecParams();
-        execParamsList.init();
+        // execParamsList.init();
 
         echo("${ParamsEnum.getClass()}");
         echo("${ParamsEnum.pePathToServiceEpf.getClass()}");
