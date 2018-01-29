@@ -148,6 +148,13 @@ class DeploykaHelper extends OScriptHelper {
 
     class ExecParams<String> extends ArrayList<String>{
 
+        private Object params;
+
+        ExecParams(Object params){
+            this.params = params;
+            super();
+        }
+
         @NonCPS
         def init() {
             clear();
