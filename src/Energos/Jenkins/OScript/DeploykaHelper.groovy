@@ -190,7 +190,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam(ParamsEnum.pePathToServiceEpf, pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
-        execParamsList = new ExecParams();
+        execParamsList = new ExecParams(this);
         execParamsList.init();
 
         // echo("${ParamsEnum.getClass().toString()}");
