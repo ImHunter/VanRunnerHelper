@@ -257,7 +257,7 @@ class DeploykaHelper extends OScriptHelper {
         // retVal = execScript(pathToDeployka, DeplCommand.dcRun, connString, "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-command",
         //     launchParam, "-execute", pv(KEY_PATH_TO_SERVICE_EPF), "-uccode", ucCode);
         retVal = execScript(
-                execParams.init()
+                execParamsList.init()
                 .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
