@@ -154,7 +154,7 @@ class DeploykaHelper extends OScriptHelper {
             addValue(pathToDeployka);
         }
 
-        // @NonCPS
+        @NonCPS
         // @Override
         def addValue(Object value) {
             if (value.getClass()==ParamsEnum.getClass()) {
