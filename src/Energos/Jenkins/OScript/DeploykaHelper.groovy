@@ -157,7 +157,7 @@ class DeploykaHelper extends OScriptHelper {
             this.params = params;
         }
 
-        @NonCPS
+        // @NonCPS
         def init(String module) {
             clear();
             def retVal = addValue(module);
@@ -165,7 +165,7 @@ class DeploykaHelper extends OScriptHelper {
             return this;
         }
 
-        @NonCPS
+        // @NonCPS
         def addValue(def value) {
             // echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
             if (value.class==ParamsEnum.class) {
@@ -177,18 +177,18 @@ class DeploykaHelper extends OScriptHelper {
             return this;
         }
 
-        @NonCPS
+        // @NonCPS
         def addCommand(DeplCommand command){
             return addValue(command);
         }
 
-        @NonCPS
+        // @NonCPS
         def addPair(ParamsEnum param) {
             return addValue(param.toString())
                     .addValue(params.get(param));
         }
 
-        @NonCPS
+        // @NonCPS
         def addPair(String parKey, String parVal) {
             return addValue(parKey).addValue(parVal);
         }
