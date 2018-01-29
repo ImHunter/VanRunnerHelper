@@ -151,8 +151,8 @@ class DeploykaHelper extends OScriptHelper {
         private Object params;
 
         ExecParams(Object params){
-            this.params = params;
             super();
+            this.params = params;
         }
 
         @NonCPS
