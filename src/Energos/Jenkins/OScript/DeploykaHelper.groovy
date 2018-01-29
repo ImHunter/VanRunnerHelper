@@ -10,7 +10,7 @@ class DeploykaHelper extends OScriptHelper {
     String ucCode = 'blocked';
 
     ConfigInfo configInfo;
-    ExecParams execParams;
+    ExecParams execParamsList;
 
     private String KEY_DB_SERVER = 'dbServer';
     private String KEY_DB_DATABASE = 'dbDatabase';
@@ -105,6 +105,10 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
+    enum ParamsEnum {
+
+    }
+
     public class ExecParams<String> extends ArrayList<String>{
 
         def init() {
@@ -122,8 +126,8 @@ class DeploykaHelper extends OScriptHelper {
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
-        execParams = new ExecParams();
-        execParams.init();
+        execParamsList = new ExecParams();
+        execParamsList.init();
     }
 
     @NonCPS
