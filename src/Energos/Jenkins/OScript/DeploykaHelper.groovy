@@ -193,7 +193,11 @@ class DeploykaHelper extends OScriptHelper {
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
-            params.put(paramKey, paramValue);
+            if (paramKey.getClass()==ParamsEnum.getClass()) {
+                params.put((paramKey), paramValue);
+            } else {
+                params.put(paramKey, paramValue);
+            }
         };
         return params;
     }
@@ -219,7 +223,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def setDbAuth(String dbUser, String dbPwd) {
-        setParam(([ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]]);
+        setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]]);
     }
 
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
