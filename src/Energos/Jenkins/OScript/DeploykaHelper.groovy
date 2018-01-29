@@ -163,6 +163,7 @@ class DeploykaHelper extends OScriptHelper {
 
         @NonCPS
         def addValue(def value) {
+            echo("value.getClass(): ${value.getClass()}")
             echo("value.getClass()==ParamsEnum.getClass(): ${value.getClass()==ParamsEnum.getClass()}")
             if (value.getClass()==ParamsEnum.getClass()) {
                 addValue(params.get(param))    
