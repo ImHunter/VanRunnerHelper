@@ -87,6 +87,7 @@ class DeploykaHelper extends OScriptHelper {
             shortName = readParamValue(log, 'SHORT_CONFIG_NAME');
             version = readParamValue(log, 'CONFIG_VERSION');
         }
+
         private String readParamValue(String log, String paramName) {
             String retVal;
             Scanner scanner = new Scanner(log);
@@ -95,8 +96,9 @@ class DeploykaHelper extends OScriptHelper {
                 Integer posParam = line.toUpperCase().indexOf(paramName.toUpperCase());
                 if (posParam>=0) {
                     retVal = line.substring(posParam + paramName.length());
-                    if (retVal.startsWith(':'))
+                    if (retVal.startsWith(':')){
                         retVal = retVal.substring(1);
+                    }
                     break;
                 }
             }
@@ -272,6 +274,8 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair('-uccode', ucCode)
         );
         configInfo.readFromLog(resultLog);
+        echo configInfo.version;
+
         return retVal;
     }
 
