@@ -261,7 +261,7 @@ class DeploykaHelper extends OScriptHelper {
     def launchUserInterface(Boolean updateMetadata){
         
         echo "executing launchUserInterface"
-        Boolean retVal;
+        def retVal;
 
         String launchParam = 'ЗавершитьРаботуСистемы;';
         if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
@@ -278,11 +278,13 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair('-uccode', ucCode)
         );
+        
         echo ("retVal: $retVal\nreading log: ${resultLog}");
         configInfo.readFromLog(resultLog);
         echo configInfo.version;
 
-        return resultCode==0;
+        retVal = resultCode==0;
+        retVal;
     }
 
     @NonCPS
