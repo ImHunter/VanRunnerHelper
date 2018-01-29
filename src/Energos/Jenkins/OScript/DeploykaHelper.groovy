@@ -158,9 +158,9 @@ class DeploykaHelper extends OScriptHelper {
         @NonCPS
         def init() {
             clear();
-            def retVal = addValue((pathToDeployka));
+            def retVal = addValue(pathToDeployka);
             echo("returns from init: $retVal");
-            return retVal;
+            return this;
         }
 
         @NonCPS
