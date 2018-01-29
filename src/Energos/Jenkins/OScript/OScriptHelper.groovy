@@ -13,6 +13,7 @@ class OScriptHelper {
         this.script = script;
     }
 
+    @NonCPS
     def echo(def msg){
         if (script!=null) {
             script.echo("${msg}");
