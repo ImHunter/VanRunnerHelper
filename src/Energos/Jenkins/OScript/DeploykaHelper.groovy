@@ -105,26 +105,19 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
-    class ExecParams extends String[] {
-        
-        def init() {
-            clear();
-            add(pathToDeployka);
-            return this;
-        }
-
-    }
+    public class ExecParams<String> extends ArrayList<String>{
+    } 
 
     public DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         
         super(paramScript); 
-        
+
         this.pathToDeployka = pathToDeployka;
         setParam((KEY_PATH_TO_SERVICE_EPF), pathToServiceEPF, pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
         execParams = new ExecParams();
-        execParams.init();
+        // execParams.init();
     }
 
     @NonCPS
