@@ -375,7 +375,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peRACUtility)
                 .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
-                .addPair(ParamsEnum.peDbPwd);
+                .addPair(ParamsEnum.peDbPwd)
                 .addPair("-lockuccode", ucCode);
         if (withNoLock) {
             params = params.addPair("-with-nolock", "y");
