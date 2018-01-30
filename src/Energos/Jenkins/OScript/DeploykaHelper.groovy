@@ -303,7 +303,14 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
+    // def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
+    //     // echo "executing launchUserInterfaceWith"
+    //     Boolean res = launchUserInterface(updateMetadata);
+    //     closure(res);
+    //     return res;
+    // }
+
+    def launchUserInterface(Boolean updateMetadata, Closure closure){
         // echo "executing launchUserInterfaceWith"
         Boolean res = launchUserInterface(updateMetadata);
         closure(res);
@@ -378,6 +385,12 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         );
+    }
+
+    def updateFromPackage(String pathToPackage, Closure closure) {
+        def retVal = updateFromPackage(pathToPackage);
+        closure(retVal);
+        retVal;
     }
 
  }
