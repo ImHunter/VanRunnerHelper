@@ -394,7 +394,11 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def echoLog() {
-        echo resultLog;
+        echo(resultLog);
+    }
+
+    def echoLog(String caption) {
+        echoLog("${caption}\n${resultLog}");
     }
 
  }
