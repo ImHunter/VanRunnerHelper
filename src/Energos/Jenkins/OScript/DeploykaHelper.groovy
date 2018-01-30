@@ -1,8 +1,6 @@
 
 package Energos.Jenkins.OScript;
 
-// import Energos.Jenkins.OScript.LockResourcesEnum;
-
 class DeploykaHelper extends OScriptHelper {
 
     String pathToDeployka;
@@ -11,19 +9,6 @@ class DeploykaHelper extends OScriptHelper {
 
     ConfigInfo configInfo;
     ExecParams execParamsList;
-
-    private String KEY_DB_SERVER = 'dbServer';
-    private String KEY_DB_DATABASE = 'dbDatabase';
-    private String KEY_DB_USER = 'dbUser';
-    private String KEY_DB_PWD = 'dbPwd';
-    private String KEY_PATH_TO_SERVICE_EPF = 'pathToServiceEpf';
-
-    private String KEY_REPO_PATH = 'repoPath';
-    private String KEY_REPO_USER = 'repoUser';
-    private String KEY_REPO_PWD = 'repoPwd';
-
-    private String KEY_RAS_SERVER = 'ras_server';
-    private String KEY_RAC_UTIL_PATH = 'rac_util_path';
 
     private String connString;
 
@@ -302,14 +287,6 @@ class DeploykaHelper extends OScriptHelper {
         retVal;
     }
 
-    // @NonCPS
-    // def launchUserInterfaceWith(Boolean updateMetadata, Closure closure){
-    //     // echo "executing launchUserInterfaceWith"
-    //     Boolean res = launchUserInterface(updateMetadata);
-    //     closure(res);
-    //     return res;
-    // }
-
     def launchUserInterface(Boolean updateMetadata, Closure closure){
         // echo "executing launchUserInterfaceWith"
         Boolean res = launchUserInterface(updateMetadata);
@@ -363,11 +340,6 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def kissSessions(Boolean withNoLock = true, String appFilter = null) {
-        String[] execParams = [pathToDeployka, LockResEnum.lrUserSeanse, "kill", "-ras", pv(KEY_RAS_SERVER), "-rac", pv(KEY_RAC_UTIL_PATH), 
-            "-db", pv(KEY_DB_DATABASE), "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-lockuccode", ucCode, "-with-nolock", "y"];
-        if (appFilter!=null) {
-            execParams = execParams + ["-filter", appFilter];
-        }
         def params = execParamsList.init(pathToDeployka)
                 .addCommand(DeplCommand.dcSession)
                 .addValue('kill')
@@ -389,8 +361,6 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def updateFromPackage(String pathToPackage) {
-        // String[] execParams = [pathToDeployka, DeplCommand.dcLoadCfg, connString, pathToPackage, "/mode", "-auto", 
-        //     "-db-user", pv(KEY_DB_USER), "-db-pwd"];
         return execScript(
                 execParamsList.init(pathToDeployka)
                 .addCommand(DeplCommand.dcLoadCfg)
@@ -406,6 +376,15 @@ class DeploykaHelper extends OScriptHelper {
         def retVal = updateFromPackage(pathToPackage);
         closure(retVal);
         retVal;
+    }
+
+    def checkDirExists(String dir){
+        def params = 
+            execParamsList.init(pathToDeployka)
+            .addCommand(DeplCommand.dcFileOperations)
+            .addValue('direxists')
+            .addPair('-dir', "\"${dir}\"");
+        return execScript(params)==0;
     }
 
  }
