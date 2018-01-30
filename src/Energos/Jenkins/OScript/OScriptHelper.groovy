@@ -8,6 +8,7 @@ class OScriptHelper {
     Integer resultCode;
     String resultLog;
     String outputLogEncoding = 'Cp866';
+    Integer interruptErrorCode = 255;
 
     public OScriptHelper(def script) {
         this.script = script;
@@ -44,10 +45,11 @@ class OScriptHelper {
                 resultCode = proc.exitValue();
                 resultLog = readLog(proc.getIn());
             } catch (e) {
-                resultCode = 1;
+                resultCode = interruptErrorCode;
                 resultLog = e.getMessage();
-                throw (e);
+                // throw (e);
             }
+            
             res = resultCode==0;
 
         } finally {
