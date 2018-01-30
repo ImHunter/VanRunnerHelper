@@ -58,6 +58,7 @@ class OScriptHelper {
             } catch (java.lang.InterruptedException e) {
                 resultCode = interruptErrorCode;
                 resultLog = e.getMessage();
+                echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
                 // throw (e);
             }
             
