@@ -66,6 +66,7 @@ class OScriptHelper {
             }
 
             if (interrupted) {
+                echo("Поток как бы прерван, ожидаем еще.");
                 while (proc.isAlive()) {
                     Thread.sleep(10000);
                 }
