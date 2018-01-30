@@ -344,7 +344,7 @@ class DeploykaHelper extends OScriptHelper {
         return setLockStatus(DeplCommand.dcSession, locked);
     }
 
-    def setLockStatusForUsersWith(Boolean locked, Closure closure) {
+    def setLockStatusForUsers(Boolean locked, Closure closure) {
         def retVal = setLockStatusForUsers(locked);
         closure(retVal);
         return retVal;
@@ -355,7 +355,7 @@ class DeploykaHelper extends OScriptHelper {
         return setLockStatus(DeplCommand.dcScheduledJobs, locked);
     }
 
-    def setLockStatusForBackgroundsWith(Boolean locked, Closure closure) {
+    def setLockStatusForBackgrounds(Boolean locked, Closure closure) {
         def retVal = setLockStatusForBackgrounds(locked);
         closure(retVal);
         return retVal;
