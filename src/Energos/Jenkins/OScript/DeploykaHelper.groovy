@@ -393,4 +393,8 @@ class DeploykaHelper extends OScriptHelper {
         retVal;
     }
 
+    def echoLog() {
+        echo resultLog;
+    }
+
  }
