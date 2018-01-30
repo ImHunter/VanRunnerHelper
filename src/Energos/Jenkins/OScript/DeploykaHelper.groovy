@@ -150,6 +150,16 @@ class DeploykaHelper extends OScriptHelper {
             @NonCPS
             @Override
             public String toString() {return "/mode";}
+        },
+        peRASServer{
+            @NonCPS
+            @Override
+            public String toString() {return "-ras";}
+        },
+        peRACUtility{
+            @NonCPS
+            @Override
+            public String toString() {return "-rac";}
         }
     }
 
@@ -302,28 +312,46 @@ class DeploykaHelper extends OScriptHelper {
 
     @NonCPS
     def setRAS(String rasServer, String racUtilPath) {
-        setParam([(KEY_RAS_SERVER):rasServer, (KEY_RAC_UTIL_PATH):racUtilPath]);
+        setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath]);
     }
 
-    @NonCPS
+    // @NonCPS
     private def setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock";
-        String[] execParams = [pathToDeployka, command, op, "-ras", "${pv(KEY_RAS_SERVER)}", "-rac", "${pv(KEY_RAC_UTIL_PATH)}", 
-            "-db", "${pv(KEY_DB_DATABASE)}", "-db-user", "${pv(KEY_DB_USER)}", "-db-pwd", "${pv(KEY_DB_PWD)}"];
-        if (res==LockResEnum.lrUserSeanse) {
-            execParams = execParams + ["-lockuccode", ucCode];
-        }
-        return execScript(execParams);
+        def params = execParamsList.init(pathToDeployka)
+                .addCommand(command)
+                .addValue(op)
+                .addPair(ParamsEnum.peRASServer)
+                .addPair(ParamsEnum.peRACUtility)
+                .addPair(ParamsEnum.peDbDatabase)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd);
+        if (command==DeplCommand.dcSession) {
+            params = params.addPair("-lockuccode", ucCode);
+        };
+        return execScript(params);
     }
 
-    @NonCPS
+    // @NonCPS
     def setLockStatusForUsers(Boolean locked) {
         return setLockStatus(DeplCommand.dcSession, locked);
     }
 
-    @NonCPS
+    def setLockStatusForUsersWith(Boolean locked, Closure closure) {
+        def retVal = setLockStatusForUsers(locked);
+        closure(retVal);
+        return retVal;
+    }
+
+    // @NonCPS
     def setLockStatusForBackgrounds(Boolean locked) {
         return setLockStatus(DeplCommand.dcScheduledJobs, locked);
+    }
+
+    def setLockStatusForBackgroundsWith(Boolean locked, Closure closure) {
+        def retVal = setLockStatusForBackgrounds(locked);
+        closure(retVal);
+        return retVal;
     }
 
     @NonCPS
