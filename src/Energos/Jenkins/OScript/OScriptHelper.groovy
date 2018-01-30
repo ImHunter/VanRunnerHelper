@@ -67,7 +67,7 @@ class OScriptHelper {
 
         }
 
-        res;
+        return res;
 
     }
 
