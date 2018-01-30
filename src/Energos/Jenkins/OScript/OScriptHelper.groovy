@@ -21,6 +21,14 @@ class OScriptHelper {
         }
     }
 
+    def echoLog() {
+        echo(resultLog);
+    }
+
+    def echoLog(String caption) {
+        echoLog("${caption}\n${resultLog}");
+    }
+
     def execScript(String[] params) {
 
         def readLog = {InputStream st ->
@@ -30,6 +38,9 @@ class OScriptHelper {
         }
 
         Boolean res;
+        resultCode = null;
+        resultLog = null;
+
         String[] initParams = ['oscript'];
         String[] fullParams = initParams + params;
 
@@ -44,7 +55,7 @@ class OScriptHelper {
                 proc.waitFor();
                 resultCode = proc.exitValue();
                 resultLog = readLog(proc.getIn());
-            } catch (e) {
+            } catch (java.lang.InterruptedException e) {
                 resultCode = interruptErrorCode;
                 resultLog = e.getMessage();
                 // throw (e);
