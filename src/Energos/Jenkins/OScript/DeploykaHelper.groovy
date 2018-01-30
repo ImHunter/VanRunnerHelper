@@ -361,15 +361,30 @@ class DeploykaHelper extends OScriptHelper {
         return retVal;
     }
 
-    @NonCPS
-    def kissSessions(String appFilter = null) {
+    // @NonCPS
+    def kissSessions(Boolean withNoLock = true, String appFilter = null) {
         String[] execParams = [pathToDeployka, LockResEnum.lrUserSeanse, "kill", "-ras", pv(KEY_RAS_SERVER), "-rac", pv(KEY_RAC_UTIL_PATH), 
             "-db", pv(KEY_DB_DATABASE), "-db-user", pv(KEY_DB_USER), "-db-pwd", pv(KEY_DB_PWD), "-lockuccode", ucCode, "-with-nolock", "y"];
         if (appFilter!=null) {
             execParams = execParams + ["-filter", appFilter];
         }
+        def params = execParamsList.init(pathToDeployka)
+                .addCommand(DeplCommand.dcSession)
+                .addValue('kill')
+                .addPair(ParamsEnum.peRASServer)
+                .addPair(ParamsEnum.peRACUtility)
+                .addPair(ParamsEnum.peDbDatabase)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd);
+                .addPair("-lockuccode", ucCode);
+        if (withNoLock) {
+            params = params.addPair("-with-nolock", "y");
+        }
+        if (appFilter!=null) {
+            params = params.addPair("-filter", appFilter);
+        }
         // echo execParams;
-        return execScript(execParams);
+        return execScript(params);
     }
 
     // @NonCPS
