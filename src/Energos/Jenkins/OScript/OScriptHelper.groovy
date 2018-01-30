@@ -41,6 +41,8 @@ class OScriptHelper {
         resultCode = null;
         resultLog = null;
 
+        Boolean interrupted = false;
+
         String[] initParams = ['oscript'];
         String[] fullParams = initParams + params;
 
@@ -56,10 +58,19 @@ class OScriptHelper {
                 resultCode = proc.exitValue();
                 resultLog = readLog(proc.getIn());
             } catch (java.lang.InterruptedException e) {
+                interrupted = true;
                 resultCode = interruptErrorCode;
                 resultLog = e.getMessage();
                 echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
                 // throw (e);
+            }
+
+            if (interrupted) {
+                while (proc.isAlive()) {
+                    Thread.sleep(10000);
+                }
+                resultCode = proc.exitValue();
+                resultLog = readLog(proc.getIn());
             }
             
             res = resultCode==0;
