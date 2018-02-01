@@ -145,6 +145,11 @@ class DeploykaHelper extends OScriptHelper {
             @NonCPS
             @Override
             public String toString() {return "-rac";}
+        },
+        peFileOpDirectory{
+            @NonCPS
+            @Override
+            public String toString() {return "-dir";}
         }
     }
 
@@ -375,7 +380,7 @@ class DeploykaHelper extends OScriptHelper {
     def updateFromPackage(String pathToPackage, Closure closure) {
         def retVal = updateFromPackage(pathToPackage);
         closure(retVal);
-        retVal;
+        return retVal;
     }
 
     def checkDirExists(String dir){
@@ -383,8 +388,28 @@ class DeploykaHelper extends OScriptHelper {
             execParamsList.init(pathToDeployka)
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('direxists')
-            .addPair('-dir', "\"${dir}\"");
+            .addPair(ParamsEnum.peFileOpDirectory, "\"${dir}\"");
         return execScript(params)==0;
     }
+
+    def checkDirExists(String dir, Closure closure){
+        def retVal = checkDirExists(dir);
+        closure(retVal);
+        return retVal;
+    }
+
+    // minModifyDT - минимальное время создания/изменения файлов в формате yyyyMMddHHmmss
+    def findFiles(String dir, String fileMask, String minModifyDT = null) {
+        // deployka("fileop fileexists -dir \"${BUP_DIR}\" -filename *.bak -modified-dt ${bupDT}"
+        def params = 
+            execParamsList.init(pathToDeployka)
+            .addCommand(DeplCommand.dcFileOperations)
+            .addValue('fileexists')
+            .addPair(ParamsEnum.peFileOpDirectory, "\"${dir}\"")
+            .addPair('-filename', '*.bak');
+        if (minModifyDT!=null && minModifyDT!='')
+            params = params.addPair('-modified-dt', minModifyDT);
+        return execScript(params);        
+    }    
 
  }

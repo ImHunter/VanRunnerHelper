@@ -20,7 +20,7 @@ class OScriptHelper {
             script.echo("${msg}");
         }
     }
-
+    
     def echoLog() {
         echo(resultLog);
     }
