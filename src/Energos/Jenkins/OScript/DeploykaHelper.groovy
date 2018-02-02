@@ -14,12 +14,9 @@ class DeploykaHelper extends OScriptHelper {
 
     enum DeplCommand {
         dcRun {
-            @NonCPS
+            // @NonCPS
             @Override
-            public String toString() {
-                // return "run";
-                "run";
-            }
+            public String toString() { return "run";}
         },
         dcLoadCfg {
             @NonCPS
@@ -132,17 +129,17 @@ class DeploykaHelper extends OScriptHelper {
         },
         peRepoPath,
         peRepoUser{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-storage-user";}
         },
         peRepoPwd{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-storage-pwd";}
         },
         peLaunchParam{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-command";}
         },
@@ -195,7 +192,7 @@ class DeploykaHelper extends OScriptHelper {
             return this;
         }
 
-        @NonCPS
+        // @NonCPS
         ExecParams addValue(def value) {
             // echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
             if (value==null) {
