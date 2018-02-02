@@ -289,6 +289,11 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromRepo();
         echo("executed updateConfigFromRepo");
         
+        def cl = {def msg ->
+            echo("notify via closure. msg: $msg");
+        }
+        notifyClosure = cl;
+        notifyAbout('TEST CLOS');
 
         echo("finish of selfTest");
     }

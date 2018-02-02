@@ -11,6 +11,7 @@ class OScriptHelper {
     String outputLogEncoding = 'Cp866';
     Integer interruptErrorCode = 255;
     String mainProcessName = 'oscript';
+    Closure notifyClosure = null;
 
     public OScriptHelper(def script) {
         this.script = script;
@@ -40,6 +41,11 @@ class OScriptHelper {
 
     def echoLog(String caption) {
         echoLog("${caption}\n${resultLog}");
+    }
+
+    def notifyAbout(def msg){
+        if (notifyClosure!=null)
+            notifyClosure(msg);
     }
 
     def execScript(String[] params) {
