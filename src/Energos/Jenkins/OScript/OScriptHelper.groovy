@@ -17,7 +17,7 @@ class OScriptHelper {
     }
 
     public void selfTest(){
-        echo("Включаем режим тестирования");
+        // echo("Включаем режим тестирования");
         isTestMode = true;
     }
 
