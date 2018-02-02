@@ -180,7 +180,7 @@ class DeploykaHelper extends OScriptHelper {
             this.params = ((DeploykaHelper) owner).params;
             addValue(((DeploykaHelper) owner).pathToDeployka);
             if (command!=null) {
-                addValue("$command");
+                addValue(command.toString());
             }
         }
 
