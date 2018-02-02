@@ -343,9 +343,9 @@ class DeploykaHelper extends OScriptHelper {
 
         // echo ("executing script");
         retVal = execScript(
-                // new ExecParams(this, DeplCommand.dcRun)
-                new ExecParams(this)
-                .addCommand(DeplCommand.dcRun)
+                new ExecParams(this, DeplCommand.dcRun)
+                // new ExecParams(this)
+                // .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
