@@ -282,7 +282,14 @@ class DeploykaHelper extends OScriptHelper {
         echo("executed setLockStatus(DeplCommand.dcSession, true)");
 
         killSessions();
-        echo("killSessions()");
+        echo("executed killSessions()");
+
+        setRepo('repo path', 'repo-us', 'repo-pwd');
+        echo("executed setRepo");
+
+        updateConfigFromRepo();
+        echo("executed updateConfigFromRepo");
+        
 
         echo("finish of selfTest");
     }
@@ -318,7 +325,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)]);
     }
 
-    @NonCPS
+    // @NonCPS
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)]);
     }
