@@ -179,6 +179,8 @@ class DeploykaHelper extends OScriptHelper {
                 addValue(params.get(value))    
             } else {
                 String strVal = "${value}";
+                if (strVal.contains(' '))
+                    strVal = qStr(strVal);
                 add(strVal);
             };
             return this;
@@ -240,23 +242,23 @@ class DeploykaHelper extends OScriptHelper {
 
     @NonCPS
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]);
+        setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, qStr((ParamsEnum.peDbPwd):dbPwd)]);
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString());
     }
 
     @NonCPS
     def setDbAuth(String dbUser, String dbPwd) {
-        setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):dbPwd]);
+        setParam([(ParamsEnum.peDbUser):dbUser, qStr((ParamsEnum.peDbPwd):dbPwd)]);
     }
 
     @NonCPS
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):repoPwd]);
+        setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, qStr((ParamsEnum.peRepoPwd):repoPwd)]);
     }
 
     @NonCPS
     def setRepoAuth(String repoUser, String repoPwd) {
-        setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):repoPwd]);
+        setParam([(ParamsEnum.peRepoUser):repoUser, qStr((ParamsEnum.peRepoPwd):repoPwd)]);
     }
 
     // @NonCPS
@@ -385,7 +387,7 @@ class DeploykaHelper extends OScriptHelper {
             execParamsList.init(pathToDeployka)
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('direxists')
-            .addPair(ParamsEnum.peFileOpDirectory, "\"${dir}\"");
+            .addPair(ParamsEnum.peFileOpDirectory, dir);
         return execScript(params)==0;
     }
 
@@ -397,16 +399,35 @@ class DeploykaHelper extends OScriptHelper {
 
     // minModifyDT - минимальное время создания/изменения файлов в формате yyyyMMddHHmmss
     def findFiles(String dir, String fileMask, String minModifyDT = null) {
-        // deployka("fileop fileexists -dir \"${BUP_DIR}\" -filename *.bak -modified-dt ${bupDT}"
         def params = 
             execParamsList.init(pathToDeployka)
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('fileexists')
-            .addPair(ParamsEnum.peFileOpDirectory, "\"${dir}\"")
-            .addPair('-filename', '*.bak');
+            .addPair(ParamsEnum.peFileOpDirectory, dir)
+            .addPair('-filename', fileMask);
         if (minModifyDT!=null && minModifyDT!='')
             params = params.addPair('-modified-dt', minModifyDT);
         return execScript(params);        
-    }    
+    } 
+
+    // возврат Истина, если сеансы найдены
+    def findSessions(String appFilter = null, Closure closure = null) {
+        def params = execParamsList.init(pathToDeployka)
+                .addCommand(DeplCommand.dcSession)
+                .addValue('search')
+                .addPair(ParamsEnum.peRASServer)
+                .addPair(ParamsEnum.peRACUtility)
+                .addPair(ParamsEnum.peDbDatabase)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+        if (appFilter!=null && appFilter!='') {
+            params = params.addPair("-filter", appFilter);
+        }
+        def retVal = execScript(params);
+        if (closure!=null) {
+            closure(retVal);
+        }
+        return retVal;
+    }   
 
  }

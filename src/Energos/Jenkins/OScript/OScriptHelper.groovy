@@ -93,4 +93,15 @@ class OScriptHelper {
         execScript(strParams);
     }
 
+    def qStr(String value = null) {
+        String retVal;
+        if (value==null || value==''){
+            retVal = '\"\"'
+        } else {
+            if (!value.startsWith('\"'))
+                retVal = "\"$value\"".toString();
+        }
+        return retVal;
+    }
+
 }
