@@ -175,14 +175,18 @@ class DeploykaHelper extends OScriptHelper {
         // @NonCPS
         def addValue(def value) {
             // echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
-            if (value.class==ParamsEnum.class) {
-                addValue(params.get(value))    
+            if (value==null) {
+                add(qStr())
             } else {
-                String strVal = "${value}";
-                if (strVal.contains(' '))
-                    strVal = qStr(strVal);
-                add(strVal);
-            };
+                if (value.class==ParamsEnum.class) {
+                    addValue(params.get(value))    
+                } else {
+                    String strVal = "${value}";
+                    if (strVal.contains(' '))
+                        strVal = qStr(strVal);
+                    add(strVal);
+                };
+            }
             return this;
         }
 
@@ -221,7 +225,7 @@ class DeploykaHelper extends OScriptHelper {
         setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
         def params = execParamsList.init(pathToDeployka)
-            // .addPair(ParamsEnum.peDbServer)
+            .addPair(ParamsEnum.peDbServer)
             // .addPair(ParamsEnum.peDbDatabase)
             // .addPair(ParamsEnum.peDbUser)
             // .addPair(ParamsEnum.peDbPwd)
