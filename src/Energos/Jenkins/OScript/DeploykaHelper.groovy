@@ -282,7 +282,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def setParam(def paramKey, String paramValue, Boolean isApply = true){
+    def setParam(Object paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             this.params.put(paramKey, paramValue);
         };
