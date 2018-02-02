@@ -241,7 +241,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    // @Override
+    @Override
     public void selfTest() {
         // super.selfTest();
         isTestMode = true;
