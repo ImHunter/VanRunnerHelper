@@ -251,7 +251,7 @@ class DeploykaHelper extends OScriptHelper {
 
         isTestMode = true;
         setDb('server', 'db');
-        echo("selfTest pathToDeployka: $pathToDeployka");
+        testEcho("selfTest pathToDeployka: $pathToDeployka");
         
         params = new ExecParams(this);
         echo("test params new ExecParams(this): $params");
