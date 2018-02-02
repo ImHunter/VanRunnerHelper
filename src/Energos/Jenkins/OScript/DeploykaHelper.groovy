@@ -14,7 +14,7 @@ class DeploykaHelper extends OScriptHelper {
 
     enum DeplCommand {
         dcRun {
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {
                 // return "run";
