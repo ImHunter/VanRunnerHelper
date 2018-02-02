@@ -272,6 +272,9 @@ class DeploykaHelper extends OScriptHelper {
         launchUserInterface();
         echo("executed launchUserInterface");
 
+        setRAS('ras server', 'ras utility');
+        echo("executed setRAS()");
+
         setLockStatus(DeplCommand.dcSession, true);
         echo("executed setLockStatus(DeplCommand.dcSession, true)");
 
@@ -320,6 +323,11 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
+    def setRAS(String rasServer, String racUtilPath) {
+        setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath]);
+    }
+
+    // @NonCPS
     def launchUserInterface(Boolean updateMetadata = false){
        
         def retVal;
@@ -356,11 +364,6 @@ class DeploykaHelper extends OScriptHelper {
         Boolean res = launchUserInterface(updateMetadata);
         closure(res);
         return res;
-    }
-
-    @NonCPS
-    def setRAS(String rasServer, String racUtilPath) {
-        setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath]);
     }
 
     // @NonCPS
