@@ -173,7 +173,7 @@ class DeploykaHelper extends OScriptHelper {
             super();
             this.params = ((DeploykaHelper) owner).params;
             addValue(((DeploykaHelper) owner).pathToDeployka);
-         }
+        }
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
             super();
@@ -194,7 +194,6 @@ class DeploykaHelper extends OScriptHelper {
 
         @NonCPS
         ExecParams addValue(def value) {
-            // echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
             if (value==null) {
                 add(qStr())
             } else {
