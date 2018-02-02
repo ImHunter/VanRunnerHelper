@@ -292,7 +292,7 @@ class DeploykaHelper extends OScriptHelper {
 
         // echo ("executing script");
         retVal = execScript(
-                execParamsList.init(pathToDeployka)
+                new ExecParams(this)
                 .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
@@ -325,7 +325,7 @@ class DeploykaHelper extends OScriptHelper {
     // @NonCPS
     private def setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock";
-        def params = execParamsList.init(pathToDeployka)
+        def params = new ExecParams(this)
                 .addCommand(command)
                 .addValue(op)
                 .addPair(ParamsEnum.peRASServer)
@@ -363,7 +363,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def kissSessions(Boolean withNoLock = true, String appFilter = null) {
-        def params = execParamsList.init(pathToDeployka)
+        def params = new ExecParams(this)
                 .addCommand(DeplCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
@@ -385,7 +385,7 @@ class DeploykaHelper extends OScriptHelper {
     // @NonCPS
     def updateFromPackage(String pathToPackage) {
         return execScript(
-                execParamsList.init(pathToDeployka)
+                new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadCfg)
                 .addValue(ParamsEnum.peDbConnString)
                 .addValue(pathToPackage)
@@ -402,8 +402,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def checkDirExists(String dir){
-        def params = 
-            execParamsList.init(pathToDeployka)
+        def params = new ExecParams(this)
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('direxists')
             .addPair(ParamsEnum.peFileOpDirectory, dir);
@@ -418,8 +417,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // minModifyDT - минимальное время создания/изменения файлов в формате yyyyMMddHHmmss
     def findFiles(String dir, String fileMask, String minModifyDT = null) {
-        def params = 
-            execParamsList.init(pathToDeployka)
+        def params = new ExecParams(this)
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('fileexists')
             .addPair(ParamsEnum.peFileOpDirectory, dir)
@@ -431,7 +429,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // возврат Истина, если сеансы найдены
     def findSessions(String appFilter = null, Closure closure = null) {
-        def params = execParamsList.init(pathToDeployka)
+        def params = new ExecParams(this)
                 .addCommand(DeplCommand.dcSession)
                 .addValue('search')
                 .addPair(ParamsEnum.peRASServer)
