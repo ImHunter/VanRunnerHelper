@@ -289,7 +289,7 @@ class DeploykaHelper extends OScriptHelper {
         return params;
     }
 
-    // @NonCPS
+    @NonCPS
     def setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered;
         if (isIgnoreEmptyValues) {
