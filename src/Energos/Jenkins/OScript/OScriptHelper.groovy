@@ -17,6 +17,7 @@ class OScriptHelper {
     }
 
     def selfTest(){
+        echo("Включаем режим тестирования");
         isTestMode = true;
     }
 
