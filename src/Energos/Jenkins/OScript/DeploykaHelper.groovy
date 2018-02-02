@@ -298,12 +298,7 @@ class DeploykaHelper extends OScriptHelper {
         return params;
     }
 
-    @NonCPS
-    def pv(def key){
-        params.get(key);
-    }
-
-    @NonCPS
+    // @NonCPS
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)]);
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString());
