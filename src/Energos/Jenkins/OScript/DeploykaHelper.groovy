@@ -272,6 +272,9 @@ class DeploykaHelper extends OScriptHelper {
         launchUserInterface();
         echo("executed launchUserInterface");
 
+        setLockStatus(DeplCommand.dcSession, true);
+        echo("executed setLockStatus(DeplCommand.dcSession, true)");
+
         echo("finish of selfTest");
     }
 
