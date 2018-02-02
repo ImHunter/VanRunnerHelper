@@ -47,6 +47,8 @@ class OScriptHelper {
         String[] initParams = [mainProcessName];
         String[] fullParams = initParams + params;
 
+        echo(fullParams);
+
         ProcessBuilder pb = new ProcessBuilder(fullParams);
 
         Process proc = pb.start();

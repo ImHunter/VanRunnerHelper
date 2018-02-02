@@ -215,6 +215,17 @@ class DeploykaHelper extends OScriptHelper {
 
     }
 
+    def selfTest() {
+
+        setDb('server', 'db');
+        def params = execParamsList.init(pathToDeployka)
+            .addPair(ParamsEnum.peDbServer)
+            .addPair(ParamsEnum.peDbDatabase)
+            .addPair(ParamsEnum.peDbUser)
+            .addPair(ParamsEnum.peDbPwd);
+        echo params;
+    }
+
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
