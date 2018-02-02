@@ -281,7 +281,7 @@ class DeploykaHelper extends OScriptHelper {
         echo("finish of selfTest");
     }
 
-    // @NonCPS
+    @NonCPS
     def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             params.put(paramKey, paramValue);
@@ -289,7 +289,7 @@ class DeploykaHelper extends OScriptHelper {
         return params;
     }
 
-    @NonCPS
+    // @NonCPS
     def setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered;
         if (isIgnoreEmptyValues) {
