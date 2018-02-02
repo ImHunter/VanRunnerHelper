@@ -171,20 +171,16 @@ class DeploykaHelper extends OScriptHelper {
 
         ExecParams(def owner){
             super();
-            // owner.testEcho("$owner".toString());
-
             this.params = ((DeploykaHelper) owner).params;
-            // testEcho(this.params);
             addValue(((DeploykaHelper) owner).pathToDeployka);
-            // addValue('nnn');
          }
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
             super();
-            this.params = owner.params;
-            addValue("${owner.pathToDeployka}");
+            this.params = ((DeploykaHelper) owner).params;
+            addValue(((DeploykaHelper) owner).pathToDeployka);
             if (command!=null) {
-                addCommand(command);
+                addValue("$command");
             }
         }
 
@@ -263,6 +259,9 @@ class DeploykaHelper extends OScriptHelper {
             // .addPair(ParamsEnum.peDbPwd)
             // .addPair('custom key', 'custom value')
             // ;
+
+        params = new ExecParams(this);
+        params.addValue(DeplCommand.dcRun);
 
         params = new ExecParams(this, DeplCommand.dcRun);
         echo("test params new ExecParams(this, DeplCommand.dcRun): $params")
