@@ -162,7 +162,7 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(String module){
             super();
             // this.params = params;
-            addValue(module);
+            // addValue(module);
             // return this;
         }
 
