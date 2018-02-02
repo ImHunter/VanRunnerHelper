@@ -162,9 +162,7 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner){
             super();
             this.params = owner.params;
-            // def pd = ;
             addValue(owner.pathToDeployka);
-            // return this;
         }
 
         // @NonCPS
@@ -228,11 +226,11 @@ class DeploykaHelper extends OScriptHelper {
         // setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
         def params = new ExecParams(this)
-        //     .addPair(ParamsEnum.peDbServer)
-        //     .addPair(ParamsEnum.peDbDatabase)
-        //     .addPair(ParamsEnum.peDbUser)
-        //     .addPair(ParamsEnum.peDbPwd)
-        //     ;
+            .addPair(ParamsEnum.peDbServer)
+            .addPair(ParamsEnum.peDbDatabase)
+            .addPair(ParamsEnum.peDbUser)
+            .addPair(ParamsEnum.peDbPwd)
+            ;
         echo params;
     }
 
