@@ -211,7 +211,7 @@ class DeploykaHelper extends OScriptHelper {
             //         add(strVal);
             //     };
             // }
-            this;
+            return this;
         }
 
         // @NonCPS
