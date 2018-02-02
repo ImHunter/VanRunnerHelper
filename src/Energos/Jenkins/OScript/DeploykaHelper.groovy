@@ -241,7 +241,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     @Override
-    void selfTest() {
+    public void selfTest() {
         // OScriptHelper.super.selfTest();
         setDb('server', 'db');
         echo("selfTest pathToDeployka: $pathToDeployka");
@@ -302,7 +302,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def launchUserInterface(Boolean updateMetadata){
+    def launchUserInterface(Boolean updateMetadata = false){
        
         def retVal;
 

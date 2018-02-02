@@ -16,7 +16,7 @@ class OScriptHelper {
         this.script = script;
     }
 
-    void selfTest(){
+    public void selfTest(){
         echo("Включаем режим тестирования");
         isTestMode = true;
     }
