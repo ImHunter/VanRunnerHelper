@@ -241,7 +241,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @Override
-    @NonCPS
+    // @NonCPS
     public void selfTest() {
         super.selfTest();
         setDb('server', 'db');

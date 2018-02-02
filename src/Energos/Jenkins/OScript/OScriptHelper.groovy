@@ -16,13 +16,13 @@ class OScriptHelper {
         this.script = script;
     }
 
-    @NonCPS
+    // @NonCPS
     public void selfTest(){
         echo("Включаем режим тестирования");
         isTestMode = true;
     }
 
-    @NonCPS
+    // @NonCPS
     def echo(def msg){
         if (script!=null) {
             script.echo("${msg}");
