@@ -23,6 +23,16 @@ class DeploykaHelper extends OScriptHelper {
             @Override
             public String toString() {return "loadcfg";}
         },
+        dcLoadRepo {
+            @NonCPS
+            @Override
+            public String toString() {return "loadrepo";}
+        },
+        dcUnbindRepo {
+            @NonCPS
+            @Override
+            public String toString() {return "unbindrepo";}
+        },
         dcSession {
             @NonCPS
             @Override
@@ -159,10 +169,12 @@ class DeploykaHelper extends OScriptHelper {
 
         private Object params;
 
-        ExecParams(DeploykaHelper owner){
+        ExecParams(DeploykaHelper owner, DeplCommand command = null){
             super();
             this.params = owner.params;
             addValue(owner.pathToDeployka);
+            if (command!=null) 
+                addCommand(command);
         }
 
         // @NonCPS
@@ -282,18 +294,17 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def launchUserInterface(Boolean updateMetadata){
-        
-        // echo "executing launchUserInterface"
+       
         def retVal;
 
         String launchParam = 'ЗавершитьРаботуСистемы;';
-        if (updateMetadata) {launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')}
-        setParam(ParamsEnum.peLaunchParam, launchParam);
+        if (updateMetadata) 
+            launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;');
+        setParam(ParamsEnum.peLaunchParam, qStr(launchParam));
 
         // echo ("executing script");
         retVal = execScript(
-                new ExecParams(this)
-                .addCommand(DeplCommand.dcRun)
+                new ExecParams(this, DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
@@ -383,13 +394,36 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def updateFromPackage(String pathToPackage) {
+    def updateConfigFromPackage(String pathToPackage) {
         return execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadCfg)
                 .addValue(ParamsEnum.peDbConnString)
                 .addValue(pathToPackage)
                 .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+        );
+    }
+
+    def updateConfigFromRepo() {
+        return execScript(
+                new ExecParams(this)
+                .addCommand(DeplCommand.dcLoadRepo)
+                .addValue(ParamsEnum.peRepoPath)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+                .addPair(ParamsEnum.peRepoUser)
+                .addPair(ParamsEnum.peRepoPwd)
+                .addPair('-uccode', ucCode)
+        );
+    }
+
+    def unbindRepo() {
+        return execScript(
+                new ExecParams(this)
+                .addCommand(DeplCommand.dcUnbindRepo)
+                .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         );
