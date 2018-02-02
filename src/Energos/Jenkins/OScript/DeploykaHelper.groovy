@@ -254,8 +254,8 @@ class DeploykaHelper extends OScriptHelper {
             // .addPair(ParamsEnum.peDbPwd)
             // .addPair('custom key', 'custom value')
             ;
-        echo(params);
-        launchUserInterface();
+        // echo(params);
+        // launchUserInterface();
         echo("finish of selfTest");
     }
 
