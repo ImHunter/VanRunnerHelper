@@ -159,8 +159,8 @@ class DeploykaHelper extends OScriptHelper {
 
         // private Object params;
 
-        ExecParams(def module){
-            super();
+        ExecParams(def owner){
+            super(owner);
             // this.params = params;
             // addValue(module);
             // return this;
@@ -226,7 +226,7 @@ class DeploykaHelper extends OScriptHelper {
 
         // setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
-        def params = new ExecParams(pathToDeployka)
+        def params = new ExecParams(this)
             .addPair(ParamsEnum.peDbServer)
             .addPair(ParamsEnum.peDbDatabase)
             .addPair(ParamsEnum.peDbUser)
