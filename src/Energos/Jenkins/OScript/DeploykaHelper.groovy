@@ -242,23 +242,23 @@ class DeploykaHelper extends OScriptHelper {
 
     @NonCPS
     def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, qStr((ParamsEnum.peDbPwd):dbPwd)]);
+        setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)]);
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString());
     }
 
     @NonCPS
     def setDbAuth(String dbUser, String dbPwd) {
-        setParam([(ParamsEnum.peDbUser):dbUser, qStr((ParamsEnum.peDbPwd):dbPwd)]);
+        setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)]);
     }
 
     @NonCPS
     def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, qStr((ParamsEnum.peRepoPwd):repoPwd)]);
+        setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)]);
     }
 
     @NonCPS
     def setRepoAuth(String repoUser, String repoPwd) {
-        setParam([(ParamsEnum.peRepoUser):repoUser, qStr((ParamsEnum.peRepoPwd):repoPwd)]);
+        setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)]);
     }
 
     // @NonCPS
