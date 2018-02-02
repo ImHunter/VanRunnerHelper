@@ -157,20 +157,20 @@ class DeploykaHelper extends OScriptHelper {
 
     class ExecParams<String> extends ArrayList<String>{
 
-        private Object params;
+        // private Object params;
 
-        ExecParams(Object params){
+        ExecParams(String module){
             super();
-            this.params = params;
+            // this.params = params;
+            addValue(module);
         }
 
         // @NonCPS
-        static def init(String module) {
-            def retVal = new ExecParams();
-            retVal.clear();
-            retVal = retVal.addValue(module);
+        def init(String module) {
+            clear();
+            def retVal = addValue(module);
             // echo("returns from init: $retVal");
-            return retVal;
+            return this;
         }
 
         // @NonCPS
@@ -225,7 +225,7 @@ class DeploykaHelper extends OScriptHelper {
 
         setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
-        def params = ExecParams.init(pathToDeployka)
+        def params = new ExecParams(pathToDeployka)
             .addPair(ParamsEnum.peDbServer)
             .addPair(ParamsEnum.peDbDatabase)
             .addPair(ParamsEnum.peDbUser)
