@@ -98,11 +98,11 @@ class OScriptHelper {
     @NonCPS
     def qStr(String value = null) {
         String retVal = value;
-        if (value==null || value==''){
+        if (retVal==null || retVal==''){
             retVal = '\"\"'
         } else {
-            if (!value.startsWith('\"'))
-                retVal = "\"$value\"".toString();
+            if (!retVal.startsWith('\"'))
+                retVal = "\"$retVal\"";
         }
         return retVal;
     }
