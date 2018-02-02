@@ -270,7 +270,7 @@ class DeploykaHelper extends OScriptHelper {
         echo("test params new ExecParams(this, DeplCommand.dcRun) and many params: $params");
 
         launchUserInterface();
-        // echo("test params new ExecParams(this, DeplCommand.dcRun) and many params: $params");
+        echo("executed launchUserInterface");
 
         echo("finish of selfTest");
     }
