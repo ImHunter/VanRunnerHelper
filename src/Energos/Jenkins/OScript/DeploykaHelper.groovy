@@ -108,58 +108,58 @@ class DeploykaHelper extends OScriptHelper {
         peDbServer,
         peDbConnString,
         pePathToServiceEpf{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-execute";}
         },
         peDbDatabase{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-db";}
         },
         peDbUser{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-db-user";}
         },
         peDbPwd{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-db-pwd";}
         },
         peRepoPath,
         peRepoUser{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-storage-user";}
         },
         peRepoPwd{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-storage-pwd";}
         },
         peLaunchParam{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-command";}
         },
         peConfigUpdateMode{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "/mode";}
         },
         peRASServer{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-ras";}
         },
         peRACUtility{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-rac";}
         },
         peFileOpDirectory{
-            @NonCPS
+            // @NonCPS
             @Override
             public String toString() {return "-dir";}
         }
