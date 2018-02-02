@@ -208,7 +208,7 @@ class DeploykaHelper extends OScriptHelper {
         super(paramScript); 
 
         this.pathToDeployka = qStr(pathToDeployka);
-        
+
         setParam(ParamsEnum.pePathToServiceEpf, qStr(pathToServiceEPF), pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
@@ -219,6 +219,7 @@ class DeploykaHelper extends OScriptHelper {
     def selfTest() {
 
         setDb('server', 'db');
+        echo(pathToDeployka);
         def params = execParamsList.init(pathToDeployka)
             .addPair(ParamsEnum.peDbServer)
             .addPair(ParamsEnum.peDbDatabase)
