@@ -167,13 +167,13 @@ class DeploykaHelper extends OScriptHelper {
 
     class ExecParams<String> extends ArrayList<String>{
 
-        Map<Object, String> params = [:];
+        def params;
 
         ExecParams(def owner){
             super();
             // owner.testEcho("$owner".toString());
 
-            this.params << (DeploykaHelper) owner.params;
+            this.params = ((DeploykaHelper) owner).params;
             // testEcho(this.params);
             // addValue("${(DeploykaHelper) owner.pathToDeployka}");
          }
