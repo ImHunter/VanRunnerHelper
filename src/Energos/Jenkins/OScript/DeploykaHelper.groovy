@@ -198,19 +198,19 @@ class DeploykaHelper extends OScriptHelper {
 
         @NonCPS
         ExecParams addValue(Object value) {
-            // echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
-            // if (value==null) {
-            //     add(qStr())
-            // } else {
-            //     if (value.class==ParamsEnum.class) {
-            //         addValue(params.get(value))    
-            //     } else {
-            //         String strVal = "${value}";
-            //         if (strVal.contains(' '))
-            //             strVal = qStr(strVal);
-            //         add(strVal);
-            //     };
-            // }
+            echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
+            if (value==null) {
+                add(qStr())
+            } else {
+                if (value.class==ParamsEnum.class) {
+                    addValue(params.get(value))    
+                } else {
+                    String strVal = "${value}";
+                    if (strVal.contains(' '))
+                        strVal = qStr(strVal);
+                    add(strVal);
+                };
+            }
             return this;
         }
 
