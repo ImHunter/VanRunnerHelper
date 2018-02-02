@@ -161,8 +161,8 @@ class DeploykaHelper extends OScriptHelper {
 
         ExecParams(def owner){
             super();
-            this.params = owner.params;
-            addValue(owner.pathToDeployka);
+            // this.params = owner.params;
+            // addValue(owner.pathToDeployka);
             // return this;
         }
 
