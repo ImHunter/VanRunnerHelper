@@ -281,8 +281,8 @@ class DeploykaHelper extends OScriptHelper {
         echo("finish of selfTest");
     }
 
-    // @NonCPS
-    def setParam(Object paramKey, String paramValue, Boolean isApply = true){
+    @NonCPS
+    def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             this.params.put(paramKey, paramValue);
         };
