@@ -17,10 +17,10 @@ class OScriptHelper {
     }
 
     // @NonCPS
-    // public void selfTest(){
-    //     echo("Включаем режим тестирования");
-    //     isTestMode = true;
-    // }
+    public void selfTest(){
+        echo("Включаем режим тестирования");
+        isTestMode = true;
+    }
 
     // @NonCPS
     def echo(def msg){
