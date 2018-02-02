@@ -173,8 +173,9 @@ class DeploykaHelper extends OScriptHelper {
             super();
             this.params = owner.params;
             addValue(owner.pathToDeployka);
-            if (command!=null) 
+            if (command!=null) {
                 addCommand(command);
+            }
         }
 
         // @NonCPS
