@@ -163,7 +163,7 @@ class DeploykaHelper extends OScriptHelper {
             super();
             // this.params = params;
             addValue(module);
-            return this;
+            // return this;
         }
 
         // @NonCPS
