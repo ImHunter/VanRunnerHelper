@@ -242,7 +242,7 @@ class DeploykaHelper extends OScriptHelper {
 
     @Override
     def selfTest() {
-        ((OScriptHelper) this).selfTest();
+        super.selfTest();
         // setDb('server', 'db');
         echo("selfTest pathToDeployka: $pathToDeployka");
         def params = new ExecParams(this)
