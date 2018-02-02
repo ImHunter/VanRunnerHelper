@@ -28,6 +28,11 @@ class OScriptHelper {
             script.echo("${msg}");
         }
     }
+
+    void testEcho(def msg){
+        if (isTestMode) 
+            echo(msg);
+    }
     
     def echoLog() {
         echo(resultLog);

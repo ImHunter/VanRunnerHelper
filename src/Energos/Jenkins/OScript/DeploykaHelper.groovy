@@ -314,6 +314,7 @@ class DeploykaHelper extends OScriptHelper {
         if (updateMetadata) 
             launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;');
         setParam(ParamsEnum.peLaunchParam, qStr(launchParam));
+        testEcho('подготовили параметры запуска launchParam');
 
         // echo ("executing script");
         retVal = execScript(
