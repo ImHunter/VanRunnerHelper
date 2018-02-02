@@ -94,7 +94,7 @@ class OScriptHelper {
     }
 
     def qStr(String value = null) {
-        String retVal;
+        String retVal = value;
         if (value==null || value==''){
             retVal = '\"\"'
         } else {
