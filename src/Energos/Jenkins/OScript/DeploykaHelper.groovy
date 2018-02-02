@@ -169,9 +169,9 @@ class DeploykaHelper extends OScriptHelper {
 
         Map<Object, String> params = [:];
 
-        ExecParams(DeploykaHelper owner){
+        ExecParams(def owner){
             super();
-            this.params << owner.params;
+            this.params << (DeploykaHelper) owner.params;
             testEcho(this.params);
             addValue("${owner.pathToDeployka}");
          }
