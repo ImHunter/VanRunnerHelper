@@ -180,7 +180,7 @@ class DeploykaHelper extends OScriptHelper {
             this.params = ((DeploykaHelper) owner).params;
             addValue(((DeploykaHelper) owner).pathToDeployka);
             if (command!=null) {
-                addValue(command.toString());
+                addValue(command);
             }
         }
 
@@ -262,6 +262,7 @@ class DeploykaHelper extends OScriptHelper {
 
         params = new ExecParams(this);
         params.addValue(DeplCommand.dcRun);
+        echo("test params new ExecParams(this) and params.addValue(DeplCommand.dcRun): $params")
 
         params = new ExecParams(this, DeplCommand.dcRun);
         echo("test params new ExecParams(this, DeplCommand.dcRun): $params")
