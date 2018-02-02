@@ -172,7 +172,7 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner){
             super();
             this.params = owner.params;
-            // addValue("${owner.pathToDeployka}");
+            addValue("${owner.pathToDeployka}");
          }
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
@@ -254,7 +254,7 @@ class DeploykaHelper extends OScriptHelper {
             // .addPair(ParamsEnum.peDbPwd)
             // .addPair('custom key', 'custom value')
             ;
-        echo("$params");
+        echo("test params: $params");
         launchUserInterface();
         echo("finish of selfTest");
     }
