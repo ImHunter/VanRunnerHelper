@@ -16,7 +16,10 @@ class DeploykaHelper extends OScriptHelper {
         dcRun {
             // @NonCPS
             @Override
-            public String toString() {return "run";}
+            public String toString() {
+                // return "run";
+                "run";
+            }
         },
         dcLoadCfg {
             @NonCPS
@@ -108,22 +111,22 @@ class DeploykaHelper extends OScriptHelper {
         peDbServer,
         peDbConnString,
         pePathToServiceEpf{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-execute";}
         },
         peDbDatabase{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-db";}
         },
         peDbUser{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-db-user";}
         },
         peDbPwd{
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "-db-pwd";}
         },
