@@ -244,18 +244,26 @@ class DeploykaHelper extends OScriptHelper {
     @Override
     public void selfTest() {
         // super.selfTest();
+        def params;
+
         isTestMode = true;
         setDb('server', 'db');
         echo("selfTest pathToDeployka: $pathToDeployka");
-        def params = new ExecParams(this)
+        
+        params = new ExecParams(this)
             // .addPair(ParamsEnum.peDbServer)
             // .addPair(ParamsEnum.peDbDatabase)
             // .addPair(ParamsEnum.peDbUser)
             // .addPair(ParamsEnum.peDbPwd)
             // .addPair('custom key', 'custom value')
             ;
-        echo("test params: $params");
-        launchUserInterface();
+        echo("test params new ExecParams(this): $params");
+
+        params = new ExecParams(this, DeplCommand.dcRun);
+        echo("test params new ExecParams(this, DeplCommand.dcRun): $params")
+
+
+        // launchUserInterface();
         echo("finish of selfTest");
     }
 
