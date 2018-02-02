@@ -159,11 +159,11 @@ class DeploykaHelper extends OScriptHelper {
 
         private Object params;
 
-        ExecParams(def owner){
+        ExecParams(DeploykaHelper owner){
             super();
-            this.params = ((DeploykaHelper) owner).params;
+            this.params = owner.params;
             // def pd = ;
-            addValue(((DeploykaHelper) owner).pathToDeployka);
+            // addValue(((DeploykaHelper) owner).pathToDeployka);
             // return this;
         }
 
