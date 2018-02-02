@@ -98,12 +98,14 @@ class OScriptHelper {
     @NonCPS
     def qStr(String value = null) {
         String retVal = value;
+        echo "qStr in $retVal"
         if (retVal==null || retVal==''){
             retVal = '\"\"'
         } else {
             if (!retVal.startsWith('\"'))
                 retVal = "\"$retVal\"";
         }
+        echo "qStr out $retVal"
         return retVal;
     }
 
