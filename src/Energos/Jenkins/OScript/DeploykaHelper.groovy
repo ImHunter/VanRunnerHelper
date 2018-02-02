@@ -255,7 +255,7 @@ class DeploykaHelper extends OScriptHelper {
             .addPair('custom key', 'custom value')
             ;
         echo("$params");
-        // launchUserInterface();
+        launchUserInterface();
         echo("finish of selfTest");
     }
 
