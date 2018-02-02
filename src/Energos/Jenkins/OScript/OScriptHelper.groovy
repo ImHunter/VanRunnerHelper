@@ -4,6 +4,7 @@ package Energos.Jenkins.OScript;
 class OScriptHelper {
 
     protected def script;
+    protected Boolean isTestMode = false;
 
     Integer resultCode;
     String resultLog;
@@ -13,6 +14,10 @@ class OScriptHelper {
 
     public OScriptHelper(def script) {
         this.script = script;
+    }
+
+    def selfTest(){
+        isTestMode = true;
     }
 
     @NonCPS
@@ -47,31 +52,38 @@ class OScriptHelper {
         String[] initParams = [mainProcessName];
         String[] fullParams = initParams + params;
 
-        echo(fullParams);
+        if (isTestMode) {
+            echo(fullParams);
+            resultCode = 0;
+            resultLog = 'Тестовый лог';
+        } else {
+            ProcessBuilder pb = new ProcessBuilder(fullParams);
 
-        ProcessBuilder pb = new ProcessBuilder(fullParams);
-
-        Process proc = pb.start();
-        try {
-            proc.waitFor();
-            resultCode = proc.exitValue();
-            resultLog = readLog(proc.getIn());
-        } catch (java.lang.InterruptedException e) {
-            interrupted = true;
-            resultCode = interruptErrorCode;
-            resultLog = e.getMessage();
-            // echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
-            // throw (e);
-        }
-
-        if (interrupted) {
-            // echo("Поток как бы прерван, ожидаем еще.");
-            while (proc.isAlive()) {
-                Thread.sleep(10000);
+            Process proc = pb.start();
+            try {
+                proc.waitFor();
+                resultCode = proc.exitValue();
+                resultLog = readLog(proc.getIn());
+            } catch (java.lang.InterruptedException e) {
+                interrupted = true;
+                resultCode = interruptErrorCode;
+                resultLog = e.getMessage();
+                // echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
+                // throw (e);
             }
-            resultCode = proc.exitValue();
-            resultLog = readLog(proc.getIn());
+
+            if (interrupted) {
+                // echo("Поток как бы прерван, ожидаем еще.");
+                while (proc.isAlive()) {
+                    Thread.sleep(10000);
+                }
+                resultCode = proc.exitValue();
+                resultLog = readLog(proc.getIn());
+            }
+
         }
+
+
         
         res = resultCode==0;
 

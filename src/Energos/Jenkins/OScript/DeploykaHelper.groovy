@@ -240,8 +240,9 @@ class DeploykaHelper extends OScriptHelper {
 
     }
 
+    @Override
     def selfTest() {
-
+        super();
         // setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
         def params = new ExecParams(this)
@@ -251,6 +252,7 @@ class DeploykaHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbPwd)
             ;
         echo params;
+        launchUserInterface();
     }
 
     @NonCPS
