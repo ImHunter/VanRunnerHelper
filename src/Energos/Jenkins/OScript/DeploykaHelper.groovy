@@ -226,13 +226,13 @@ class DeploykaHelper extends OScriptHelper {
 
         setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
-        def params = new ExecParams(pathToDeployka)
+        // def params = new ExecParams(pathToDeployka)
             // .addPair(ParamsEnum.peDbServer)
             // .addPair(ParamsEnum.peDbDatabase)
             // .addPair(ParamsEnum.peDbUser)
             // .addPair(ParamsEnum.peDbPwd)
             ;
-        echo params;
+        // echo params;
     }
 
     @NonCPS
