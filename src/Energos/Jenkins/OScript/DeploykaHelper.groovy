@@ -249,6 +249,9 @@ class DeploykaHelper extends OScriptHelper {
         isTestMode = true;
         setDb('server', 'db');
         testEcho("selfTest pathToDeployka: $pathToDeployka");
+
+        setDbAuth('польззз', "паророр");
+        testEcho("executed setDbAuth('польззз', "паророр")");
         
         params = new ExecParams(this);
         echo("test params new ExecParams(this): $params");
