@@ -21,7 +21,7 @@ class OScriptHelper {
         isTestMode = true;
     }
 
-    @NonCPS
+    // @NonCPS
     def echo(def msg){
         if (script!=null) {
             script.echo("${msg}");
