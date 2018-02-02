@@ -344,8 +344,6 @@ class DeploykaHelper extends OScriptHelper {
         // echo ("executing script");
         retVal = execScript(
                 new ExecParams(this, DeplCommand.dcRun)
-                // new ExecParams(this)
-                // .addCommand(DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
@@ -372,8 +370,7 @@ class DeploykaHelper extends OScriptHelper {
     // @NonCPS
     private def setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock";
-        def params = new ExecParams(this)
-                .addCommand(command)
+        def params = new ExecParams(this, command)
                 .addValue(op)
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
