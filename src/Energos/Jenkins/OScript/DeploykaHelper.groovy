@@ -165,11 +165,12 @@ class DeploykaHelper extends OScriptHelper {
         }
 
         // @NonCPS
-        def init(String module) {
-            clear();
-            def retVal = addValue(module);
+        static def init(String module) {
+            def retVal = new ExecParams();
+            retVal.clear();
+            retVal = retVal.addValue(module);
             // echo("returns from init: $retVal");
-            return this;
+            return retVal;
         }
 
         // @NonCPS
@@ -216,7 +217,7 @@ class DeploykaHelper extends OScriptHelper {
         setParam(ParamsEnum.pePathToServiceEpf, qStr(pathToServiceEPF), pathToServiceEPF!=null);
         configInfo = new ConfigInfo();
         
-        execParamsList = new ExecParams(params);
+        // execParamsList = new ExecParams(params);
 
     }
 
@@ -224,7 +225,7 @@ class DeploykaHelper extends OScriptHelper {
 
         setDb('server', 'db');
         echo("selfTest pathToDeployka $pathToDeployka");
-        def params = execParamsList.init(pathToDeployka)
+        def params = ExecParams.init(pathToDeployka)
             .addPair(ParamsEnum.peDbServer)
             .addPair(ParamsEnum.peDbDatabase)
             .addPair(ParamsEnum.peDbUser)
