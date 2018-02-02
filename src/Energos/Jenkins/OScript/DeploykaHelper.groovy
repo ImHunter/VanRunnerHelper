@@ -240,7 +240,7 @@ class DeploykaHelper extends OScriptHelper {
 
     }
 
-    // @NonCPS
+    @NonCPS
     @Override
     public void selfTest() {
         super.selfTest();
