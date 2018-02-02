@@ -171,7 +171,7 @@ class DeploykaHelper extends OScriptHelper {
 
         ExecParams(def owner){
             super();
-            testEcho("start of ExecParams(def owner)");
+            // testEcho("start of ExecParams(def owner)");
 
             // this.params << (DeploykaHelper) owner.params;
             // testEcho(this.params);
