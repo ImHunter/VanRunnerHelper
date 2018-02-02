@@ -240,10 +240,10 @@ class DeploykaHelper extends OScriptHelper {
 
     }
 
-    @NonCPS
+    // @NonCPS
     @Override
     public void selfTest() {
-        super.selfTest();
+        // super.selfTest();
         isTestMode = true;
         setDb('server', 'db');
         echo("selfTest pathToDeployka: $pathToDeployka");
