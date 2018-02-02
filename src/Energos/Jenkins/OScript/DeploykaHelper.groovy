@@ -52,6 +52,7 @@ class DeploykaHelper extends OScriptHelper {
         Boolean isChanged;
         String shortName;
         String version;
+        String platform;
 
         def readFromLog(String log) {
             
@@ -71,6 +72,7 @@ class DeploykaHelper extends OScriptHelper {
             }
             shortName = readParamValue(log, 'SHORT_CONFIG_NAME');
             version = readParamValue(log, 'CONFIG_VERSION');
+            platform = readParamValue(log, 'PLATFORM');
         }
 
         private String readParamValue(String log, String paramName) {
@@ -214,11 +216,6 @@ class DeploykaHelper extends OScriptHelper {
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
-            // if (paramKey.class==ParamsEnum.class) {
-            //     params.put((paramKey), paramValue);
-            // } else {
-            //     params.put(paramKey, paramValue);
-            // }
             params.put(paramKey, paramValue);
         };
         return params;
@@ -354,10 +351,10 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair("-lockuccode", ucCode);
-        if (withNoLock) {
+        if (withNoLock==true) {
             params = params.addPair("-with-nolock", "y");
         }
-        if (appFilter!=null) {
+        if (appFilter!=null && appFilter!='') {
             params = params.addPair("-filter", appFilter);
         }
         // echo execParams;

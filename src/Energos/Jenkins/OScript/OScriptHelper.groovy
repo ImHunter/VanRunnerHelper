@@ -9,6 +9,7 @@ class OScriptHelper {
     String resultLog;
     String outputLogEncoding = 'Cp866';
     Integer interruptErrorCode = 255;
+    String mainProcessName = 'oscript';
 
     public OScriptHelper(def script) {
         this.script = script;
@@ -43,44 +44,38 @@ class OScriptHelper {
 
         Boolean interrupted = false;
 
-        String[] initParams = ['oscript'];
+        String[] initParams = [mainProcessName];
         String[] fullParams = initParams + params;
 
         // echo "$fullParams";
 
+        ProcessBuilder pb = new ProcessBuilder(fullParams);
+
+        Process proc = pb.start();
         try {
-
-            ProcessBuilder pb = new ProcessBuilder(fullParams);
-
-            Process proc = pb.start();
-            try {
-                proc.waitFor();
-                resultCode = proc.exitValue();
-                resultLog = readLog(proc.getIn());
-            } catch (java.lang.InterruptedException e) {
-                interrupted = true;
-                resultCode = interruptErrorCode;
-                resultLog = e.getMessage();
-                echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
-                // throw (e);
-            }
-
-            if (interrupted) {
-                echo("Поток как бы прерван, ожидаем еще.");
-                while (proc.isAlive()) {
-                    Thread.sleep(10000);
-                }
-                resultCode = proc.exitValue();
-                resultLog = readLog(proc.getIn());
-            }
-            
-            res = resultCode==0;
-
-        } finally {
-
+            proc.waitFor();
+            resultCode = proc.exitValue();
+            resultLog = readLog(proc.getIn());
+        } catch (java.lang.InterruptedException e) {
+            interrupted = true;
+            resultCode = interruptErrorCode;
+            resultLog = e.getMessage();
+            // echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
+            // throw (e);
         }
 
-        return res;
+        if (interrupted) {
+            // echo("Поток как бы прерван, ожидаем еще.");
+            while (proc.isAlive()) {
+                Thread.sleep(10000);
+            }
+            resultCode = proc.exitValue();
+            resultLog = readLog(proc.getIn());
+        }
+        
+        res = resultCode==0;
+
+         return res;
 
     }
 
