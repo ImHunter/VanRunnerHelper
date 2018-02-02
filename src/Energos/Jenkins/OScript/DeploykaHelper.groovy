@@ -196,7 +196,7 @@ class DeploykaHelper extends OScriptHelper {
             return this;
         }
 
-        @NonCPS
+        // @NonCPS
         ExecParams addValue(def value) {
             // echo("value.class: ${value.class}\nvalue.class==ParamsEnum.class: ${value.class==ParamsEnum.class}")
             if (value==null) {
