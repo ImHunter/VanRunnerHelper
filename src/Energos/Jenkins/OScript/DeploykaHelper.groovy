@@ -281,6 +281,9 @@ class DeploykaHelper extends OScriptHelper {
         setLockStatus(DeplCommand.dcSession, true);
         echo("executed setLockStatus(DeplCommand.dcSession, true)");
 
+        killSessions();
+        echo("killSessions()");
+
         echo("finish of selfTest");
     }
 
@@ -406,9 +409,8 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def kissSessions(Boolean withNoLock = true, String appFilter = null) {
-        def params = new ExecParams(this)
-                .addCommand(DeplCommand.dcSession)
+    def killSessions(Boolean withNoLock = true, String appFilter = null) {
+        def params = new ExecParams(this, DeplCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
