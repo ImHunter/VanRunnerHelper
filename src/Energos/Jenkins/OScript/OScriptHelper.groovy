@@ -93,6 +93,7 @@ class OScriptHelper {
         execScript(strParams);
     }
 
+    @NonCPS
     def qStr(String value = null) {
         String retVal = value;
         if (value==null || value==''){
