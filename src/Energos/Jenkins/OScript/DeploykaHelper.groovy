@@ -240,7 +240,7 @@ class DeploykaHelper extends OScriptHelper {
 
     }
 
-    @Override
+    // @Override
     public void selfTest() {
         super.selfTest();
         setDb('server', 'db');
