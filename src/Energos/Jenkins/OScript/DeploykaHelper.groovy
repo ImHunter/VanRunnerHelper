@@ -14,7 +14,7 @@ class DeploykaHelper extends OScriptHelper {
 
     enum DeplCommand {
         dcRun {
-            // @NonCPS
+            @NonCPS
             @Override
             public String toString() {return "run";}
         },
@@ -178,7 +178,7 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner, DeplCommand command){
             super();
             this.params = owner.params;
-            addValue(owner.pathToDeployka);
+            addValue("${owner.pathToDeployka}");
             if (command!=null) {
                 addCommand(command);
             }
