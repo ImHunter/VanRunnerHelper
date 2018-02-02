@@ -16,7 +16,7 @@ class OScriptHelper {
         this.script = script;
     }
 
-    // @NonCPS
+    @NonCPS
     public void selfTest(){
         echo("Включаем режим тестирования");
         isTestMode = true;
