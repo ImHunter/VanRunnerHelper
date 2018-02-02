@@ -85,11 +85,9 @@ class OScriptHelper {
 
         }
 
-
-        
         res = resultCode==0;
 
-         return res;
+        return res;
 
     }
 

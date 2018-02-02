@@ -252,7 +252,7 @@ class DeploykaHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
             ;
-        echo params;
+        echo(params);
         launchUserInterface();
     }
 
