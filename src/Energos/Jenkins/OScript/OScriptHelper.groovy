@@ -98,7 +98,7 @@ class OScriptHelper {
             resLog
         }
 
-        Boolean res
+        boolean res
         resultCode = null
         resultLog = null
 
