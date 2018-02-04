@@ -70,10 +70,10 @@ class DeploykaHelper extends OScriptHelper {
             paramValue = readParamValue(log, 'CONFIG_STATE')
             // echo "value of CONFIG_STATE: ${paramValue}";
             if (paramValue!=null) {
-                if (paramValue.toUpperCase().equals('CONFIG_CHANGED')) {
+                if (paramValue.toUpperCase() == 'CONFIG_CHANGED') {
                     isChanged = true
                 } else {
-                    if (paramValue.toUpperCase().equals('CONFIG_NOT_CHANGED')) {
+                    if (paramValue.toUpperCase() == 'CONFIG_NOT_CHANGED') {
                         isChanged = false
                     }    
                 }
@@ -394,25 +394,29 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def setLockStatusForUsers(Boolean locked) {
-        return setLockStatus(DeplCommand.dcSession, locked)
+    boolean setLockStatusForUsers(Boolean locked) {
+        boolean retVal = setLockStatus(DeplCommand.dcSession, locked)
+        notifyAbout((locked ? 'Установлена ': 'Снята ') + 'блокировка сеансов пользователей' + (retVal ? '' : ' (с ошибкой)'))
+        retVal
     }
 
-    def setLockStatusForUsers(Boolean locked, Closure closure) {
+    boolean setLockStatusForUsers(Boolean locked, Closure closure) {
         def retVal = setLockStatusForUsers(locked)
         closure(retVal)
-        return retVal
+        retVal
     }
 
     // @NonCPS
-    def setLockStatusForBackgrounds(Boolean locked) {
-        return setLockStatus(DeplCommand.dcScheduledJobs, locked)
+    boolean setLockStatusForBackgrounds(Boolean locked) {
+        boolean retVal = setLockStatus(DeplCommand.dcScheduledJobs, locked)
+        notifyAbout((locked ? 'Установлена ': 'Снята ') + 'блокировка регламентных заданий' + (retVal ? '' : ' (с ошибкой)'))
+        retVal
     }
 
-    def setLockStatusForBackgrounds(Boolean locked, Closure closure) {
+    boolean setLockStatusForBackgrounds(Boolean locked, Closure closure) {
         def retVal = setLockStatusForBackgrounds(locked)
         closure(retVal)
-        return retVal
+        retVal
     }
 
     // @NonCPS

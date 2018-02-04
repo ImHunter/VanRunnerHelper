@@ -10,143 +10,142 @@ class BatchExecuter {
     // public vars
 
     // closed vars
-    private Script script;
-    private Map<String, String> envVariables;
+    private Script script
+    private Map<String, String> envVariables
 
     // constructor
     BatchExecuter(Script scr) {
-        script = scr;
-        envVariables = System.getenv();
+        script = scr
+        envVariables = System.getenv()
     }
 
     ////////////////////////////////////
     // code
 
     def echo(def msg) {
-        script.echo("${msg}");
-        true;
+        script.echo("${msg}")
+        true
     }
 
     def setEnvVariables(Map<String,String> envVars = null) {
         // envVariables = [:];
         // envVariables.clear();
         if (envVars!= null) {
-            envVariables.plus(envVars);
+            envVariables + envVars
         }
-        envVariables;
+        envVariables
     }
 
     def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
 
-        def resLog = "";
-        Integer resCode;
-        def res;
-        File log;
+        def resLog = ""
+        Integer resCode
+        def res
 
         // echo cmdText;
-        setEnvVariables(envVars);
+        setEnvVariables(envVars)
 
-        File batFile = prepareBatFile(cmdText);
+        File batFile = prepareBatFile(cmdText)
 
         try {
 
             // ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "CALL", "${batFile.getName()}");
-            ProcessBuilder pb = new ProcessBuilder("oscript", "help");
+            ProcessBuilder pb = new ProcessBuilder("oscript", "help")
             // echo pb.environment();
-            File dir = new File(batFile.getParent());
-            pb.directory(dir);
+            File dir = new File(batFile.getParent())
+            pb.directory(dir)
 
-            Process proc = pb.start();
-            proc.waitFor();
-            resCode = proc.exitValue();
-            resLog = proc.getText();
+            Process proc = pb.start()
+            proc.waitFor()
+            resCode = proc.exitValue()
+            resLog = proc.getText()
 
-            echo "resCode=${resCode}";
-            echo "resLog=${resLog}";
+            echo "resCode=${resCode}"
+            echo "resLog=${resLog}"
 
         } finally {
-            batFile.delete();
+            batFile.delete()
             // log.delete();
         }
 
         if (returnResultAsLog) {
-            res = resLog;
+            res = resLog
         } else {
-            res = resCode;
+            res = resCode
         }
 
-        res;
+        res
 
     }
 
-    def getEnvArray(Map<String, String> envMap) {
-        String[] res;
-        def curVal;
+    static def getEnvArray(Map<String, String> envMap) {
+        String[] res
+        def curVal
         if (envMap!=null) {
-            def mapCount = envMap.size();
-            res = new String[mapCount];
-            def i = 0;
+            def mapCount = envMap.size()
+            res = new String[mapCount]
+            def i = 0
             envMap.each { entry ->
-                curVal = entry.key + '=' + entry.value;
-                res[i] = curVal;
-                i++;
+                curVal = entry.key + '=' + entry.value
+                res[i] = curVal
+                i++
                 // res.add(curVal);
             }        
         } else {
-            res = [];
+            res = []
         }
-        res;
+        res
     }
 
     def execCmd_run(String cmdText, Map<String, String> envVars = null, Boolean returnResultAsLog = true) {
 
-        String resLog = "";
-        Integer resCode;
-        def res;
-        
-        setEnvVariables(envVars);
-        File batFile = prepareBatFile(cmdText);
+        String resLog = ""
+        Integer resCode
+        def res
+
+        setEnvVariables(envVars)
+        File batFile = prepareBatFile(cmdText)
 
         try {
 
-            Runtime rt = Runtime.getRuntime();
-            String[] cmd = ["cmd.exe", "/A", "/C", "START", "/WAIT", "/B", batFile.getName()];
-            String[] env = getEnvArray(System.getenv());
-            File batDir = new File(batFile.getParent());
-            Process proc = rt.exec(cmd, env, batDir);
-            proc.waitFor();
-            resCode = proc.exitValue();
+            Runtime rt = Runtime.getRuntime()
+            String[] cmd = ["cmd.exe", "/A", "/C", "START", "/WAIT", "/B", batFile.getName()]
+            String[] env = getEnvArray(System.getenv())
+            File batDir = new File(batFile.getParent())
+            Process proc = rt.exec(cmd, env, batDir)
+            proc.waitFor()
+            resCode = proc.exitValue()
 
             // ошибки
-            InputStream st = proc.getErrorStream();
+            InputStream st = proc.getErrorStream()
             st.eachLine("cp866"){it, lnr -> 
                 script.println "println err: ${it} lnr ${lnr}"
             }
-            st = proc.getInputStream();
+            st = proc.getInputStream()
             st.eachLine("cp866"){it, lnr -> 
                 script.println "println info: ${it} lnr ${lnr}"
             }
 
         } finally {
-            batFile.delete();
+            batFile.delete()
             // log.delete();
         }
 
         if (returnResultAsLog) {
-            res = resLog;
+            res = resLog
         } else {
-            res = resCode;
+            res = resCode
         }
 
-        res;
+        res
 
     }
 
-    private def prepareBatFile(String cmdText) {
-        File res = File.createTempFile("bex",".bat");
-        res.setText(cmdText);
+    private static def prepareBatFile(String cmdText) {
+        File res = File.createTempFile("bex",".bat")
+        res.setText(cmdText)
         // res.append("\nexit");
-        res;
+        res
     }
 
 }
