@@ -198,13 +198,13 @@ class DeploykaHelper extends OScriptHelper {
                 if (value.class==ParamsEnum.class) {
                     addValue(params.get(value))    
                 } else {
-                    GString strVal = "${value}"
+                    def strVal = "${value}".toString()
                     if (strVal.contains(' '))
                         strVal = qStr(strVal)
                     add(strVal)
                 }
             }
-            return this
+            this
         }
 
         // @NonCPS
