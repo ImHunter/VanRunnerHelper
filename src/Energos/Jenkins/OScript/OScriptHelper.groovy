@@ -59,7 +59,10 @@ class OScriptHelper {
         isTestMode = true
     }
 
-    // @NonCPS
+    /**
+     * Вывод сообщения в какую-либо консоль. Если в объекте установлен контекст (в конструкторе передан скрипт Jenkins), то сообщение выводится его методом echo. В противном случае, печатается методом println.
+     * @param msg Сообщаемое сообщение
+     */
     void echo(def msg){
         String echoMsg = "${msg}".toString()
         if (script!=null) {
