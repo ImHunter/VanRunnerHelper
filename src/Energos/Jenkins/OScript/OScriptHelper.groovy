@@ -89,7 +89,7 @@ class OScriptHelper {
         if (moduleName!='')
             notifyMsg = "$msg ($moduleName)"
         if (notifyClosure!=null)
-            notifyClosure(notifyMsg, resultCode, resultLog)
+            notifyClosure.call(notifyMsg, resultCode, resultLog)
         notifyMsg
     }
 
