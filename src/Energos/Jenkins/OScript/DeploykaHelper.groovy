@@ -1,5 +1,7 @@
 package Energos.Jenkins.OScript
 
+import java.lang.*
+
 class DeploykaHelper extends OScriptHelper {
 
     public String pathToDeployka
@@ -191,12 +193,12 @@ class DeploykaHelper extends OScriptHelper {
         @NonCPS
         ExecParams addValue(def value) {
             if (value==null) {
-                add(qStr())
+                add(qStr() as java.lang.String)
             } else {
                 if (value.class==ParamsEnum.class) {
                     addValue(params.get(value))    
                 } else {
-                    String strVal = "${value}"
+                    GString strVal = "${value}"
                     if (strVal.contains(' '))
                         strVal = qStr(strVal)
                     add(strVal)
@@ -446,6 +448,12 @@ class DeploykaHelper extends OScriptHelper {
         )
     }
 
+    def updateConfigFromPackage(String pathToPackage, Closure closure) {
+        def retVal = updateConfigFromPackage(pathToPackage)
+        closure(retVal)
+        return retVal
+    }
+
     def updateConfigFromRepo() {
         return execScript(
                 new ExecParams(this)
@@ -467,12 +475,6 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
-    }
-
-    def updateFromPackage(String pathToPackage, Closure closure) {
-        def retVal = updateFromPackage(pathToPackage)
-        closure(retVal)
-        return retVal
     }
 
     def checkDirExists(String dir){

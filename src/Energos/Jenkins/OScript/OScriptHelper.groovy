@@ -8,12 +8,12 @@ class OScriptHelper {
     protected def script
     protected Boolean isTestMode = false
 
-    Integer resultCode
-    String resultLog
-    String outputLogEncoding = 'Cp866'
-    Integer interruptErrorCode = 255
-    String mainProcessName = 'oscript'
-    Closure notifyClosure = null
+    public Integer resultCode
+    public String resultLog
+    public String outputLogEncoding = 'Cp866'
+    public Integer interruptErrorCode = 255
+    public String mainProcessName = 'oscript'
+    public Closure notifyClosure = null
 
     OScriptHelper(def script) {
         this.script = script
@@ -71,9 +71,6 @@ class OScriptHelper {
             echo("Вызов execScript в тестовом режиме с параметрами $fullParams")
             resultCode = 0
             resultLog = 'Тестовый лог'
-            res = resultCode==0
-            return res
-
 
         } else {
             ProcessBuilder pb = new ProcessBuilder(fullParams)
@@ -87,12 +84,9 @@ class OScriptHelper {
                 interrupted = true
                 resultCode = interruptErrorCode
                 resultLog = e.getMessage()
-                // echo("Процесс прерван. Состояние isAlive()=${proc.isAlive()}")
-                // throw (e);
             }
 
             if (interrupted) {
-                // echo("Поток как бы прерван, ожидаем еще.");
                 while (proc.isAlive()) {
                     Thread.sleep(10000)
                 }
@@ -100,6 +94,8 @@ class OScriptHelper {
                 resultLog = readLog(proc.getIn())
             }
         }
+        res = resultCode==0
+        res
     }
 
     boolean execScript(List<Object> params) {
@@ -125,7 +121,7 @@ class OScriptHelper {
             retVal = '\"\"'
         } else if (!retVal.startsWith('\"'))
             retVal = "\"$retVal\""
-        return retVal
+        retVal
     }
 
 }
