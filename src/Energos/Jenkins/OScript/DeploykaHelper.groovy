@@ -240,8 +240,8 @@ class DeploykaHelper extends OScriptHelper {
     void selfTest() {
         // super.selfTest();
         def params
-
         isTestMode = true
+
         setDb('server', 'db')
         testEcho("selfTest pathToDeployka: $pathToDeployka")
 
@@ -315,33 +315,33 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
+    void setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
     }
 
     @NonCPS
-    def setDbAuth(String dbUser, String dbPwd) {
+    void setDbAuth(String dbUser, String dbPwd) {
         setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
     }
 
     // @NonCPS
-    def setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
+    void setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
     }
 
     @NonCPS
-    def setRepoAuth(String repoUser, String repoPwd) {
+    void setRepoAuth(String repoUser, String repoPwd) {
         setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
     }
 
     // @NonCPS
-    def setRAS(String rasServer, String racUtilPath) {
+    void setRAS(String rasServer, String racUtilPath) {
         setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath])
     }
 
     // @NonCPS
-    def launchUserInterface(Boolean updateMetadata = false){
+    boolean launchUserInterface(Boolean updateMetadata = false){
        
         def retVal
 
@@ -370,9 +370,9 @@ class DeploykaHelper extends OScriptHelper {
         retVal
     }
 
-    def launchUserInterface(Boolean updateMetadata, Closure closure){
+    boolean launchUserInterface(Boolean updateMetadata, Closure closure){
         // echo "executing launchUserInterfaceWith"
-        Boolean res = launchUserInterface(updateMetadata)
+        boolean res = launchUserInterface(updateMetadata)
         closure(res)
         res
     }

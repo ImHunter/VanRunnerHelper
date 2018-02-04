@@ -22,7 +22,7 @@ class OScriptHelper {
     /**
      * Код возврата после выполнения процесса.
      */
-    public int resultCode
+    public Integer resultCode
     /**
      * Лог, выводимый при выполнении процесса.
      */
@@ -40,6 +40,10 @@ class OScriptHelper {
      * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout
      */
     public Closure notifyClosure = null
+    /**
+     * Опциональное имя объекта. Используется для логирования.
+     */
+    public String moduleName = ''
 
     /**
      * Конструктор класса
@@ -77,9 +81,13 @@ class OScriptHelper {
         echo("${caption}\n${resultLog}")
     }
 
-    void notifyAbout(def msg){
+    String notifyAbout(def msg){
+        def notifyMsg = msg;
+        if (moduleName!='')
+            notifyMsg = "$msg ($moduleName)"
         if (notifyClosure!=null)
-            notifyClosure(msg)
+            notifyClosure(notifyMsg)
+        notifyMsg
     }
 
     boolean execScript(String[] params) {
