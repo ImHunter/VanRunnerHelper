@@ -1,6 +1,8 @@
 
 package Energos.Jenkins.OScript;
 
+import java.lang.*
+
 class OScriptHelper {
 
     protected def script;
@@ -18,13 +20,13 @@ class OScriptHelper {
     }
 
     // @NonCPS
-    public void selfTest(){
+    void selfTest(){
         echo("Включаем режим тестирования");
         isTestMode = true;
     }
 
     // @NonCPS
-    def echo(def msg){
+    void echo(def msg){
         if (script!=null) {
             script.echo("${msg}");
         }
@@ -35,20 +37,20 @@ class OScriptHelper {
             echo(msg);
     }
     
-    def echoLog() {
+    void echoLog() {
         echo(resultLog);
     }
 
-    def echoLog(String caption) {
-        echoLog("${caption}\n${resultLog}");
+    void echoLog(String caption) {
+        echo("${caption}\n${resultLog}");
     }
 
-    def notifyAbout(def msg){
+    void notifyAbout(def msg){
         if (notifyClosure!=null)
             notifyClosure(msg);
     }
 
-    def execScript(String[] params) {
+    boolean execScript(String[] params) {
 
         def readLog = {InputStream st ->
             String resLog;
@@ -69,6 +71,10 @@ class OScriptHelper {
             echo("Вызов execScript в тестовом режиме с параметрами $fullParams");
             resultCode = 0;
             resultLog = 'Тестовый лог';
+        res = resultCode==0;
+        return res;
+
+
         } else {
             ProcessBuilder pb = new ProcessBuilder(fullParams);
 
@@ -77,7 +83,7 @@ class OScriptHelper {
                 proc.waitFor();
                 resultCode = proc.exitValue();
                 resultLog = readLog(proc.getIn());
-            } catch (java.lang.InterruptedException e) {
+            } catch (InterruptedException e) {
                 interrupted = true;
                 resultCode = interruptErrorCode;
                 resultLog = e.getMessage();
@@ -93,40 +99,32 @@ class OScriptHelper {
                 resultCode = proc.exitValue();
                 resultLog = readLog(proc.getIn());
             }
-
         }
-
-        res = resultCode==0;
-
-        return res;
-
     }
 
-    def execScript(List<Object> params) {
+    boolean execScript(List<Object> params) {
         String[] strParams = new String[params.size()];
         0.upto(params.size() - 1) {
             strParams[it] = params[it].toString();    
         }
-        execScript(strParams);
+        execScript strParams;
     }
 
-    def execScript(Object... args) {
+    boolean execScript(Object... args) {
         String[] strParams = new String[args.length];
         0.upto(args.length - 1) {
             strParams[it] = args[it]==null ? null : args[it].toString();
         }
-        execScript(strParams);
+        execScript strParams;
     }
 
     @NonCPS
-    def qStr(String value = null) {
+    static String qStr(String value = null) {
         String retVal = value;
-        if (retVal==null || retVal==''){
+        if (retVal == null || retVal == '') {
             retVal = '\"\"'
-        } else {
-            if (!retVal.startsWith('\"'))
-                retVal = "\"$retVal\"";
-        }
+        } else if (!retVal.startsWith('\"'))
+            retVal = "\"$retVal\""
         return retVal;
     }
 

@@ -1,4 +1,3 @@
-
 package Energos.Jenkins.OScript;
 
 class DeploykaHelper extends OScriptHelper {
@@ -486,7 +485,7 @@ class DeploykaHelper extends OScriptHelper {
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('direxists')
             .addPair(ParamsEnum.peFileOpDirectory, dir);
-        return execScript(params)==0;
+        return execScript(params)
     }
 
     def checkDirExists(String dir, Closure closure){
