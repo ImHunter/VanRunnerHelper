@@ -3,19 +3,36 @@ package Energos.Jenkins.OScript
 
 import java.lang.*
 
+/**
+ * Класс предназначен для запуска скриптового файла OScript и ожидания его завершения.
+ * Родился для того, чтобы уйти от использования синтаксиса bat, предоставляемого Jenkins, т.к. работа bat - неустойчива.
+ * Предустановлен запуск процесса oscript. Но это можно легко поменять переприсвоением поля mainProcessName - указать любой другой вызываемый процесс (например, cmd).
+ */
 class OScriptHelper {
 
+    /**
+     * Переменная для хранения контекста скрипта Jenkins, чтобы можно было выполнять любые его операции.
+     */
     protected def script
-    protected Boolean isTestMode = false
+    /**
+     * Переменная, указывающая, что действует тестовый режим. При этом процесс не запускается, а лишь в консоль выводятся параметры запуска процесса.
+     */
+    protected isTestMode = false
 
+    /**
+     * Код возврата после выполнения процесса.
+     */
     public Integer resultCode
+    /**
+     * Лог, выводимый при выполнении процесса.
+     */
     public String resultLog
     public String outputLogEncoding = 'Cp866'
     public Integer interruptErrorCode = 255
     public String mainProcessName = 'oscript'
     public Closure notifyClosure = null
 
-    OScriptHelper(def script) {
+    OScriptHelper(Script script) {
         this.script = script
     }
 
