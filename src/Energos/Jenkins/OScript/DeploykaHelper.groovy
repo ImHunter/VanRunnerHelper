@@ -2,14 +2,11 @@ package Energos.Jenkins.OScript
 
 class DeploykaHelper extends OScriptHelper {
 
-    String pathToDeployka
-    Map<Object, String> params = [:]
-    String ucCode = 'blocked'
+    public String pathToDeployka
+    public Map<Object, String> params = [:]
+    public String ucCode = 'blocked'
 
-    ConfigInfo configInfo
-    ExecParams execParamsList
-
-    private String connString
+    public ConfigInfo configInfo
 
     enum DeplCommand {
         dcRun {
@@ -234,31 +231,29 @@ class DeploykaHelper extends OScriptHelper {
         setParam(ParamsEnum.pePathToServiceEpf, qStr(pathToServiceEPF), pathToServiceEPF!=null)
         configInfo = new ConfigInfo()
 
-        // execParamsList = new ExecParams(params);
-
     }
 
     // @NonCPS
     @Override
     void selfTest() {
         // super.selfTest();
-        def params;
+        def params
 
-        isTestMode = true;
-        setDb('server', 'db');
-        testEcho("selfTest pathToDeployka: $pathToDeployka");
+        isTestMode = true
+        setDb('server', 'db')
+        testEcho("selfTest pathToDeployka: $pathToDeployka")
 
-        setDbAuth('польззз', 'паророр');
-        testEcho("executed setDbAuth('польззз', 'паророр')");
-        
-        params = new ExecParams(this);
-        echo("test params new ExecParams(this): $params");
+        setDbAuth('польззз', 'паророр')
+        testEcho("executed setDbAuth('польззз', 'паророр')")
 
-        params = new ExecParams(this);
-        params.addValue(DeplCommand.dcRun);
+        params = new ExecParams(this)
+        echo("test params new ExecParams(this): $params")
+
+        params = new ExecParams(this)
+        params.addValue(DeplCommand.dcRun)
         echo("test params new ExecParams(this) and params.addValue(DeplCommand.dcRun): $params")
 
-        params = new ExecParams(this, DeplCommand.dcRun);
+        params = new ExecParams(this, DeplCommand.dcRun)
         echo("test params new ExecParams(this, DeplCommand.dcRun): $params")
 
         params = new ExecParams(this, DeplCommand.dcRun)
@@ -267,34 +262,34 @@ class DeploykaHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
             .addPair('custom key', 'custom value')
-            ;
-        echo("test params new ExecParams(this, DeplCommand.dcRun) and many params: $params");
 
-        launchUserInterface();
-        echo("executed launchUserInterface");
+        echo("test params new ExecParams(this, DeplCommand.dcRun) and many params: $params")
 
-        setRAS('ras server', 'ras utility');
-        echo("executed setRAS()");
+        launchUserInterface()
+        echo("executed launchUserInterface")
 
-        setLockStatus(DeplCommand.dcSession, true);
-        echo("executed setLockStatus(DeplCommand.dcSession, true)");
+        setRAS('ras server', 'ras utility')
+        echo("executed setRAS()")
 
-        killSessions();
-        echo("executed killSessions()");
+        setLockStatus(DeplCommand.dcSession, true)
+        echo("executed setLockStatus(DeplCommand.dcSession, true)")
 
-        setRepo('repo path', 'repo-us', 'repo-pwd');
-        echo("executed setRepo");
+        killSessions()
+        echo("executed killSessions()")
 
-        updateConfigFromRepo();
-        echo("executed updateConfigFromRepo");
-        
+        setRepo('repo path', 'repo-us', 'repo-pwd')
+        echo("executed setRepo")
+
+        updateConfigFromRepo()
+        echo("executed updateConfigFromRepo")
+
         def cl = {def msg ->
-            echo("notify via closure. msg: $msg");
+            echo("notify via closure. msg: $msg")
         }
-        notifyClosure = cl;
-        notifyAbout('TEST CLOS');
+        notifyClosure = cl
+        notifyAbout('TEST CLOS')
 
-        echo("finish of selfTest");
+        echo("finish of selfTest")
     }
 
     @NonCPS
