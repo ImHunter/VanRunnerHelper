@@ -193,12 +193,12 @@ class DeploykaHelper extends OScriptHelper {
         @NonCPS
         ExecParams addValue(def value) {
             if (value==null) {
-                add(qStr() as java.lang.String)
+                add(qStr())
             } else {
                 if (value.class==ParamsEnum.class) {
                     addValue(params.get(value))    
                 } else {
-                    def strVal = "${value}".toString()
+                    String strVal = "${value}".toString()
                     if (strVal.contains(' '))
                         strVal = qStr(strVal)
                     add(strVal)
@@ -436,8 +436,8 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def updateConfigFromPackage(String pathToPackage) {
-        return execScript(
+    boolean updateConfigFromPackage(String pathToPackage) {
+        execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadCfg)
                 .addValue(ParamsEnum.peDbConnString)
@@ -448,14 +448,14 @@ class DeploykaHelper extends OScriptHelper {
         )
     }
 
-    def updateConfigFromPackage(String pathToPackage, Closure closure) {
+    boolean updateConfigFromPackage(String pathToPackage, Closure closure) {
         def retVal = updateConfigFromPackage(pathToPackage)
         closure(retVal)
-        return retVal
+        retVal
     }
 
     def updateConfigFromRepo() {
-        return execScript(
+        execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadRepo)
                 .addValue(ParamsEnum.peRepoPath)

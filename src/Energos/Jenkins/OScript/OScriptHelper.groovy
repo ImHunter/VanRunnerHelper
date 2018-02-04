@@ -13,25 +13,38 @@ class OScriptHelper {
     /**
      * Переменная для хранения контекста скрипта Jenkins, чтобы можно было выполнять любые его операции.
      */
-    protected def script
+    protected Script script
     /**
      * Переменная, указывающая, что действует тестовый режим. При этом процесс не запускается, а лишь в консоль выводятся параметры запуска процесса.
      */
-    protected isTestMode = false
+    protected boolean isTestMode = false
 
     /**
      * Код возврата после выполнения процесса.
      */
-    public Integer resultCode
+    public int resultCode
     /**
      * Лог, выводимый при выполнении процесса.
      */
     public String resultLog
+    /**
+     * Кодировка, в которой читается лог выполнения процесса. Предустановлено значение 'Cp866'
+     */
     public String outputLogEncoding = 'Cp866'
-    public Integer interruptErrorCode = 255
+//    public Integer interruptErrorCode = 255
+    /**
+     * Имя запускаемого процесса. Предустановлен запуск oscript. Имя этого процесса автоматически добавляется первым параметром при запуске скрипта.
+     */
     public String mainProcessName = 'oscript'
+    /**
+     * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout
+     */
     public Closure notifyClosure = null
 
+    /**
+     * Конструктор класса
+     * @param script В конструктор передаем контекст выполняемого скрипта Jenkins. В принципе, можно передавать null. Тогда всякие echo работать не будут. Вместо них будет использоваться println.
+     */
     OScriptHelper(Script script) {
         this.script = script
     }
@@ -44,9 +57,11 @@ class OScriptHelper {
 
     // @NonCPS
     void echo(def msg){
+        String echoMsg = "${msg}".toString()
         if (script!=null) {
-            script.echo("${msg}")
-        }
+            script.echo(echoMsg)
+        } else
+            println echoMsg
     }
 
     void testEcho(def msg){
@@ -99,7 +114,7 @@ class OScriptHelper {
                 resultLog = readLog(proc.getIn())
             } catch (InterruptedException e) {
                 interrupted = true
-                resultCode = interruptErrorCode
+//                resultCode = interruptErrorCode
                 resultLog = e.getMessage()
             }
 
@@ -137,7 +152,7 @@ class OScriptHelper {
         if (retVal == null || retVal == '') {
             retVal = '\"\"'
         } else if (!retVal.startsWith('\"'))
-            retVal = "\"$retVal\""
+            retVal = "\"$retVal\"".toString()
         retVal
     }
 
