@@ -68,26 +68,42 @@ class OScriptHelper {
             println echoMsg
     }
 
+    /**
+     * Вывод сообщения в какую-либо консоль. Но сообщение выводится в консоль лишь в тестовом режиме, когда установлено isTestMode=true
+     * @param msg Сообщаемое сообщение
+     */
     void testEcho(def msg){
         if (isTestMode) 
             echo(msg)
     }
-    
+
+    /**
+     * Вывод в консоль текущего лога выполнения процесса (из поля resultLog).
+     */
     void echoLog() {
         echo(resultLog)
     }
 
+    /**
+     * Вывод в консоль текущего лога выполнения процесса (из поля resultLog). Предварительно логу, будет выведен заголовок caption
+     * @param caption Дополнительный заголовок лога
+     */
     void echoLog(String caption) {
         echo("${caption}\n${resultLog}")
     }
 
-    String notifyAbout(def msg){
+    /**
+     * Метод для оповещения о каком-либо событии.
+     * Вызывает выполнение notifyClosure, если эта Closure задана.
+     * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; resultCode - текущий код результата процесса; resultLog - текущий лог результата процесса.
+     * @param msg Сообщаемое сообщение.
+     */
+    void notifyAbout(def msg){
         def notifyMsg = msg;
 //        if (moduleName!='')
 //            notifyMsg = "$msg ($moduleName)"
         if (notifyClosure!=null)
             notifyClosure.call(notifyMsg, resultCode, resultLog)
-        notifyMsg
     }
 
     boolean execScript(String[] params) {
