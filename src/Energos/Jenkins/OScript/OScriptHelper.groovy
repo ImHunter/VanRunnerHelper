@@ -40,10 +40,6 @@ class OScriptHelper {
      * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout
      */
     public Closure notifyClosure = null
-    /**
-     * Опциональное имя объекта. Используется для логирования.
-     */
-    public String moduleName = ''
 
     /**
      * Конструктор класса
@@ -86,8 +82,8 @@ class OScriptHelper {
 
     String notifyAbout(def msg){
         def notifyMsg = msg;
-        if (moduleName!='')
-            notifyMsg = "$msg ($moduleName)"
+//        if (moduleName!='')
+//            notifyMsg = "$msg ($moduleName)"
         if (notifyClosure!=null)
             notifyClosure.call(notifyMsg, resultCode, resultLog)
         notifyMsg
