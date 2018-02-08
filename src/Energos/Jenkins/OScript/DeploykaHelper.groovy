@@ -182,14 +182,6 @@ class DeploykaHelper extends OScriptHelper {
             }
         }
 
-        // @NonCPS
-        def init(String module) {
-            clear()
-            def retVal = addValue(module)
-            // echo("returns from init: $retVal");
-            return this
-        }
-
         @NonCPS
         ExecParams addValue(def value) {
             if (value==null) {
@@ -341,9 +333,10 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean launchUserInterface(Boolean updateMetadata = false){
+    boolean launchUserInterface(boolean updateMetadata = false){
        
         def retVal
+        def opName = 'Запуск 1С:Предприятие'.concat( updateMetadata ? ' (с обновлением метаданных)' : '')
 
         String launchParam = 'ЗавершитьРаботуСистемы;'
         if (updateMetadata) 
@@ -352,6 +345,7 @@ class DeploykaHelper extends OScriptHelper {
         testEcho('подготовили параметры запуска launchParam')
 
         // echo ("executing script");
+        notifyAbout(opName)
         retVal = execScript(
                 new ExecParams(this, DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
@@ -361,12 +355,8 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair('-uccode', ucCode)
         )
-
-        // echo ("retVal: $retVal\nreading log: ${resultLog}");
         configInfo.readFromLog(resultLog)
-        // echo configInfo.version;
-
-        // retVal = resultCode==0;
+        notifyAbout(opName)
         retVal
     }
 

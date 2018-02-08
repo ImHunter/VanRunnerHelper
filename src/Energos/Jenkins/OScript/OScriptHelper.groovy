@@ -103,7 +103,7 @@ class OScriptHelper {
 //        if (moduleName!='')
 //            notifyMsg = "$msg ($moduleName)"
         if (notifyClosure!=null)
-            notifyClosure.call(notifyMsg, resultCode, resultLog)
+            notifyClosure.call(notifyMsg, this)
     }
 
     boolean execScript(String[] params) {
