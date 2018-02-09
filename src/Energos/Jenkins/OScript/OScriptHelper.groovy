@@ -95,7 +95,7 @@ class OScriptHelper {
     /**
      * Метод для оповещения о каком-либо событии.
      * Вызывает выполнение notifyClosure, если эта Closure задана.
-     * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; resultCode - текущий код результата процесса; resultLog - текущий лог результата процесса.
+     * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; текущий объект this.
      * @param msg Сообщаемое сообщение.
      */
     void notifyAbout(def msg){
@@ -106,6 +106,12 @@ class OScriptHelper {
             notifyClosure.call(notifyMsg, this)
     }
 
+    /**
+     * Выполнение процесса с параметрами.
+     * Имя процесса содержится в поле mainProcessName и предустановление в значение oscript.
+     * @param params Параметры, с которыми вызывается процесс
+     * @return Возвращается Истина/true, когда процесс завершен с кодом возврата ==0. Иначе - возврат Ложь/false.
+     */
     boolean execScript(String[] params) {
 
         def readLog = {InputStream st ->
@@ -170,6 +176,13 @@ class OScriptHelper {
         execScript strParams
     }
 
+    /**
+     * Вспомогательный метод для обрамления двойными кавычками.
+     * Если передается пустой параметр value (==null || ==''), то возвращается ""
+     * Если value начинается с кавычки, то дополнительное обрамление не делается.
+     * @param value
+     * @return
+     */
     @NonCPS
     static String qStr(String value = null) {
         String retVal = value
