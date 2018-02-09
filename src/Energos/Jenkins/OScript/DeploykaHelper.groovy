@@ -438,7 +438,8 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     boolean updateConfigFromPackage(String pathToPackage) {
-        execScript(
+        notifyAbout('Попытка обновления конфигурации из пакета обновлений', true)
+        def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadCfg)
                 .addValue(ParamsEnum.peDbConnString)
@@ -447,6 +448,8 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
+        notifyAbout('Обновление конфигурации из пакета обновлений ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        retVal
     }
 
     boolean updateConfigFromPackage(String pathToPackage, Closure closure) {
@@ -456,7 +459,8 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def updateConfigFromRepo() {
-        execScript(
+        notifyAbout('Попытка обновления конфигурации из хранилища', true)
+        def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadRepo)
                 .addValue(ParamsEnum.peRepoPath)
@@ -466,16 +470,21 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peRepoPwd)
                 .addPair('-uccode', ucCode)
         )
+        notifyAbout('Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        retVal
     }
 
     def unbindRepo() {
-        return execScript(
+        notifyAbout('Попытка отключения конфигурации от хранилища', true)
+        def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcUnbindRepo)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
+        notifyAbout('Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        retVal
     }
 
     def checkDirExists(String dir){
@@ -483,7 +492,7 @@ class DeploykaHelper extends OScriptHelper {
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('direxists')
             .addPair(ParamsEnum.peFileOpDirectory, dir)
-        return execScript(params)
+        execScript(params)
     }
 
     def checkDirExists(String dir, Closure closure){
