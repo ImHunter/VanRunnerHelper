@@ -97,9 +97,15 @@ class OScriptHelper {
      * Вызывает выполнение notifyClosure, если эта Closure задана.
      * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; текущий объект this.
      * @param msg Сообщаемое сообщение.
+     * @param withResetResult Сбрасывать ли значения полей resultCode и resultLog в null.
+     * Значение параметра true используется для оповещений ПЕРЕД выполнением операции.
      */
-    void notifyAbout(def msg){
-        def notifyMsg = msg;
+    void notifyAbout(def msg, boolean withResetResult = false){
+        if (withResetResult) {
+            resultCode = null
+            resultLog = null
+        }
+        def notifyMsg = msg
 //        if (moduleName!='')
 //            notifyMsg = "$msg ($moduleName)"
         if (notifyClosure!=null)

@@ -287,15 +287,15 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     @NonCPS
-    def setParam(def paramKey, String paramValue, Boolean isApply = true){
+    Map<Object, String> setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             this.params.put paramKey, paramValue
         }
-        return params
+        params
     }
 
     // @NonCPS
-    def setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
+    Map<Object, String> setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered
         if (isIgnoreEmptyValues) {
             filtered = newParams.findAll { it.value != null }
@@ -303,7 +303,7 @@ class DeploykaHelper extends OScriptHelper {
             filtered = newParams
         }
         params << filtered
-        return params
+        params
     }
 
     // @NonCPS
