@@ -385,8 +385,10 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     boolean setLockStatusForUsers(Boolean locked) {
+        notifyAbout('Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей', true)
         boolean retVal = setLockStatus(DeplCommand.dcSession, locked)
-        notifyAbout((locked ? 'Установлена ': 'Снята ') + 'блокировка сеансов пользователей' + (retVal ? '' : ' (с ошибкой)'))
+        notifyAbout((locked ? 'Установка': 'Снятие') + ' блокировки сеансов пользователей ' +
+                (retVal ? 'успешно' : 'не') + ' выполнена')
         retVal
     }
 
@@ -398,8 +400,10 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     boolean setLockStatusForBackgrounds(Boolean locked) {
+        notifyAbout('Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий', true)
         boolean retVal = setLockStatus(DeplCommand.dcScheduledJobs, locked)
-        notifyAbout((locked ? 'Установлена ': 'Снята ') + 'блокировка регламентных заданий' + (retVal ? '' : ' (с ошибкой)'))
+        notifyAbout((locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
+                (retVal ? 'успешно' : 'не') + ' выполнена')
         retVal
     }
 
@@ -411,6 +415,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def killSessions(Boolean withNoLock = true, String appFilter = null) {
+        notifyAbout('Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter), true)
         def params = new ExecParams(this, DeplCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
@@ -426,7 +431,9 @@ class DeploykaHelper extends OScriptHelper {
             params = params.addPair("-filter", appFilter)
         }
         // echo execParams;
-        return execScript(params)
+        def retVal = execScript(params)
+        notifyAbout('Завершение сеансов ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        retVal
     }
 
     // @NonCPS
