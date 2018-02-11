@@ -37,10 +37,6 @@ class OScriptHelper {
      * Имя запускаемого процесса. Предустановлен запуск oscript. Имя этого процесса автоматически добавляется первым параметром при запуске скрипта.
      */
     public String mainProcessName = 'oscript'
-    /**
-     * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout
-     */
-    public Closure notifyClosure = null
 
     /**
      * Конструктор класса
@@ -90,26 +86,6 @@ class OScriptHelper {
      */
     void echoLog(String caption) {
         echo("${caption}\n${resultLog}")
-    }
-
-    /**
-     * Метод для оповещения о каком-либо событии.
-     * Вызывает выполнение notifyClosure, если эта Closure задана.
-     * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; текущий объект this.
-     * @param msg Сообщаемое сообщение.
-     * @param withResetResult Сбрасывать ли значения полей resultCode и resultLog в null.
-     * Значение параметра true используется для оповещений ПЕРЕД выполнением операции.
-     */
-    void notifyAbout(def msg, boolean withResetResult = false){
-        if (withResetResult) {
-            resultCode = null
-            resultLog = null
-        }
-        def notifyMsg = msg
-//        if (moduleName!='')
-//            notifyMsg = "$msg ($moduleName)"
-        if (notifyClosure!=null)
-            notifyClosure.call(notifyMsg, this)
     }
 
     /**

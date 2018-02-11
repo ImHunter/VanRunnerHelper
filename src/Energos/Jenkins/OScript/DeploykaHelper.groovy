@@ -2,12 +2,25 @@ package Energos.Jenkins.OScript
 
 import java.lang.*
 
+/**
+ * Класс-обертка для операций Деплойки.
+ */
 class DeploykaHelper extends OScriptHelper {
+
+    final static int NOTIFY_TYPE_UNDEFINED = 0
+    final static int NOTIFY_TYPE_BEFORE = 1
+    final static int NOTIFY_TYPE_AFTER = 2
+
+    final static int OP_UNDEFINED = 0
+    final static int OP_LAUNCH_USER_INTERFACE = 1
 
     public String pathToDeployka
     public Map<Object, String> params = [:]
     public String ucCode = 'blocked'
-
+    /**
+     * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout
+     */
+    public Closure notifyClosure = null
     public ConfigInfo configInfo
 
     enum DeplCommand {
@@ -62,7 +75,7 @@ class DeploykaHelper extends OScriptHelper {
         String version
         String platform
 
-        def readFromLog(String log) {
+        private void readLogInfo(String log) {
             
             String paramValue
 
@@ -227,7 +240,20 @@ class DeploykaHelper extends OScriptHelper {
 
     }
 
-    // @NonCPS
+    /**
+     * Метод для оповещения о каком-либо событии.
+     * Вызывает выполнение notifyClosure, если эта Closure задана.
+     * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; текущий объект this.
+     * @param msg Сообщаемое сообщение.
+     * @param withResetResult Сбрасывать ли значения полей resultCode и resultLog в null.
+     * Значение параметра true используется для оповещений ПЕРЕД выполнением операции.
+     */
+    protected void notifyAbout(def msgText, def msgKind, def msgType, Object... params){
+        if (notifyClosure!=null)
+            notifyClosure.call(msgText, this, msgKind, msgType, params)
+    }
+
+// @NonCPS
     @Override
     void selfTest() {
         // super.selfTest();
@@ -277,7 +303,7 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromRepo()
         echo("executed updateConfigFromRepo")
 
-        def cl = {def msg ->
+        def cl = {msg ->
             echo("notify via closure. msg: $msg")
         }
         notifyClosure = cl
@@ -287,15 +313,15 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     @NonCPS
-    Map<Object, String> setParam(def paramKey, String paramValue, Boolean isApply = true){
+    def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
             this.params.put paramKey, paramValue
         }
-        params
+        this
     }
 
     // @NonCPS
-    Map<Object, String> setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
+    def setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered
         if (isIgnoreEmptyValues) {
             filtered = newParams.findAll { it.value != null }
@@ -303,33 +329,38 @@ class DeploykaHelper extends OScriptHelper {
             filtered = newParams
         }
         params << filtered
-        params
+        this
     }
 
     // @NonCPS
     void setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
+        this
     }
 
     @NonCPS
     void setDbAuth(String dbUser, String dbPwd) {
         setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
+        this
     }
 
     // @NonCPS
     void setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
+        this
     }
 
     @NonCPS
     void setRepoAuth(String repoUser, String repoPwd) {
         setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
+        this
     }
 
     // @NonCPS
     void setRAS(String rasServer, String racUtilPath) {
         setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath])
+        this
     }
 
     // @NonCPS
@@ -345,7 +376,7 @@ class DeploykaHelper extends OScriptHelper {
         testEcho('подготовили параметры запуска launchParam')
 
         // echo ("executing script");
-        notifyAbout(opName)
+        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), updateMetadata)
         retVal = execScript(
                 new ExecParams(this, DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
@@ -355,8 +386,8 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair('-uccode', ucCode)
         )
-        configInfo.readFromLog(resultLog)
-        notifyAbout(opName)
+        configInfo.readLogInfo(resultLog)
+        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), updateMetadata)
         retVal
     }
 
