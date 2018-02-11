@@ -435,7 +435,10 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     DeploykaHelper setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
-        setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
+        setParam([(ParamsEnum.peDbDatabase): dbDatabase,
+                  (ParamsEnum.peDbServer):dbServer,
+                  (ParamsEnum.peDbUser):dbUser,
+                  (ParamsEnum.peDbPwd):qStr(dbPwd)])
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
         this
     }
@@ -473,7 +476,7 @@ class DeploykaHelper extends OScriptHelper {
         String launchParam = 'ЗавершитьРаботуСистемы;'
         if (updateMetadata) 
             launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')
-        setParam(ParamsEnum.peLaunchParam, qStr(launchParam))
+        setParam( ParamsEnum.peLaunchParam, qStr(launchParam))
         testEcho('подготовили параметры запуска launchParam')
 
         // echo ("executing script");
@@ -531,7 +534,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     boolean setLockStatusForUsers(Boolean locked, Closure closure) {
-        def retVal = setLockStatusForUsers(locked)
+        boolean retVal = setLockStatusForUsers(locked)
         closure(retVal)
         retVal
     }
@@ -555,9 +558,9 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def killSessions(Boolean withNoLock = true, String appFilter = '') {
-        def msg = 'Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter)
+        String msg = 'Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
-        def params = new ExecParams(this, DeplCommand.dcSession)
+        ExecParams params = new ExecParams(this, DeplCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
@@ -572,17 +575,17 @@ class DeploykaHelper extends OScriptHelper {
             params = params.addPair("-filter", appFilter)
         }
         // echo execParams;
-        def retVal = execScript(params)
-        msg = 'Завершение сеансов ' + (retVal ? 'успешно' : 'не') + ' выполнено'
+        boolean retVal = execScript(params)
+        msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено')
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
         retVal
     }
 
     // @NonCPS
     boolean updateConfigFromPackage(String pathToPackage) {
-        def msg = 'Попытка обновления конфигурации из пакета обновлений'
+        String msg = 'Попытка обновления конфигурации из пакета обновлений'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
-        def retVal = execScript(
+        boolean retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadCfg)
                 .addValue(ParamsEnum.peDbConnString)
@@ -602,7 +605,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def updateConfigFromRepo() {
-        def msg = 'Попытка обновления конфигурации из хранилища'
+        String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
@@ -650,7 +653,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // minModifyDT - минимальное время создания/изменения файлов в формате yyyyMMddHHmmss
     def findFiles(String dir, String fileMask, String minModifyDT = null) {
-        def params = new ExecParams(this)
+        ExecParams params = new ExecParams(this)
             .addCommand(DeplCommand.dcFileOperations)
             .addValue('fileexists')
             .addPair(ParamsEnum.peFileOpDirectory, dir)
@@ -662,7 +665,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // возврат Истина, если сеансы найдены
     def findSessions(String appFilter = null, Closure closure = null) {
-        def params = new ExecParams(this)
+        ExecParams params = new ExecParams(this)
                 .addCommand(DeplCommand.dcSession)
                 .addValue('search')
                 .addPair(ParamsEnum.peRASServer)
