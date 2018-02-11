@@ -72,7 +72,7 @@ class DeploykaHelper extends OScriptHelper {
     /**
      * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout().
      */
-    public Closure notifyClosure = null
+    public Closure notifyEvent = null
     /**
      * Объект, содержащий информацию о конфигурации.
      * Информация заполняется при выполнении запуска 1С в режиме Предприятие. При этом, происходит запуск специализированной
@@ -266,8 +266,8 @@ class DeploykaHelper extends OScriptHelper {
 
         ExecParams(DeploykaHelper owner){
             super()
-            this.params = ((DeploykaHelper) owner).params
-            addValue(((DeploykaHelper) owner).pathToDeployka)
+            this.params = owner.params
+            addValue(owner.pathToDeployka)
         }
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
@@ -326,8 +326,8 @@ class DeploykaHelper extends OScriptHelper {
 
     /**
      * Метод для оповещения о каком-либо событии.
-     * Вызывает выполнение notifyClosure, если эта Closure задана.
-     * В notifyClosure передаются несколько параметров: msgText - сообщаемое сообщение; текущий объект this, msgKind, msgType, params.
+     * Вызывает выполнение notifyEvent, если эта Closure задана.
+     * В notifyEvent передаются несколько параметров: msgText - сообщаемое сообщение; текущий объект this, msgKind, msgType, params.
      * Такая детализация задумана для того, чтобы можно было достаточно просто обрабатывать выводимые оповещения. И при необходимости -
      * частично или полностью переписать алгоритм формирования текстовки и состава оповещений.
      * @param msgText Сообщаемое сообщение.
@@ -340,8 +340,8 @@ class DeploykaHelper extends OScriptHelper {
      * К примеру, при выполнении метода setLockStatusForUsers(locked), здесь передается параметр locked.
      */
     protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, Object... params){
-        if (notifyClosure!=null)
-            notifyClosure.call(msgText, this, msgKind, msgType, params)
+        if (notifyEvent!=null)
+            notifyEvent.call(msgText, this, msgKind, msgType, params)
     }
 
 // @NonCPS
@@ -358,7 +358,7 @@ class DeploykaHelper extends OScriptHelper {
         def cl = {msg ->
             echo("notify via closure. msg: $msg")
         }
-        notifyClosure = cl
+        notifyEvent = cl
         notifyAbout('TEST CLOSURE MESSAGE')
 
 
