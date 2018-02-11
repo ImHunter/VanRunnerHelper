@@ -181,7 +181,7 @@ class DeploykaHelper extends OScriptHelper {
         }
 
         private String readParamValue(String log, String paramName) {
-            String retVal
+            String retVal = null
             Scanner scanner = new Scanner(log)
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine()
@@ -195,7 +195,7 @@ class DeploykaHelper extends OScriptHelper {
                 }
             }
             scanner.close()
-            return retVal
+            retVal
         }
     }
 
@@ -264,7 +264,7 @@ class DeploykaHelper extends OScriptHelper {
 
         def params
 
-        ExecParams(def owner){
+        ExecParams(DeploykaHelper owner){
             super()
             this.params = ((DeploykaHelper) owner).params
             addValue(((DeploykaHelper) owner).pathToDeployka)
@@ -339,12 +339,17 @@ class DeploykaHelper extends OScriptHelper {
      * Этим параметром передаются параметры выполнения какого-либо метода.
      * К примеру, при выполнении метода setLockStatusForUsers(locked), здесь передается параметр locked.
      */
-    protected void notifyAbout(def msgText, def msgKind = OP_UNDEFINED, def msgType = NOTIFY_TYPE_UNDEFINED, Object... params){
+    protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, Object... params){
         if (notifyClosure!=null)
             notifyClosure.call(msgText, this, msgKind, msgType, params)
     }
 
 // @NonCPS
+    /**
+     * Метод для самотестирования библиотеки.
+     * Это некая замена модульному тестированию.
+     * Устанавливается флаг тестирования (isTestMode = true), выполняются некие операции, флаг сбрасывается.
+     */
     @Override
     void selfTest() {
         // super.selfTest();
@@ -403,6 +408,7 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromPackage('path to package')
 
         echo("finish of selfTest")
+        isTestMode = false
     }
 
     @NonCPS
@@ -414,7 +420,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
+    DeploykaHelper setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered
         if (isIgnoreEmptyValues) {
             filtered = newParams.findAll { it.value != null }
@@ -426,14 +432,14 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    void setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
+    DeploykaHelper setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase, (ParamsEnum.peDbServer):dbServer, (ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
         this
     }
 
     @NonCPS
-    void setDbAuth(String dbUser, String dbPwd) {
+    DeploykaHelper setDbAuth(String dbUser, String dbPwd) {
         setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
         this
     }
@@ -494,7 +500,7 @@ class DeploykaHelper extends OScriptHelper {
     // @NonCPS
     private boolean setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock"
-        def params = new ExecParams(this, command)
+        ExecParams params = new ExecParams(this, command)
                 .addValue(op)
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
@@ -510,7 +516,7 @@ class DeploykaHelper extends OScriptHelper {
     // @NonCPS
     boolean setLockStatusForUsers(Boolean locked) {
 
-        def msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей'
+        String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей'
         notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE())
 
         boolean retVal = setLockStatus(DeplCommand.dcSession, locked)
@@ -530,7 +536,7 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     boolean setLockStatusForBackgrounds(Boolean locked) {
-        def msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий'
+        String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), locked)
         boolean retVal = setLockStatus(DeplCommand.dcScheduledJobs, locked)
         msg = (locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
