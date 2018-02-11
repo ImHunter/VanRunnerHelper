@@ -248,7 +248,7 @@ class DeploykaHelper extends OScriptHelper {
      * @param withResetResult Сбрасывать ли значения полей resultCode и resultLog в null.
      * Значение параметра true используется для оповещений ПЕРЕД выполнением операции.
      */
-    protected void notifyAbout(def msgText, def msgKind, def msgType, Object... params){
+    protected void notifyAbout(def msgText, def msgKind = getOP_UNDEFINED(), def msgType = getNOTIFY_TYPE_UNDEFINED(), Object... params){
         if (notifyClosure!=null)
             notifyClosure.call(msgText, this, msgKind, msgType, params)
     }
@@ -259,6 +259,12 @@ class DeploykaHelper extends OScriptHelper {
         // super.selfTest();
         def params
         isTestMode = true
+        def cl = {msg ->
+            echo("notify via closure. msg: $msg")
+        }
+        notifyClosure = cl
+        notifyAbout('TEST CLOSURE MESSAGE')
+
 
         setDb('server', 'db')
         testEcho("selfTest pathToDeployka: $pathToDeployka")
@@ -302,12 +308,6 @@ class DeploykaHelper extends OScriptHelper {
 
         updateConfigFromRepo()
         echo("executed updateConfigFromRepo")
-
-        def cl = {msg ->
-            echo("notify via closure. msg: $msg")
-        }
-        notifyClosure = cl
-        notifyAbout('TEST CLOS')
 
         echo("finish of selfTest")
     }
