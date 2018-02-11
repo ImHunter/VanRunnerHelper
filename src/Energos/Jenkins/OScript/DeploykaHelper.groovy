@@ -327,12 +327,19 @@ class DeploykaHelper extends OScriptHelper {
     /**
      * Метод для оповещения о каком-либо событии.
      * Вызывает выполнение notifyClosure, если эта Closure задана.
-     * В notifyClosure передаются несколько параметров: notifyMsg - сообщаемое сообщение; текущий объект this.
-     * @param msg Сообщаемое сообщение.
-     * @param withResetResult Сбрасывать ли значения полей resultCode и resultLog в null.
-     * Значение параметра true используется для оповещений ПЕРЕД выполнением операции.
+     * В notifyClosure передаются несколько параметров: msgText - сообщаемое сообщение; текущий объект this, msgKind, msgType, params.
+     * Такая детализация задумана для того, чтобы можно было достаточно просто обрабатывать выводимые оповещения. И при необходимости -
+     * частично или полностью переписать алгоритм формирования текстовки и состава оповещений.
+     * @param msgText Сообщаемое сообщение.
+     * @param msgKind Вид операции, о которой происходит оповещение.
+     * Используются значения констант OP_*
+     * @param msgType Тип оповещения (до, перед, не задано).
+     * Используются значения констант NOTIFY_TYPE_*
+     * @param params Дополнительные параметры, которые могут быть переданы с оповещением.
+     * Этим параметром передаются параметры выполнения какого-либо метода.
+     * К примеру, при выполнении метода setLockStatusForUsers(locked), здесь передается параметр locked.
      */
-    protected void notifyAbout(def msgText, def msgKind = getOP_UNDEFINED(), def msgType = getNOTIFY_TYPE_UNDEFINED(), Object... params){
+    protected void notifyAbout(def msgText, def msgKind = OP_UNDEFINED, def msgType = NOTIFY_TYPE_UNDEFINED, Object... params){
         if (notifyClosure!=null)
             notifyClosure.call(msgText, this, msgKind, msgType, params)
     }
