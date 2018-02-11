@@ -402,6 +402,8 @@ class DeploykaHelper extends OScriptHelper {
         setRepo('repo path', 'repo-us', 'repo-pwd')
         echo("executed setRepo")
 
+        setDbAuth('newuser', 'newpwd')
+
         updateConfigFromRepo()
         echo("executed updateConfigFromRepo")
 
@@ -438,14 +440,14 @@ class DeploykaHelper extends OScriptHelper {
         this
     }
 
-    @NonCPS
+//    @NonCPS
     DeploykaHelper setDbAuth(String dbUser, String dbPwd) {
         setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
         this
     }
 
     // @NonCPS
-    void setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
+    DeploykaHelper setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
         this
     }
