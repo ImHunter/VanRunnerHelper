@@ -7,61 +7,134 @@ import java.lang.*
  */
 class DeploykaHelper extends OScriptHelper {
 
+    /**
+     * Тип оповещения - неопределено
+     */
     final static int NOTIFY_TYPE_UNDEFINED = 0
+    /**
+     * Тип оповещения - перед выполнением операции
+     */
     final static int NOTIFY_TYPE_BEFORE = 1
+    /**
+     * Тип оповещения - после выполнения операции
+     */
     final static int NOTIFY_TYPE_AFTER = 2
 
+    /**
+     * Вид операции - неопределено.
+     */
     final static int OP_UNDEFINED = 0
+    /**
+     * Вид операции - запуск в режиме 1С:Предприятик
+     */
     final static int OP_LAUNCH_USER_INTERFACE = 1
+    /**
+     * Вид опреации - блокировка/разблокировка пользовательских сеансов
+     */
     final static int OP_SET_LOCK_USERS = 2
+    /**
+     * Вид операции - блокировка/разблокировка регламентных заданий
+     */
     final static int OP_SET_LOCK_BACKGROUNDS = 3
+    /**
+     * Вид операции - завершение сеансов
+     */
     final static int OP_KILL_SESSIONS = 4
+    /**
+     * Вид операции - обновление конфигурации из пакета обновления
+     */
     final static int OP_UPDATE_CONFIG_FROM_PACKAGE = 5
+    /**
+     * Вид операции - обновление конфигурации из хранилища
+     */
     final static int OP_UPDATE_CONFIG_FROM_REPO = 6
+    /**
+     * Вид операции - отключение конфигурации от хранилища
+     */
     final static int OP_UNBIND_REPO = 7
 //    final static int OP_ =
 //    final static int OP_ =
 
+    /**
+     * Путь к выполняемому скрипту Деплойка.
+     * Скрипт может быть и любой другой
+     */
     public String pathToDeployka
+    /**
+     * Свойства, которые могут быть использованы при выполнении скрипта.
+     * Задаются методами set... (например, setDb(...)).
+     */
     public Map<Object, String> params = [:]
+    /**
+     * Значение, которое может быть указано, например, при блокировке сеансов. Т.е., то, что передается в ключе /UC
+     */
     public String ucCode = 'blocked'
     /**
-     * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout
+     * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout().
      */
     public Closure notifyClosure = null
+    /**
+     * Объект, содержащий информацию о конфигурации.
+     * Информация заполняется при выполнении запуска 1С в режиме Предприятие. При этом, происходит запуск специализированной
+     * внешней обработки. Результаты ее работы (лог) разбираются и интерпретируются.
+     */
     public ConfigInfo configInfo
 
+    /**
+     * Перечисление с возможными командами Деплойки
+     */
     enum DeplCommand {
+        /**
+         * Запуск в режиме Предприятие
+         */
         dcRun {
             @NonCPS
             @Override
             String toString() { return "run" }
         },
+        /**
+         * Обновление конфигурации из пакета обновлений
+         */
         dcLoadCfg {
             @NonCPS
             @Override
             String toString() {return "loadcfg" }
         },
+        /**
+         * Обновление конфигурации из хранилища
+         */
         dcLoadRepo {
             @NonCPS
             @Override
             String toString() {return "loadrepo" }
         },
+        /**
+         * Отключение конфигурации от хранилища
+         */
         dcUnbindRepo {
             @NonCPS
             @Override
             String toString() {return "unbindrepo" }
         },
+        /**
+         * Операции с сеансами
+         */
         dcSession {
             @NonCPS
             @Override
             String toString() {return "session" }
         },
+        /**
+         * Операции с регламентными заданиями
+         */
         dcScheduledJobs {
             @NonCPS
             @Override
             String toString() {return "scheduledjobs" }
         },
+        /**
+         * Получение информации о базе данных
+         */
         dcInfo {
             @NonCPS
             @Override
@@ -69,6 +142,9 @@ class DeploykaHelper extends OScriptHelper {
                 return "info"
             }
         },
+        /**
+         * Файловые операции
+         */
         dcFileOperations {
             @NonCPS
             @Override
