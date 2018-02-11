@@ -13,6 +13,14 @@ class DeploykaHelper extends OScriptHelper {
 
     final static int OP_UNDEFINED = 0
     final static int OP_LAUNCH_USER_INTERFACE = 1
+    final static int OP_SET_LOCK_USERS = 2
+    final static int OP_SET_LOCK_BACKGROUNDS = 3
+    final static int OP_KILL_SESSIONS = 4
+    final static int OP_UPDATE_CONFIG_FROM_PACKAGE = 5
+    final static int OP_UPDATE_CONFIG_FROM_REPO = 6
+    final static int OP_UNBIND_REPO = 7
+//    final static int OP_ =
+//    final static int OP_ =
 
     public String pathToDeployka
     public Map<Object, String> params = [:]
@@ -416,10 +424,16 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     boolean setLockStatusForUsers(Boolean locked) {
-        notifyAbout('Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей', true)
+
+        def msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей'
+        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE())
+
         boolean retVal = setLockStatus(DeplCommand.dcSession, locked)
-        notifyAbout((locked ? 'Установка': 'Снятие') + ' блокировки сеансов пользователей ' +
-                (retVal ? 'успешно' : 'не') + ' выполнена')
+
+        msg = (locked ? 'Установка': 'Снятие') + ' блокировки сеансов пользователей ' +
+                (retVal ? 'успешно' : 'не') + ' выполнена'
+        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_AFTER())
+
         retVal
     }
 
@@ -431,10 +445,12 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     boolean setLockStatusForBackgrounds(Boolean locked) {
-        notifyAbout('Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий', true)
+        def msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий'
+        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), locked)
         boolean retVal = setLockStatus(DeplCommand.dcScheduledJobs, locked)
-        notifyAbout((locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
-                (retVal ? 'успешно' : 'не') + ' выполнена')
+        msg = (locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
+                (retVal ? 'успешно' : 'не') + ' выполнена'
+        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), locked)
         retVal
     }
 
@@ -445,8 +461,9 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def killSessions(Boolean withNoLock = true, String appFilter = null) {
-        notifyAbout('Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter), true)
+    def killSessions(Boolean withNoLock = true, String appFilter = '') {
+        def msg = 'Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter)
+        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
         def params = new ExecParams(this, DeplCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
@@ -463,13 +480,15 @@ class DeploykaHelper extends OScriptHelper {
         }
         // echo execParams;
         def retVal = execScript(params)
-        notifyAbout('Завершение сеансов ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        msg = 'Завершение сеансов ' + (retVal ? 'успешно' : 'не') + ' выполнено'
+        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
         retVal
     }
 
     // @NonCPS
     boolean updateConfigFromPackage(String pathToPackage) {
-        notifyAbout('Попытка обновления конфигурации из пакета обновлений', true)
+        def msg = 'Попытка обновления конфигурации из пакета обновлений'
+        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadCfg)
@@ -479,7 +498,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
-        notifyAbout('Обновление конфигурации из пакета обновлений ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_AFTER(), pathToPackage)
         retVal
     }
 
@@ -490,7 +509,8 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     def updateConfigFromRepo() {
-        notifyAbout('Попытка обновления конфигурации из хранилища', true)
+        def msg = 'Попытка обновления конфигурации из хранилища'
+        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcLoadRepo)
@@ -501,12 +521,14 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peRepoPwd)
                 .addPair('-uccode', ucCode)
         )
-        notifyAbout('Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
+        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER())
         retVal
     }
 
     def unbindRepo() {
-        notifyAbout('Попытка отключения конфигурации от хранилища', true)
+        def msg = 'Попытка отключения конфигурации от хранилища'
+        notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(DeplCommand.dcUnbindRepo)
@@ -514,7 +536,8 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
-        notifyAbout('Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено')
+        msg = 'Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
+        notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_AFTER())
         retVal
     }
 
