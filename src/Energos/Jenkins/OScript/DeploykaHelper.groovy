@@ -317,6 +317,8 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromRepo()
         echo("executed updateConfigFromRepo")
 
+        updateConfigFromPackage('path to package')
+
         echo("finish of selfTest")
     }
 
