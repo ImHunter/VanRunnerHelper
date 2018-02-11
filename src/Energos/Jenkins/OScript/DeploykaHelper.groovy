@@ -59,7 +59,7 @@ class DeploykaHelper extends OScriptHelper {
      * Путь к выполняемому скрипту Деплойка.
      * Скрипт может быть и любой другой
      */
-    public String pathToDeployka
+    public pathToDeployka
     /**
      * Свойства, которые могут быть использованы при выполнении скрипта.
      * Задаются методами set... (например, setDb(...)).
@@ -272,8 +272,8 @@ class DeploykaHelper extends OScriptHelper {
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
             super()
-            this.params = ((DeploykaHelper) owner).params
-            addValue(((DeploykaHelper) owner).pathToDeployka)
+            this.params = owner.params
+            addValue(owner.pathToDeployka)
             if (command!=null) {
                 addValue(command)
             }
@@ -287,7 +287,7 @@ class DeploykaHelper extends OScriptHelper {
                 if (value.class==ParamsEnum.class) {
                     addValue(params.get(value))    
                 } else {
-                    String strVal = "${value}".toString()
+                    java.lang.String strVal = "${value}".toString()
                     if (strVal.contains(' '))
                         strVal = qStr(strVal)
                     add(strVal)
@@ -297,12 +297,12 @@ class DeploykaHelper extends OScriptHelper {
         }
 
         // @NonCPS
-        def addCommand(DeplCommand command){
-            return addValue(command)
+        ExecParams addCommand(DeplCommand command){
+            addValue(command)
         }
 
         // @NonCPS
-        def addPair(ParamsEnum param) {
+        ExecParams addPair(ParamsEnum param) {
             return addValue(param.toString())
                     .addValue(params.get(param))
         }
@@ -453,13 +453,13 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     @NonCPS
-    void setRepoAuth(String repoUser, String repoPwd) {
+    DeploykaHelper setRepoAuth(String repoUser, String repoPwd) {
         setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
         this
     }
 
     // @NonCPS
-    void setRAS(String rasServer, String racUtilPath) {
+    DeploykaHelper setRAS(String rasServer, String racUtilPath) {
         setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath])
         this
     }
@@ -510,7 +510,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         if (command==DeplCommand.dcSession) {
-            params = params.addPair("-lockuccode", ucCode)
+            params = params.addPair('-lockuccode', ucCode)
         }
         execScript(params)
     }
