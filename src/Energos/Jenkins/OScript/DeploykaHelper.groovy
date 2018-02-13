@@ -459,6 +459,30 @@ class DeploykaHelper extends OScriptHelper {
         def addAppClientThin(){
             setAppFilter(AppNames.appClientThin)
         }
+
+        def addAppBackgroung(){
+            setAppFilter(AppNames.appBackgroung)
+        }
+
+        def addAppComConnector(){
+            setAppFilter(AppNames.appComConnector)
+        }
+
+        def addAppDesigner(){
+            setAppFilter(AppNames.appDesigner)
+        }
+
+        def addAppWebClient(){
+            setAppFilter(AppNames.appWebClient)
+        }
+
+        def addAppWebExt(){
+            setAppFilter(AppNames.appWebExt)
+        }
+
+        def addAppWS(){
+            setAppFilter(AppNames.appWS)
+        }
     }
 
     // endregion
