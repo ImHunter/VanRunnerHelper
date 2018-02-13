@@ -609,7 +609,7 @@ class DeploykaHelper extends OScriptHelper {
                 .toString()
         echo("Test filter empty: $flt")
 
-        def now = Calendar.newInstance()
+        def now = Calendar.getInstance()
         now.add(Calendar.MINUTE, 4)
         waitForCloseSessions(now.getTime())
 
