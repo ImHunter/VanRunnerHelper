@@ -528,7 +528,7 @@ class DeploykaHelper extends OScriptHelper {
         setLockStatus(DeplCommand.dcSession, true)
         echo("executed setLockStatus(DeplCommand.dcSession, true)")
 
-        killSessions(this.newSessionFilter().setAppFilter(this.AppNames.appClient, this.AppNames.appClientThin))
+        killSessions(true, newSessionFilter().setAppFilter(AppNames.appClient, AppNames.appClientThin))
         echo("executed killSessions()")
 
         setRepo('repo path', 'repo-us', 'repo-pwd')
