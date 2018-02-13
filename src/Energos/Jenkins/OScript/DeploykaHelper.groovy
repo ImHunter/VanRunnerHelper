@@ -429,8 +429,8 @@ class DeploykaHelper extends OScriptHelper {
 
         @NonCPS
         @Override
-        String toString() {
-            String retVal = ''
+        java.lang.String toString() {
+            java.lang.String retVal = ''
             if (apps.size()!=0) {
                 if (retVal!='') retVal = retVal.concat('|')
                 retVal = retVal.concat('appid=').concat(joinArray(apps))
