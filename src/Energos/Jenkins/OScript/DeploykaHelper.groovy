@@ -439,7 +439,7 @@ class DeploykaHelper extends OScriptHelper {
                 if (retVal!='') retVal = retVal.concat('|')
                 retVal = retVal.concat('name=').concat(joinArray(names))
             }
-            retVal
+            return retVal
         }
     }
 
