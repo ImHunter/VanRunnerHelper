@@ -838,7 +838,7 @@ class DeploykaHelper extends OScriptHelper {
     @NotifyAbout(OP_UPDATE_DB)
     boolean updateDB(Closure closure = null) {
         boolean retVal
-        notifyAbout('Попытка обновления базы данных', getAnnotation(NotifyAbout), NOTIFY_TYPE_BEFORE)
+//        notifyAbout('Попытка обновления базы данных', getAnnotation(NotifyAbout), NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, DeplCommand.dcUpdateDB)
             .addValue(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
