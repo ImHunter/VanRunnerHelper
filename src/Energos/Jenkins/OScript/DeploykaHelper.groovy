@@ -611,7 +611,7 @@ class DeploykaHelper extends OScriptHelper {
 
         def now = Calendar.getInstance()
         now.add(Calendar.MINUTE, 4)
-        waitForCloseSessions(now.getTime())
+        echo("waitForCloseSessions: ${waitForCloseSessions(now.getTime())}")
 
         echo("finish of selfTest")
         isTestMode = false
