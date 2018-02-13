@@ -703,6 +703,8 @@ class DeploykaHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbPwd)
             .addPair('-uccode', ucCode)
         retVal = execScript(params)
+        if (closure!=null)
+            closure.call(retVal)
         notifyAbout('Выполнено обновление базы данных', OP_UPDATE_DB, NOTIFY_TYPE_AFTER)
         retVal
     }
