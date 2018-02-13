@@ -412,12 +412,12 @@ class DeploykaHelper extends OScriptHelper {
         private Object[] names = []
 
         def setAppFilter(Object... apps) {
-            this.apps << apps
+            apps.each { this.apps.add(it.toString()) }
             this
         }
 
         def setNamesFilter(Object... names) {
-            this.names << names
+            names.each { this.names.add(it.toString()) }
             this
         }
 
