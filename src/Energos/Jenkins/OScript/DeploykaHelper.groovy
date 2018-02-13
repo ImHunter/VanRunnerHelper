@@ -437,7 +437,7 @@ class DeploykaHelper extends OScriptHelper {
         @Override
         java.lang.String toString() {
             java.lang.String retVal = ''
-            echo("SessionFilter enter apps.size()=$apps.size names.size()=$names.size")
+            echo("SessionFilter enter apps.size()=${apps.size()} names.size()=${names.size()}")
             echo("SessionFilter enter apps.size!=0=")
             if (apps.size!=0) {
                 echo("SessionFilter test mess1 $retVal")
