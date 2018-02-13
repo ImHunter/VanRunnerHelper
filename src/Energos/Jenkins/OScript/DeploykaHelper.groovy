@@ -63,6 +63,9 @@ class DeploykaHelper extends OScriptHelper {
      * Операция - ожидание завершения сессий
      */
     final static int OP_WAIT_FOR_CLOSE = 9
+    /**
+     * Операция - ожидание завершения сессий, выполнен цикл ожидания
+     */
     final static int OP_WAIT_FOR_CLOSE_CONTINUE = 10
 //    final static int OP_ =
 //    final static int OP_ =
