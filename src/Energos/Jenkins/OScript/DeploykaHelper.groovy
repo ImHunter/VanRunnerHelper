@@ -454,12 +454,10 @@ class DeploykaHelper extends OScriptHelper {
 
         def addAppClient(){
             setAppFilter(AppNames.appClient)
-            this
         }
 
         def addAppClientThin(){
             setAppFilter(AppNames.appClientThin)
-            this
         }
     }
 
