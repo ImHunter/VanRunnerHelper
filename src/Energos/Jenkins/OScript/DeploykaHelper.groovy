@@ -408,8 +408,8 @@ class DeploykaHelper extends OScriptHelper {
 
     class SessionFilter {
 
-        private List apps = List.newInstance()
-        private List names = List.newInstance()
+        private ArrayList<String> apps = new ArrayList<>()
+        private ArrayList<String> names = new ArrayList<>()
 
         def setAppFilter(Object... apps) {
             apps.each { this.apps.add(it.toString()) }
