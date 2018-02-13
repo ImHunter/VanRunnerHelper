@@ -440,7 +440,7 @@ class DeploykaHelper extends OScriptHelper {
 //            echo("SessionFilter enter apps.size():${apps.size()} names.size():${names.size()}")
 //            echo('SessionFilter enter apps.size!=0=')
             if (apps.size!=0) {
-                echo("SessionFilter test mess1 $retVal")
+//                echo("SessionFilter test mess1 $retVal")
                 if (!retVal.equals('')) {
                     retVal = retVal.concat('|')
                 }
