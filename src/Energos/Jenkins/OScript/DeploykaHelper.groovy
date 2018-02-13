@@ -444,7 +444,7 @@ class DeploykaHelper extends OScriptHelper {
                 if (!retVal.equals('')) {
                     retVal = retVal.concat('|')
                 }
-                echo("SessionFilter test mess1/1 $retVal")
+//                echo("SessionFilter test mess1/1 $retVal")
                 retVal = retVal.concat('appid=').concat(joinArray(apps))
                 echo("SessionFilter test mess2 $retVal")
             }
