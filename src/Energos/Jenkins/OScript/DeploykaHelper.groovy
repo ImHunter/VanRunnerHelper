@@ -90,6 +90,7 @@ class DeploykaHelper extends OScriptHelper {
     //endregion
 
     // region Перечисления
+
     /**
      * Перечисление с возможными командами Деплойки
      */
