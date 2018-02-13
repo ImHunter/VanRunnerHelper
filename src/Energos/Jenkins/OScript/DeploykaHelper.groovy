@@ -426,6 +426,7 @@ class DeploykaHelper extends OScriptHelper {
             this
         }
 
+        @NonCPS
         private String joinArray(def array) {
             String retVal
             retVal = array.join(';')
