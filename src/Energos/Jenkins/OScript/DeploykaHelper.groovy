@@ -835,7 +835,7 @@ class DeploykaHelper extends OScriptHelper {
         return retVal
     }
 
-    @NotifyAbout(OP_UPDATE_DB)
+    @NotifyAbout(2)
     boolean updateDB(Closure closure = null) {
         boolean retVal
 //        notifyAbout('Попытка обновления базы данных', getAnnotation(NotifyAbout), NOTIFY_TYPE_BEFORE)
