@@ -539,6 +539,9 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromRepo()
         echo("executed updateConfigFromRepo")
 
+        updateDB()
+        echo("DB updated")
+
         updateConfigFromPackage('path to package')
 
         def flt = newSessionFilter()
@@ -832,9 +835,10 @@ class DeploykaHelper extends OScriptHelper {
         return retVal
     }
 
+    @NotifyAbout(OP_UPDATE_DB)
     boolean updateDB(Closure closure = null) {
         boolean retVal
-        notifyAbout('Попытка обновления базы данных', OP_UPDATE_DB, NOTIFY_TYPE_BEFORE)
+        notifyAbout('Попытка обновления базы данных', getAnnotation(NotifyAbout), NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, DeplCommand.dcUpdateDB)
             .addValue(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
