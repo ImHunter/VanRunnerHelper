@@ -525,13 +525,14 @@ class DeploykaHelper extends OScriptHelper {
      * Используются значения констант OP_*
      * @param msgType Тип оповещения (до, перед, не задано).
      * Используются значения констант NOTIFY_TYPE_*
+     * @param operationResult Результат выполнения операции
      * @param params Дополнительные параметры, которые могут быть переданы с оповещением.
      * Этим параметром передаются параметры выполнения какого-либо метода.
      * К примеру, при выполнении метода setLockStatusForUsers(locked), здесь передается параметр locked.
      */
-    protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, Object... params){
+    protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, def operationResult = null, Object... params){
         if (notifyEvent!=null)
-            notifyEvent.call(msgText, this, msgKind, msgType, params)
+            notifyEvent.call(msgText, this, msgKind, msgType, operationResult, params)
     }
 
 // @NonCPS
@@ -694,7 +695,7 @@ class DeploykaHelper extends OScriptHelper {
         testEcho('подготовили параметры запуска launchParam')
 
         // echo ("executing script");
-        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), updateMetadata)
+        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, updateMetadata)
         retVal = execScript(
                 new ExecParams(this, DeplCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
@@ -705,7 +706,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair('-uccode', ucCode)
         )
         configInfo.readLogInfo(resultLog)
-        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), updateMetadata)
+        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, updateMetadata)
         retVal
     }
 
@@ -736,13 +737,13 @@ class DeploykaHelper extends OScriptHelper {
     boolean setLockStatusForUsers(Boolean locked) {
 
         String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей'
-        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE())
+        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE(), null, locked)
 
         boolean retVal = setLockStatus(DeplCommand.dcSession, locked)
 
         msg = (locked ? 'Установка': 'Снятие') + ' блокировки сеансов пользователей ' +
                 (retVal ? 'успешно' : 'не') + ' выполнена'
-        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_AFTER())
+        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_AFTER(), retVal, locked)
 
         retVal
     }
@@ -756,11 +757,11 @@ class DeploykaHelper extends OScriptHelper {
     // @NonCPS
     boolean setLockStatusForBackgrounds(Boolean locked) {
         String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий'
-        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), locked)
+        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), null, locked)
         boolean retVal = setLockStatus(DeplCommand.dcScheduledJobs, locked)
         msg = (locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
                 (retVal ? 'успешно' : 'не') + ' выполнена'
-        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), locked)
+        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), retVal, locked)
         retVal
     }
 
