@@ -449,15 +449,15 @@ class DeploykaHelper extends OScriptHelper {
 //                echo("SessionFilter test mess2 $retVal")
             }
             if (names.size!=0) {
-                echo("SessionFilter test mess3 $retVal")
+//                echo("SessionFilter test mess3 $retVal")
                 if (!retVal.equals('')) {
                     retVal = retVal.concat('|')
                 }
-                echo("SessionFilter test mess3/1 $retVal")
+//                echo("SessionFilter test mess3/1 $retVal")
                 retVal = retVal.concat('name=').concat(joinArray(names))
-                echo("SessionFilter test mess4 $retVal")
+//                echo("SessionFilter test mess4 $retVal")
             }
-            echo("SessionFilter test mess5 $retVal")
+//            echo("SessionFilter test mess5 $retVal")
             retVal
         }
     }
