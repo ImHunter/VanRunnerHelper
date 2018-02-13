@@ -427,6 +427,7 @@ class DeploykaHelper extends OScriptHelper {
             retVal
         }
 
+        @NonCPS
         @Override
         String toString() {
             String retVal = ''
@@ -540,13 +541,13 @@ class DeploykaHelper extends OScriptHelper {
 
         updateConfigFromPackage('path to package')
 
-        def flt = new SessionFilter()
+        def flt = newSessionFilter()
             .setAppFilter(AppNames.appClient, AppNames.appBackgroung)
             .setNamesFilter('админ', "польз")
             .toString()
         echo("Test filter filled: $flt")
 
-        flt = new SessionFilter()
+        flt = newSessionFilter()
                 .toString()
         echo("Test filter empty: $flt")
 
@@ -610,6 +611,10 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // endregion
+
+    SessionFilter newSessionFilter(){
+        new SessionFilter()
+    }
 
     // @NonCPS
     boolean launchUserInterface(boolean updateMetadata = false){
