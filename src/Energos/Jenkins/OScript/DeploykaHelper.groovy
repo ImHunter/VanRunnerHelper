@@ -451,6 +451,16 @@ class DeploykaHelper extends OScriptHelper {
             }
             retVal
         }
+
+        def addAppClient(){
+            setAppFilter(AppNames.appClient)
+            this
+        }
+
+        def addAppClientThin(){
+            setAppFilter(AppNames.appClientThin)
+            this
+        }
     }
 
     // endregion
@@ -626,7 +636,7 @@ class DeploykaHelper extends OScriptHelper {
     // endregion
 
     SessionFilter newSessionFilter(){
-        new SessionFilter()
+        return new SessionFilter()
     }
 
     // @NonCPS
