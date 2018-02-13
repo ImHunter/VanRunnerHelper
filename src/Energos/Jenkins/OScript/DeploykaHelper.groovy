@@ -63,7 +63,7 @@ class DeploykaHelper extends OScriptHelper {
      * Операция - ожидание завершения сессий
      */
     final static int OP_WAIT_FOR_CLOSE = 9
-//    final static int OP_ =
+    final static int OP_WAIT_FOR_CLOSE_CONTINUE = 10
 //    final static int OP_ =
 //    final static int OP_ =
 //    final static int OP_ =
@@ -918,10 +918,13 @@ class DeploykaHelper extends OScriptHelper {
             notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
             int iter = 0
             while (Date.newInstance().compareTo(maxDT)<0) {
+                iter++
                 sleep(minutesPerWaitCycle * 60 * 1000)
                 retVal = !findSessions(appFilter)
                 if (retVal)
                     break
+                else
+                    notifyAbout("Продолжение ожидания завершения процессов. Цикл: $iter", OP_WAIT_FOR_CLOSE_CONTINUE, NOTIFY_TYPE_UNDEFINED)
             }
             if (!retVal)
                 retVal = !findSessions(appFilter)
