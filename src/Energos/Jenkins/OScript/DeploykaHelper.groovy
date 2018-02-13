@@ -7,6 +7,7 @@ import java.lang.*
  */
 class DeploykaHelper extends OScriptHelper {
 
+    //region Константы типов оповещений
     /**
      * Тип оповещения - неопределено
      */
@@ -19,7 +20,9 @@ class DeploykaHelper extends OScriptHelper {
      * Тип оповещения - после выполнения операции
      */
     final static int NOTIFY_TYPE_AFTER = 2
+    //endregion
 
+    //region Константы видов оповещений (операций)
     /**
      * Вид операции - неопределено.
      */
@@ -57,7 +60,9 @@ class DeploykaHelper extends OScriptHelper {
      */
     final static int OP_UPDATE_DB = 8
 //    final static int OP_ =
+    //endregion
 
+    //region Поля public
     /**
      * Путь к выполняемому скрипту Деплойка.
      * Скрипт может быть и любой другой
@@ -82,7 +87,9 @@ class DeploykaHelper extends OScriptHelper {
      * внешней обработки. Результаты ее работы (лог) разбираются и интерпретируются.
      */
     public ConfigInfo configInfo
+    //endregion
 
+    // region Перечисления
     /**
      * Перечисление с возможными командами Деплойки
      */
@@ -163,53 +170,6 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
-    class ConfigInfo {
-        
-        Boolean isChanged
-        String shortName
-        String version
-        String platform
-
-        private void readLogInfo(String log) {
-            
-            String paramValue
-
-            isChanged = null
-            paramValue = readParamValue(log, 'CONFIG_STATE')
-            // echo "value of CONFIG_STATE: ${paramValue}";
-            if (paramValue!=null) {
-                if (paramValue.toUpperCase() == 'CONFIG_CHANGED') {
-                    isChanged = true
-                } else {
-                    if (paramValue.toUpperCase() == 'CONFIG_NOT_CHANGED') {
-                        isChanged = false
-                    }    
-                }
-            }
-            shortName = readParamValue(log, 'SHORT_CONFIG_NAME')
-            version = readParamValue(log, 'CONFIG_VERSION')
-            platform = readParamValue(log, 'PLATFORM')
-        }
-
-        private String readParamValue(String log, String paramName) {
-            String retVal = null
-            Scanner scanner = new Scanner(log)
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine()
-                Integer posParam = line.toUpperCase().indexOf(paramName.toUpperCase())
-                if (posParam>=0) {
-                    retVal = line.substring(posParam + paramName.length())
-                    if (retVal.startsWith(':')){
-                        retVal = retVal.substring(1)
-                    }
-                    break
-                }
-            }
-            scanner.close()
-            retVal
-        }
-    }
-
     enum ParamsEnum {
         peDbServer,
         peDbConnString,
@@ -271,6 +231,128 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
+    /**
+     * Возможные приложения 1С
+     * 1CV8 1CV8C WebClient Designer COMConnection WSConnection BackgroundJob WebServerExtension
+     */
+    enum AppNames{
+        /**
+         * Толстый клиент
+         */
+        appClient {
+            @NonCPS
+            @Override
+            String toString() { return '1CV8' }
+        },
+        /**
+         * Тонкий клиент
+         */
+        appClientThin {
+            @NonCPS
+            @Override
+            String toString() {return '1CV8C' }
+        },
+        /**
+         * Веб-клиент
+         */
+        appWebClient {
+            @NonCPS
+            @Override
+            String toString() {return 'WebClient' }
+        },
+        /**
+         * Конфигуратор
+         */
+        appDesigner {
+            @NonCPS
+            @Override
+            String toString() {return 'Designer' }
+        },
+        /**
+         * COM-коннектор
+         */
+        appComConnector {
+            @NonCPS
+            @Override
+            String toString() {return 'COMConnection' }
+        },
+        /**
+         * Вебсервис
+         */
+        appWS {
+            @NonCPS
+            @Override
+            String toString() {return 'WSConnection' }
+        },
+        /**
+         * Фоновое задание
+         */
+        appBackgroung {
+            @NonCPS
+            @Override
+            String toString() {return 'BackgroundJob' }
+        },
+        /**
+         * Вебсервисное расширение
+         */
+        appWebExt {
+            @NonCPS
+            @Override
+            String toString() {return 'WebServerExtension' }
+        }
+    }
+
+    // endregion
+
+    // region Вложенные классы
+
+    class ConfigInfo {
+        
+        Boolean isChanged
+        String shortName
+        String version
+        String platform
+
+        private void readLogInfo(String log) {
+            
+            String paramValue
+
+            isChanged = null
+            paramValue = readParamValue(log, 'CONFIG_STATE')
+            // echo "value of CONFIG_STATE: ${paramValue}";
+            if (paramValue!=null) {
+                if (paramValue.toUpperCase() == 'CONFIG_CHANGED') {
+                    isChanged = true
+                } else {
+                    if (paramValue.toUpperCase() == 'CONFIG_NOT_CHANGED') {
+                        isChanged = false
+                    }    
+                }
+            }
+            shortName = readParamValue(log, 'SHORT_CONFIG_NAME')
+            version = readParamValue(log, 'CONFIG_VERSION')
+            platform = readParamValue(log, 'PLATFORM')
+        }
+
+        private String readParamValue(String log, String paramName) {
+            String retVal = null
+            Scanner scanner = new Scanner(log)
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine()
+                Integer posParam = line.toUpperCase().indexOf(paramName.toUpperCase())
+                if (posParam>=0) {
+                    retVal = line.substring(posParam + paramName.length())
+                    if (retVal.startsWith(':')){
+                        retVal = retVal.substring(1)
+                    }
+                    break
+                }
+            }
+            scanner.close()
+            retVal
+        }
+    }
+
     class ExecParams<String> extends ArrayList<String>{
 
         def params
@@ -323,6 +405,44 @@ class DeploykaHelper extends OScriptHelper {
             return addValue(parKey).addValue(parVal)
         }
     }
+
+    class SessionFilter {
+
+        private Object[] apps = []
+        private Object[] names = []
+
+        def setAppFilter(Object... apps) {
+            this.apps << apps
+            this
+        }
+
+        def setNamesFilter(Object... names) {
+            this.names << names
+            this
+        }
+
+        private String joinArray(Objects[] array) {
+            String retVal
+            retVal = array.join(';')
+            retVal
+        }
+
+        @Override
+        String toString() {
+            String retVal = ''
+            if (apps.size()!=0) {
+                if (retVal!='') retVal = retVal.concat('|')
+                retVal = retVal.concat('appid=').concat(joinArray(apps))
+            }
+            if (names.size()!=0) {
+                if (retVal!='') retVal = retVal.concat('|')
+                retVal = retVal.concat('name=').concat(joinArray(names))
+            }
+            retVal
+        }
+    }
+
+    // endregion
 
     DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
         
@@ -420,10 +540,21 @@ class DeploykaHelper extends OScriptHelper {
 
         updateConfigFromPackage('path to package')
 
+        def flt = new SessionFilter()
+            .setAppFilter(AppNames.appClient, AppNames.appBackgroung)
+            .setNamesFilter('админ', "польз")
+            .toString()
+        echo("Test filter filled: $flt")
+
+        flt = new SessionFilter()
+                .toString()
+        echo("Test filter empty: $flt")
+
         echo("finish of selfTest")
         isTestMode = false
     }
 
+    //region Установка параметров
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean isApply = true){
         if (isApply) {
@@ -477,6 +608,8 @@ class DeploykaHelper extends OScriptHelper {
         setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath])
         this
     }
+
+    // endregion
 
     // @NonCPS
     boolean launchUserInterface(boolean updateMetadata = false){
