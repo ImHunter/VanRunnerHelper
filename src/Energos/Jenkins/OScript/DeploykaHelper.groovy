@@ -59,6 +59,13 @@ class DeploykaHelper extends OScriptHelper {
      * Вид операции - обновление БД
      */
     final static int OP_UPDATE_DB = 8
+    /**
+     * Операция - ожидание завершения сессий
+     */
+    final static int OP_WAIT_FOR_CLOSE = 9
+//    final static int OP_ =
+//    final static int OP_ =
+//    final static int OP_ =
 //    final static int OP_ =
     //endregion
 
@@ -602,6 +609,8 @@ class DeploykaHelper extends OScriptHelper {
                 .toString()
         echo("Test filter empty: $flt")
 
+        waitForCloseSessions(Calendar.newInstance().add(Calendar.MINUTE, 4))
+
         echo("finish of selfTest")
         isTestMode = false
     }
@@ -865,7 +874,7 @@ class DeploykaHelper extends OScriptHelper {
     } 
 
     // возврат Истина, если сеансы найдены
-    def findSessions(String appFilter = null, Closure closure = null) {
+    def findSessions(def appFilter = null, Closure closure = null) {
         ExecParams params = new ExecParams(this)
                 .addCommand(DeplCommand.dcSession)
                 .addValue('search')
@@ -897,6 +906,25 @@ class DeploykaHelper extends OScriptHelper {
         if (closure!=null)
             closure.call(retVal)
         notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER)
+        retVal
+    }
+
+    boolean waitForCloseSessions(Date maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
+        boolean retVal = !findSessions(appFilter)
+        int oper = OP_WAIT_FOR_CLOSE
+        if (!retVal) {
+            notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
+            int iter = 0
+            while (Date.newInstance().compareTo(maxDT)<0) {
+                sleep(minutesPerWaitCycle * 60 * 1000)
+                retVal = !findSessions(appFilter)
+                if (retVal)
+                    break
+            }
+            if (!retVal)
+                retVal = !findSessions(appFilter)
+            notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, maxDT, minutesPerWaitCycle, appFilter)
+        }
         retVal
     }
 
