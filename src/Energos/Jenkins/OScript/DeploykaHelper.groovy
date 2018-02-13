@@ -97,6 +97,7 @@ class DeploykaHelper extends OScriptHelper {
      * внешней обработки. Результаты ее работы (лог) разбираются и интерпретируются.
      */
     public ConfigInfo configInfo
+   // public
     //endregion
 
     // region Перечисления
