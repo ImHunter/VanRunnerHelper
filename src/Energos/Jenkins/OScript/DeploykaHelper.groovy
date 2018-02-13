@@ -542,7 +542,7 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromPackage('path to package')
 
         def flt = newSessionFilter()
-            .setAppFilter(AppNames.appClient, AppNames.appBackgroung)
+            .setAppFilter(AppNames.appClient, AppNames.appBackgroung, 'some app', 'other app')
             .setNamesFilter('админ', "польз")
             .toString()
         echo("Test filter filled: $flt")
