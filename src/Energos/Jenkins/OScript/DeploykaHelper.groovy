@@ -528,7 +528,7 @@ class DeploykaHelper extends OScriptHelper {
         setLockStatus(DeplCommand.dcSession, true)
         echo("executed setLockStatus(DeplCommand.dcSession, true)")
 
-        killSessions()
+        killSessions(this.newSessionFilter().setAppFilter(this.AppNames.appClient, this.AppNames.appClientThin))
         echo("executed killSessions()")
 
         setRepo('repo path', 'repo-us', 'repo-pwd')
@@ -709,7 +709,7 @@ class DeploykaHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    def killSessions(Boolean withNoLock = true, String appFilter = '') {
+    def killSessions(Boolean withNoLock = true, def appFilter = '') {
         String msg = 'Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
         ExecParams params = new ExecParams(this, DeplCommand.dcSession)
@@ -723,7 +723,7 @@ class DeploykaHelper extends OScriptHelper {
         if (withNoLock) {
             params = params.addPair("-with-nolock", "y")
         }
-        if (appFilter!=null && appFilter!='') {
+        if (appFilter!=null && appFilter.toString()!='') {
             params = params.addPair("-filter", appFilter)
         }
         // echo execParams;
@@ -837,7 +837,7 @@ class DeploykaHelper extends OScriptHelper {
 
     boolean updateDB(Closure closure = null) {
         boolean retVal
-//        notifyAbout('Попытка обновления базы данных', getAnnotation(NotifyAbout), NOTIFY_TYPE_BEFORE)
+        notifyAbout('Попытка обновления базы данных', OP_UPDATE_DB, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, DeplCommand.dcUpdateDB)
             .addValue(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
