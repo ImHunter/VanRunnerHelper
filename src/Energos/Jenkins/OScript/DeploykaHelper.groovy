@@ -432,11 +432,13 @@ class DeploykaHelper extends OScriptHelper {
         java.lang.String toString() {
             java.lang.String retVal = ''
             if (apps.size()!=0) {
-                if (retVal!='') retVal = retVal.concat('|')
+                if (!retVal.equals(''))
+                    retVal = retVal.concat('|')
                 retVal = retVal.concat('appid=').concat(joinArray(apps))
             }
             if (names.size()!=0) {
-                if (retVal!='') retVal = retVal.concat('|')
+                if (!retVal.equals(''))
+                    retVal = retVal.concat('|')
                 retVal = retVal.concat('name=').concat(joinArray(names))
             }
             return retVal
@@ -528,8 +530,8 @@ class DeploykaHelper extends OScriptHelper {
         setLockStatus(DeplCommand.dcSession, true)
         echo("executed setLockStatus(DeplCommand.dcSession, true)")
 
-        killSessions(true, newSessionFilter().setAppFilter(AppNames.appClient, AppNames.appClientThin))
-        echo("executed killSessions()")
+//        killSessions(true, newSessionFilter().setAppFilter(AppNames.appClient, AppNames.appClientThin))
+//        echo("executed killSessions()")
 
         setRepo('repo path', 'repo-us', 'repo-pwd')
         echo("executed setRepo")
