@@ -52,7 +52,10 @@ class DeploykaHelper extends OScriptHelper {
      * Вид операции - отключение конфигурации от хранилища
      */
     final static int OP_UNBIND_REPO = 7
-//    final static int OP_ =
+    /**
+     * Вид операции - обновление БД
+     */
+    final static int OP_UPDATE_DB = 8
 //    final static int OP_ =
 
     /**
@@ -149,6 +152,14 @@ class DeploykaHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() { return "fileop" }
+        },
+        /**
+         * Обновление БД
+         */
+        dcUpdateDB {
+            @NonCPS
+            @Override
+            String toString() { return "dbupdate" }
         }
     }
 
@@ -681,6 +692,19 @@ class DeploykaHelper extends OScriptHelper {
             closure(retVal)
         }
         return retVal
-    }   
+    }
+
+    boolean updateDB(Closure closure = null) {
+        boolean retVal
+        notifyAbout('Попытка обновления базы данных', OP_UPDATE_DB, NOTIFY_TYPE_BEFORE)
+        ExecParams params = new ExecParams(this, DeplCommand.dcUpdateDB)
+            .addValue(ParamsEnum.peDbConnString)
+            .addPair(ParamsEnum.peDbUser)
+            .addPair(ParamsEnum.peDbPwd)
+            .addPair('-uccode', ucCode)
+        retVal = execScript(params)
+        notifyAbout('Выполнено обновление базы данных', OP_UPDATE_DB, NOTIFY_TYPE_AFTER)
+        retVal
+    }
 
  }
