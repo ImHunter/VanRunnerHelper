@@ -609,7 +609,9 @@ class DeploykaHelper extends OScriptHelper {
                 .toString()
         echo("Test filter empty: $flt")
 
-        waitForCloseSessions(Calendar.newInstance().add(Calendar.MINUTE, 4))
+        def now = Calendar.newInstance()
+        now.add(Calendar.MINUTE, 4)
+        waitForCloseSessions(now.getTime())
 
         echo("finish of selfTest")
         isTestMode = false
