@@ -438,7 +438,7 @@ class DeploykaHelper extends OScriptHelper {
         java.lang.String toString() {
             java.lang.String retVal = ''
             echo("SessionFilter enter apps.size()=$apps.size names.size()=$names.size")
-            if (apps.size!=0) {
+            if (apps.size) {
                 echo("SessionFilter test mess1 $retVal")
                 if (!retVal.equals('')) {
                     retVal = retVal.concat('|')
@@ -447,7 +447,7 @@ class DeploykaHelper extends OScriptHelper {
                 retVal = retVal.concat('appid=').concat(joinArray(apps))
                 echo("SessionFilter test mess2 $retVal")
             }
-            if (names.size!=0) {
+            if (names.size) {
                 echo("SessionFilter test mess3 $retVal")
                 if (!retVal.equals('')) {
                     retVal = retVal.concat('|')
