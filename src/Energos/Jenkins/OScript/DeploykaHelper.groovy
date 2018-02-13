@@ -228,6 +228,11 @@ class DeploykaHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() {return "-dir" }
+        },
+        peSessionFilter{
+            @NonCPS
+            @Override
+            String toString() {return "-filter" }
         }
     }
 
@@ -712,7 +717,8 @@ class DeploykaHelper extends OScriptHelper {
 
     // @NonCPS
     def killSessions(Boolean withNoLock = true, def appFilter = '') {
-        String msg = 'Попытка завершения сеансов' + (appFilter!=null && appFilter!='' ? '' : '; фильтр: ' + appFilter)
+        String filter = appFilter.toString()
+        String msg = 'Попытка завершения сеансов' + (appFilter!=null && !filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
         ExecParams params = new ExecParams(this, DeplCommand.dcSession)
                 .addValue('kill')
@@ -725,8 +731,8 @@ class DeploykaHelper extends OScriptHelper {
         if (withNoLock) {
             params = params.addPair("-with-nolock", "y")
         }
-        if (appFilter!=null && appFilter.toString()!='') {
-            params = params.addPair("-filter", appFilter)
+        if (appFilter!=null && !filter.isEmpty()) {
+            params = params.addPair(ParamsEnum.peSessionFilter, filter)
         }
         // echo execParams;
         boolean retVal = execScript(params)
@@ -827,8 +833,8 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-        if (appFilter!=null && appFilter!='') {
-            params = params.addPair("-filter", appFilter)
+        if (appFilter!=null && !appFilter.toString().isEmpty()) {
+            params = params.addPair(ParamsEnum.peSessionFilter, appFilter)
         }
         def retVal = execScript(params)
         if (closure!=null) {
