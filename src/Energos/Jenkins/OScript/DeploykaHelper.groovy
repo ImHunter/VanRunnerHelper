@@ -411,6 +411,11 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
+    /**
+     * Класс для формирования фильтра команды session.
+     * Пример использования:
+     * dep.killSessions(false, dep.newSessionFilter().addAppClient().addAppDesigner().setNamesFilter('user1', 'admin')) // dep - объект класса DeploykaHelper
+     */
     class SessionFilter {
 
         private ArrayList<String> apps = new ArrayList<>()
@@ -880,7 +885,8 @@ class DeploykaHelper extends OScriptHelper {
 
     boolean updateDB(Closure closure = null) {
         boolean retVal
-        notifyAbout('Попытка обновления базы данных', OP_UPDATE_DB, NOTIFY_TYPE_BEFORE)
+        def oper = OP_UPDATE_DB
+        notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, DeplCommand.dcUpdateDB)
             .addValue(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
@@ -889,7 +895,7 @@ class DeploykaHelper extends OScriptHelper {
         retVal = execScript(params)
         if (closure!=null)
             closure.call(retVal)
-        notifyAbout('Выполнено обновление базы данных', OP_UPDATE_DB, NOTIFY_TYPE_AFTER)
+        notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER)
         retVal
     }
 
