@@ -97,7 +97,11 @@ class DeploykaHelper extends OScriptHelper {
      * внешней обработки. Результаты ее работы (лог) разбираются и интерпретируются.
      */
     public ConfigInfo configInfo
-   // public
+    /**
+     * Поле для хранения произвольного контекста.
+     * Задумано для того, чтобы понимать, в каком контексте выполняется та или иная операция. Скорее всего, будет применяться для расширенной работы оповещалок через notifyEvent
+     */
+    protected def context
     //endregion
 
     // region Перечисления
@@ -614,9 +618,9 @@ class DeploykaHelper extends OScriptHelper {
                 .toString()
         echo("Test filter empty: $flt")
 
-        def now = Calendar.getInstance()
-        now.add(Calendar.MINUTE, 4)
-        echo("waitForCloseSessions: ${waitForCloseSessions(now.getTime())}")
+//        def now = Calendar.getInstance()
+//        now.add(Calendar.MINUTE, 4)
+//        echo("waitForCloseSessions: ${waitForCloseSessions(now.getTime())}")
 
         echo("finish of selfTest")
         isTestMode = false
@@ -786,7 +790,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair("-lockuccode", ucCode)
         if (withNoLock) {
-            params = params.addPair("-with-nolock", "y")
+            params = params.addValue("-with-nolock")
         }
         if (appFilter!=null && !filter.isEmpty()) {
             params = params.addPair(ParamsEnum.peSessionFilter, filter)

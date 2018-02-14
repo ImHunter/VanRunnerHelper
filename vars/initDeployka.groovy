@@ -1,4 +1,4 @@
-import Energos.Jenkins.OScript.DeploykaHelper;
+import Energos.Jenkins.OScript.DeploykaHelper
 
 /**
  * Функция initDeployka. Служит для получения экземпляра класса DeploykaHelper
