@@ -814,6 +814,7 @@ class DeploykaHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
+                .addPair("-uccode", ucCode)
         )
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_AFTER(), pathToPackage)
         retVal
