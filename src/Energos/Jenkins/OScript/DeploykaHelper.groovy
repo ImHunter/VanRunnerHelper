@@ -802,7 +802,11 @@ class DeploykaHelper extends OScriptHelper {
         retVal
     }
 
-    // @NonCPS
+    /**
+     * Обновление конфигурации из пакета обновлений
+     * @param pathToPackage Путь к пакету обновлений
+     * @return Результат обновления
+     */
     boolean updateConfigFromPackage(String pathToPackage) {
         String msg = 'Попытка обновления конфигурации из пакета обновлений'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
