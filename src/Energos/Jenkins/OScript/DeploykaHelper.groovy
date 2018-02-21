@@ -24,47 +24,47 @@ class DeploykaHelper extends OScriptHelper {
 
     //region Константы видов оповещений (операций)
     /**
-     * Вид операции - неопределено.
+     * Вид операции - неопределено (=0).
      */
     final static int OP_UNDEFINED = 0
     /**
-     * Вид операции - запуск в режиме 1С:Предприятик
+     * Вид операции - запуск в режиме 1С:Предприятие (=1)
      */
     final static int OP_LAUNCH_USER_INTERFACE = 1
     /**
-     * Вид опреации - блокировка/разблокировка пользовательских сеансов
+     * Вид опреации - блокировка/разблокировка пользовательских сеансов (=2)
      */
     final static int OP_SET_LOCK_USERS = 2
     /**
-     * Вид операции - блокировка/разблокировка регламентных заданий
+     * Вид операции - блокировка/разблокировка регламентных заданий (=3)
      */
     final static int OP_SET_LOCK_BACKGROUNDS = 3
     /**
-     * Вид операции - завершение сеансов
+     * Вид операции - завершение сеансов (=4)
      */
     final static int OP_KILL_SESSIONS = 4
     /**
-     * Вид операции - обновление конфигурации из пакета обновления
+     * Вид операции - обновление конфигурации из пакета обновления (=5)
      */
     final static int OP_UPDATE_CONFIG_FROM_PACKAGE = 5
     /**
-     * Вид операции - обновление конфигурации из хранилища
+     * Вид операции - обновление конфигурации из хранилища (=6)
      */
     final static int OP_UPDATE_CONFIG_FROM_REPO = 6
     /**
-     * Вид операции - отключение конфигурации от хранилища
+     * Вид операции - отключение конфигурации от хранилища (=7)
      */
     final static int OP_UNBIND_REPO = 7
     /**
-     * Вид операции - обновление БД
+     * Вид операции - обновление БД (=8)
      */
     final static int OP_UPDATE_DB = 8
     /**
-     * Операция - ожидание завершения сессий
+     * Операция - ожидание завершения сессий (=9)
      */
     final static int OP_WAIT_FOR_CLOSE = 9
     /**
-     * Операция - ожидание завершения сессий, выполнен цикл ожидания
+     * Операция - ожидание завершения сессий, выполнен цикл ожидания (=10)
      */
     final static int OP_WAIT_FOR_CLOSE_CONTINUE = 10
 //    final static int OP_ =
@@ -327,6 +327,10 @@ class DeploykaHelper extends OScriptHelper {
 
     // region Вложенные классы
 
+    /**
+     * Класс для отражения информации о конфигурации.
+     * Заполняется по итогам запуска сервисной обработки в режиме 1С:Предприятие. Обработка выводит определенные логи. Их содержимое интерпретируется и отражается в полях объекта.
+     */
     class ConfigInfo {
         
         Boolean isChanged
@@ -929,11 +933,12 @@ class DeploykaHelper extends OScriptHelper {
         boolean retVal = !findSessions(appFilter)
         int oper = OP_WAIT_FOR_CLOSE
         if (!retVal) {
+            int sleepTime = minutesPerWaitCycle>0 ? minutesPerWaitCycle * 60 * 1000 : maxDT - Date.newInstance()
             notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
             int iter = 0
             while (Date.newInstance().compareTo(maxDT)<0) {
                 iter++
-                sleep(minutesPerWaitCycle * 60 * 1000)
+                sleep(sleepTime)
                 retVal = !findSessions(appFilter)
                 if (retVal)
                     break
