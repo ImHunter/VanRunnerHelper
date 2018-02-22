@@ -922,6 +922,7 @@ class DeploykaHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
             .addPair('-uccode', ucCode)
+            .addValue('-allow-warnings')
         retVal = execScript(params)
         if (closure!=null)
             closure.call(retVal)
