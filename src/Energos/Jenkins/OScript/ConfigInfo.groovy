@@ -49,5 +49,6 @@ class ConfigInfo {
         scanner.close()
         retVal
     }
+
 }
 
