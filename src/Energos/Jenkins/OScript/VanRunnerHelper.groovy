@@ -74,7 +74,7 @@ class VanRunnerHelper extends OScriptHelper {
 
     //region Поля public
     /**
-     * Путь к выполняемому скрипту Деплойка.
+     * Путь к выполняемому скрипту Vanessa-runner.
      * Скрипт может быть и любой другой
      */
     public pathToDeployka
