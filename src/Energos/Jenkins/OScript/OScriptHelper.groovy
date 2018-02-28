@@ -6,11 +6,12 @@ import java.lang.*
 
 /**
  * Класс предназначен для запуска скриптового файла OScript и ожидания его завершения.
- * Родился для того, чтобы уйти от использования синтаксиса bat, предоставляемого Jenkins, т.к. работа bat - неустойчива.
- * Предустановлен запуск процесса oscript. Но это можно легко поменять переприсвоением поля mainProcessName - указать любой другой вызываемый процесс (например, cmd).
+ * Родился для того, чтобы уйти от использования плагина bat, предоставляемого Jenkins, т.к. работа bat бывает неустойчива.
+ * Предустановлен запуск процесса oscript. Но это можно легко поменять переприсвоением поля mainProcessName - указать любой другой вызываемый процесс (например, cmd или runner).
  */
 class OScriptHelper {
 
+    // region Защищенные поля
     /**
      * Переменная для хранения контекста скрипта Jenkins, чтобы можно было выполнять любые его операции.
      */
@@ -19,6 +20,8 @@ class OScriptHelper {
      * Переменная, указывающая, что действует тестовый режим. При этом процесс не запускается, а лишь в консоль выводятся параметры запуска процесса.
      */
     protected boolean isTestMode = false
+    // endregion
+    // region Публичные поля
     /**
      * Путь к выполняемому скрипту
      */
@@ -35,11 +38,17 @@ class OScriptHelper {
      * Кодировка, в которой читается лог выполнения процесса. Предустановлено значение 'Cp866'
      */
     public String outputLogEncoding = 'Cp866'
-//    public Integer interruptErrorCode = 255
     /**
      * Имя запускаемого процесса. Предустановлен запуск oscript. Имя этого процесса автоматически добавляется первым параметром при запуске скрипта.
      */
     public String mainProcessName = 'oscript'
+    // endregion
+    // region Приватные поля
+    /**
+     * Запускаемая командная строка
+     */
+    private String launchString
+    // endregion
 
     /**
      * Конструктор класса
@@ -61,9 +70,11 @@ class OScriptHelper {
      */
     void echo(def msg){
         String echoMsg = "${msg}".toString()
-        if (script!=null) {
-            script.echo(echoMsg)
-        } else
+        if (script!=null)
+            try {
+                script.echo(echoMsg)
+            } catch (e) { println echoMsg }
+        else
             println echoMsg
     }
 
@@ -92,6 +103,14 @@ class OScriptHelper {
     }
 
     /**
+     * Возврат запускаемой командной строки
+     * @return Запускаемая строка
+     */
+    String getLaunchString(){
+        this.launchString
+    }
+
+    /**
      * Выполнение процесса с параметрами.
      * Имя процесса содержится в поле mainProcessName и предустановление в значение oscript.
      * @param params Параметры, с которыми вызывается процесс
@@ -112,7 +131,10 @@ class OScriptHelper {
         Boolean interrupted = false
 
         String[] initParams = [mainProcessName]
+        if (pathToScript!=null)
+            initParams = initParams + [pathToScript]
         String[] fullParams = initParams + params
+        launchString = fullParams.join(' ')
 
         if (isTestMode) {
             echo("Вызов execScript в тестовом режиме с параметрами $fullParams")
@@ -135,7 +157,7 @@ class OScriptHelper {
 
             if (interrupted) {
                 while (proc.isAlive()) {
-                    Thread.sleep(10000)
+                    Thread.sleep(5000)
                 }
                 resultCode = proc.exitValue()
                 resultLog = readLog(proc.getIn())

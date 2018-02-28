@@ -247,131 +247,9 @@ class DeploykaHelper extends OScriptHelper {
         }
     }
 
-    /**
-     * Возможные приложения 1С
-     * 1CV8 1CV8C WebClient Designer COMConnection WSConnection BackgroundJob WebServerExtension
-     */
-    enum AppNames{
-        /**
-         * Толстый клиент
-         */
-        appClient {
-            @NonCPS
-            @Override
-            String toString() { return '1CV8' }
-        },
-        /**
-         * Тонкий клиент
-         */
-        appClientThin {
-            @NonCPS
-            @Override
-            String toString() {return '1CV8C' }
-        },
-        /**
-         * Веб-клиент
-         */
-        appWebClient {
-            @NonCPS
-            @Override
-            String toString() {return 'WebClient' }
-        },
-        /**
-         * Конфигуратор
-         */
-        appDesigner {
-            @NonCPS
-            @Override
-            String toString() {return 'Designer' }
-        },
-        /**
-         * COM-коннектор
-         */
-        appComConnector {
-            @NonCPS
-            @Override
-            String toString() {return 'COMConnection' }
-        },
-        /**
-         * Вебсервис
-         */
-        appWS {
-            @NonCPS
-            @Override
-            String toString() {return 'WSConnection' }
-        },
-        /**
-         * Фоновое задание
-         */
-        appBackgroung {
-            @NonCPS
-            @Override
-            String toString() {return 'BackgroundJob' }
-        },
-        /**
-         * Вебсервисное расширение
-         */
-        appWebExt {
-            @NonCPS
-            @Override
-            String toString() {return 'WebServerExtension' }
-        }
-    }
-
     // endregion
 
     // region Вложенные классы
-
-    /**
-     * Класс для отражения информации о конфигурации.
-     * Заполняется по итогам запуска сервисной обработки в режиме 1С:Предприятие. Обработка выводит определенные логи. Их содержимое интерпретируется и отражается в полях объекта.
-     */
-    class ConfigInfo {
-        
-        Boolean isChanged
-        String shortName
-        String version
-        String platform
-
-        private void readLogInfo(String log) {
-            
-            String paramValue
-
-            isChanged = null
-            paramValue = readParamValue(log, 'CONFIG_STATE')
-            // echo "value of CONFIG_STATE: ${paramValue}";
-            if (paramValue!=null) {
-                if (paramValue.toUpperCase() == 'CONFIG_CHANGED') {
-                    isChanged = true
-                } else {
-                    if (paramValue.toUpperCase() == 'CONFIG_NOT_CHANGED') {
-                        isChanged = false
-                    }    
-                }
-            }
-            shortName = readParamValue(log, 'SHORT_CONFIG_NAME')
-            version = readParamValue(log, 'CONFIG_VERSION')
-            platform = readParamValue(log, 'PLATFORM')
-        }
-
-        private String readParamValue(String log, String paramName) {
-            String retVal = null
-            Scanner scanner = new Scanner(log)
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine()
-                Integer posParam = line.toUpperCase().indexOf(paramName.toUpperCase())
-                if (posParam>=0) {
-                    retVal = line.substring(posParam + paramName.length())
-                    if (retVal.startsWith(':')){
-                        retVal = retVal.substring(1)
-                    }
-                    break
-                }
-            }
-            scanner.close()
-            retVal
-        }
-    }
 
     class ExecParams<String> extends ArrayList<String>{
 
@@ -380,7 +258,6 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner){
             super()
             this.params = owner.params
-            addValue(owner.pathToScript)
         }
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
@@ -423,85 +300,6 @@ class DeploykaHelper extends OScriptHelper {
         // @NonCPS
         def addPair(String parKey, String parVal) {
             return addValue(parKey).addValue(parVal)
-        }
-    }
-
-    /**
-     * Класс для формирования фильтра команды session.
-     * Пример использования:
-     * dep.killSessions(false, dep.newSessionFilter().addAppClient().addAppDesigner().setNamesFilter('user1', 'admin')) // dep - объект класса DeploykaHelper
-     */
-    class SessionFilter {
-
-        private ArrayList<String> apps = new ArrayList<>()
-        private ArrayList<String> names = new ArrayList<>()
-
-        def setAppFilter(Object... apps) {
-            apps.each { this.apps.add(it.toString()) }
-            this
-        }
-
-        def setNamesFilter(Object... names) {
-            names.each { this.names.add(it.toString()) }
-            this
-        }
-
-        @NonCPS
-        private String joinArray(def array) {
-            String retVal
-            retVal = array.join(';')
-            retVal
-        }
-
-        @NonCPS
-        @Override
-        java.lang.String toString() {
-            java.lang.String retVal = ''
-            if (apps.size!=0) {
-                if (!retVal.equals('')) {
-                    retVal = retVal.concat('|')
-                }
-                retVal = retVal.concat('appid=').concat(joinArray(apps))
-            }
-            if (names.size!=0) {
-                if (!retVal.equals('')) {
-                    retVal = retVal.concat('|')
-                }
-                retVal = retVal.concat('name=').concat(joinArray(names))
-            }
-            retVal
-        }
-
-        def addAppClient(){
-            setAppFilter(AppNames.appClient)
-        }
-
-        def addAppClientThin(){
-            setAppFilter(AppNames.appClientThin)
-        }
-
-        def addAppBackgroung(){
-            setAppFilter(AppNames.appBackgroung)
-        }
-
-        def addAppComConnector(){
-            setAppFilter(AppNames.appComConnector)
-        }
-
-        def addAppDesigner(){
-            setAppFilter(AppNames.appDesigner)
-        }
-
-        def addAppWebClient(){
-            setAppFilter(AppNames.appWebClient)
-        }
-
-        def addAppWebExt(){
-            setAppFilter(AppNames.appWebExt)
-        }
-
-        def addAppWS(){
-            setAppFilter(AppNames.appWS)
         }
     }
 
@@ -568,10 +366,10 @@ class DeploykaHelper extends OScriptHelper {
 
         params = new ExecParams(this)
         params.addValue(DeplCommand.dcRun)
-        echo("test params new ExecParams(this) and params.addValue(DeplCommand.dcRun): $params")
+        echo("test params new ExecParams(this) and params.addValue(VanRunnerCommand.dcRun): $params")
 
         params = new ExecParams(this, DeplCommand.dcRun)
-        echo("test params new ExecParams(this, DeplCommand.dcRun): $params")
+        echo("test params new ExecParams(this, VanRunnerCommand.dcRun): $params")
 
         params = new ExecParams(this, DeplCommand.dcRun)
             .addPair(ParamsEnum.peDbServer)
@@ -580,7 +378,7 @@ class DeploykaHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbPwd)
             .addPair('custom key', 'custom value')
 
-        echo("test params new ExecParams(this, DeplCommand.dcRun) and many params: $params")
+        echo("test params new ExecParams(this, VanRunnerCommand.dcRun) and many params: $params")
 
         launchUserInterface()
         echo("executed launchUserInterface")
@@ -589,9 +387,9 @@ class DeploykaHelper extends OScriptHelper {
         echo("executed setRAS()")
 
         setLockStatus(DeplCommand.dcSession, true)
-        echo("executed setLockStatus(DeplCommand.dcSession, true)")
+        echo("executed setLockStatus(VanRunnerCommand.dcSession, true)")
 
-//        killSessions(true, newSessionFilter().setAppFilter(AppNames.appClient, AppNames.appClientThin))
+//        killSessions(true, newSessionFilter().addAppFilter(AppNames.appClient, AppNames.appClientThin))
 //        echo("executed killSessions()")
 
         setRepo('repo path', 'repo-us', 'repo-pwd')
@@ -608,7 +406,7 @@ class DeploykaHelper extends OScriptHelper {
         updateConfigFromPackage('path to package')
 
         def flt = newSessionFilter()
-            .setAppFilter(AppNames.appClient, AppNames.appBackgroung, 'some app', 'other app')
+            .addAppFilter(AppNames.appClient, AppNames.appBackgroung, 'some app', 'other app')
             .setNamesFilter('админ', "польз")
             .toString()
         echo("Test filter filled: $flt")
@@ -683,7 +481,7 @@ class DeploykaHelper extends OScriptHelper {
     // endregion
 
     SessionFilter newSessionFilter(){
-        return new SessionFilter()
+        new SessionFilter()
     }
 
     // @NonCPS

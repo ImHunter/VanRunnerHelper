@@ -3,7 +3,7 @@ package Energos.Jenkins.OScript
 import java.lang.*
 
 /**
- * Класс-обертка для операций Деплойки.
+ * Класс-обертка для операций Vanessa-runner.
  */
 class VanRunnerHelper extends OScriptHelper {
 
@@ -103,7 +103,7 @@ class VanRunnerHelper extends OScriptHelper {
     /**
      * Перечисление с возможными командами Деплойки
      */
-    enum DeplCommand {
+    enum VanRunnerCommand {
         /**
          * Запуск в режиме Предприятие
          */
@@ -115,10 +115,10 @@ class VanRunnerHelper extends OScriptHelper {
         /**
          * Обновление конфигурации из пакета обновлений
          */
-        dcLoadCfg {
+        dcUpdateCfg {
             @NonCPS
             @Override
-            String toString() {return "loadcfg" }
+            String toString() {return "update" }
         },
         /**
          * Обновление конфигурации из хранилища
@@ -159,16 +159,8 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() {
-                return "info"
+                return "dbinfo"
             }
-        },
-        /**
-         * Файловые операции
-         */
-        dcFileOperations {
-            @NonCPS
-            @Override
-            String toString() { return "fileop" }
         },
         /**
          * Обновление БД
@@ -176,201 +168,92 @@ class VanRunnerHelper extends OScriptHelper {
         dcUpdateDB {
             @NonCPS
             @Override
-            String toString() { return "dbupdate" }
+            String toString() { return "updatedb" }
         }
     }
 
     enum ParamsEnum {
         peDbServer,
-        peDbConnString,
+        peDbConnString{
+            @NonCPS
+            @Override
+            String toString() {return '--ibconnection' }
+        },
         pePathToServiceEpf{
             @NonCPS
             @Override
-            String toString() {return "-execute" }
+            String toString() {return '--execute' }
         },
         peDbDatabase{
             @NonCPS
             @Override
-            String toString() {return "-db" }
+            String toString() {return '--db' }
         },
         peDbUser{
             @NonCPS
             @Override
-            String toString() {return "-db-user" }
+            String toString() {return '--db-user' }
         },
         peDbPwd{
             @NonCPS
             @Override
-            String toString() {return "-db-pwd" }
+            String toString() {return '--db-pwd' }
         },
-        peRepoPath,
+        peRepoPath{
+            @NonCPS
+            @Override
+            String toString() {return '--storage-name' }
+        },
         peRepoUser{
             @NonCPS
             @Override
-            String toString() {return "-storage-user" }
+            String toString() {return '--storage-user' }
         },
         peRepoPwd{
             @NonCPS
             @Override
-            String toString() {return "-storage-pwd" }
+            String toString() {return '--storage-pwd' }
+        },
+        peRepoVersion{
+            @NonCPS
+            @Override
+            String toString() {return '--storage-ver' }
         },
         peLaunchParam{
             @NonCPS
             @Override
-            String toString() {return "-command" }
-        },
-        peConfigUpdateMode{
-            @NonCPS
-            @Override
-            String toString() {return "/mode" }
+            String toString() {return '--command' }
         },
         peRASServer{
             @NonCPS
             @Override
-            String toString() {return "-ras" }
+            String toString() {return '--ras' }
         },
         peRACUtility{
             @NonCPS
             @Override
-            String toString() {return "-rac" }
-        },
-        peFileOpDirectory{
-            @NonCPS
-            @Override
-            String toString() {return "-dir" }
+            String toString() {return '--rac' }
         },
         peSessionFilter{
             @NonCPS
             @Override
-            String toString() {return "-filter" }
-        }
-    }
-
-    /**
-     * Возможные приложения 1С
-     * 1CV8 1CV8C WebClient Designer COMConnection WSConnection BackgroundJob WebServerExtension
-     */
-    enum AppNames{
-        /**
-         * Толстый клиент
-         */
-        appClient {
-            @NonCPS
-            @Override
-            String toString() { return '1CV8' }
+            String toString() {return '--filter' }
         },
-        /**
-         * Тонкий клиент
-         */
-        appClientThin {
+        peUCCode{
             @NonCPS
             @Override
-            String toString() {return '1CV8C' }
+            String toString() {return '--uccode' }
         },
-        /**
-         * Веб-клиент
-         */
-        appWebClient {
+        peAdditionalRunParams{
             @NonCPS
             @Override
-            String toString() {return 'WebClient' }
-        },
-        /**
-         * Конфигуратор
-         */
-        appDesigner {
-            @NonCPS
-            @Override
-            String toString() {return 'Designer' }
-        },
-        /**
-         * COM-коннектор
-         */
-        appComConnector {
-            @NonCPS
-            @Override
-            String toString() {return 'COMConnection' }
-        },
-        /**
-         * Вебсервис
-         */
-        appWS {
-            @NonCPS
-            @Override
-            String toString() {return 'WSConnection' }
-        },
-        /**
-         * Фоновое задание
-         */
-        appBackgroung {
-            @NonCPS
-            @Override
-            String toString() {return 'BackgroundJob' }
-        },
-        /**
-         * Вебсервисное расширение
-         */
-        appWebExt {
-            @NonCPS
-            @Override
-            String toString() {return 'WebServerExtension' }
+            String toString() {return '--additional' }
         }
     }
 
     // endregion
 
     // region Вложенные классы
-
-    /**
-     * Класс для отражения информации о конфигурации.
-     * Заполняется по итогам запуска сервисной обработки в режиме 1С:Предприятие. Обработка выводит определенные логи. Их содержимое интерпретируется и отражается в полях объекта.
-     */
-    class ConfigInfo {
-        
-        Boolean isChanged
-        String shortName
-        String version
-        String platform
-
-        private void readLogInfo(String log) {
-            
-            String paramValue
-
-            isChanged = null
-            paramValue = readParamValue(log, 'CONFIG_STATE')
-            // echo "value of CONFIG_STATE: ${paramValue}";
-            if (paramValue!=null) {
-                if (paramValue.toUpperCase() == 'CONFIG_CHANGED') {
-                    isChanged = true
-                } else {
-                    if (paramValue.toUpperCase() == 'CONFIG_NOT_CHANGED') {
-                        isChanged = false
-                    }    
-                }
-            }
-            shortName = readParamValue(log, 'SHORT_CONFIG_NAME')
-            version = readParamValue(log, 'CONFIG_VERSION')
-            platform = readParamValue(log, 'PLATFORM')
-        }
-
-        private String readParamValue(String log, String paramName) {
-            String retVal = null
-            Scanner scanner = new Scanner(log)
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine()
-                Integer posParam = line.toUpperCase().indexOf(paramName.toUpperCase())
-                if (posParam>=0) {
-                    retVal = line.substring(posParam + paramName.length())
-                    if (retVal.startsWith(':')){
-                        retVal = retVal.substring(1)
-                    }
-                    break
-                }
-            }
-            scanner.close()
-            retVal
-        }
-    }
 
     class ExecParams<String> extends ArrayList<String>{
 
@@ -379,10 +262,9 @@ class VanRunnerHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner){
             super()
             this.params = owner.params
-            addValue(owner.pathToScript)
         }
 
-        ExecParams(DeploykaHelper owner, DeplCommand command){
+        ExecParams(DeploykaHelper owner, VanRunnerCommand command){
             super()
             this.params = owner.params
             addValue(owner.pathToScript)
@@ -409,19 +291,24 @@ class VanRunnerHelper extends OScriptHelper {
         }
 
         // @NonCPS
-        ExecParams addCommand(DeplCommand command){
+        ExecParams addCommand(VanRunnerCommand command){
             addValue(command)
         }
 
         // @NonCPS
-        ExecParams addPair(ParamsEnum param) {
-            return addValue(param.toString())
-                    .addValue(params.get(param))
+        ExecParams addPair(ParamsEnum param, boolean condition = true) {
+            if (condition)
+                addValue(param.toString()).addValue(params.get(param))
+            else
+                this
         }
 
         // @NonCPS
-        def addPair(String parKey, String parVal) {
-            return addValue(parKey).addValue(parVal)
+        def addPair(String parKey, String parVal, boolean condition = true) {
+            if (condition)
+                addValue(parKey).addValue(parVal)
+            else
+                this
         }
     }
 
@@ -430,83 +317,9 @@ class VanRunnerHelper extends OScriptHelper {
      * Пример использования:
      * dep.killSessions(false, dep.newSessionFilter().addAppClient().addAppDesigner().setNamesFilter('user1', 'admin')) // dep - объект класса DeploykaHelper
      */
-    class SessionFilter {
-
-        private ArrayList<String> apps = new ArrayList<>()
-        private ArrayList<String> names = new ArrayList<>()
-
-        def setAppFilter(Object... apps) {
-            apps.each { this.apps.add(it.toString()) }
-            this
-        }
-
-        def setNamesFilter(Object... names) {
-            names.each { this.names.add(it.toString()) }
-            this
-        }
-
-        @NonCPS
-        private String joinArray(def array) {
-            String retVal
-            retVal = array.join(';')
-            retVal
-        }
-
-        @NonCPS
-        @Override
-        java.lang.String toString() {
-            java.lang.String retVal = ''
-            if (apps.size!=0) {
-                if (!retVal.equals('')) {
-                    retVal = retVal.concat('|')
-                }
-                retVal = retVal.concat('appid=').concat(joinArray(apps))
-            }
-            if (names.size!=0) {
-                if (!retVal.equals('')) {
-                    retVal = retVal.concat('|')
-                }
-                retVal = retVal.concat('name=').concat(joinArray(names))
-            }
-            retVal
-        }
-
-        def addAppClient(){
-            setAppFilter(AppNames.appClient)
-        }
-
-        def addAppClientThin(){
-            setAppFilter(AppNames.appClientThin)
-        }
-
-        def addAppBackgroung(){
-            setAppFilter(AppNames.appBackgroung)
-        }
-
-        def addAppComConnector(){
-            setAppFilter(AppNames.appComConnector)
-        }
-
-        def addAppDesigner(){
-            setAppFilter(AppNames.appDesigner)
-        }
-
-        def addAppWebClient(){
-            setAppFilter(AppNames.appWebClient)
-        }
-
-        def addAppWebExt(){
-            setAppFilter(AppNames.appWebExt)
-        }
-
-        def addAppWS(){
-            setAppFilter(AppNames.appWS)
-        }
-    }
-
     // endregion
 
-    VanRunnerHelper(def paramScript, String pathToScript, String pathToServiceEPF = null){
+    VanRunnerHelper(def paramScript, String pathToScript = null, String pathToServiceEPF = null){
         
         super(paramScript)
 
@@ -566,20 +379,20 @@ class VanRunnerHelper extends OScriptHelper {
         echo("test params new ExecParams(this): $params")
 
         params = new ExecParams(this)
-        params.addValue(DeplCommand.dcRun)
-        echo("test params new ExecParams(this) and params.addValue(DeplCommand.dcRun): $params")
+        params.addValue(VanRunnerCommand.dcRun)
+        echo("test params new ExecParams(this) and params.addValue(VanRunnerCommand.dcRun): $params")
 
-        params = new ExecParams(this, DeplCommand.dcRun)
-        echo("test params new ExecParams(this, DeplCommand.dcRun): $params")
+        params = new ExecParams(this, VanRunnerCommand.dcRun)
+        echo("test params new ExecParams(this, VanRunnerCommand.dcRun): $params")
 
-        params = new ExecParams(this, DeplCommand.dcRun)
+        params = new ExecParams(this, VanRunnerCommand.dcRun)
             .addPair(ParamsEnum.peDbServer)
             .addPair(ParamsEnum.peDbDatabase)
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
             .addPair('custom key', 'custom value')
 
-        echo("test params new ExecParams(this, DeplCommand.dcRun) and many params: $params")
+        echo("test params new ExecParams(this, VanRunnerCommand.dcRun) and many params: $params")
 
         launchUserInterface()
         echo("executed launchUserInterface")
@@ -587,10 +400,10 @@ class VanRunnerHelper extends OScriptHelper {
         setRAS('ras server', 'ras utility')
         echo("executed setRAS()")
 
-        setLockStatus(DeplCommand.dcSession, true)
-        echo("executed setLockStatus(DeplCommand.dcSession, true)")
+        setLockStatus(VanRunnerCommand.dcSession, true)
+        echo("executed setLockStatus(VanRunnerCommand.dcSession, true)")
 
-//        killSessions(true, newSessionFilter().setAppFilter(AppNames.appClient, AppNames.appClientThin))
+//        killSessions(true, newSessionFilter().addAppFilter(AppNames.appClient, AppNames.appClientThin))
 //        echo("executed killSessions()")
 
         setRepo('repo path', 'repo-us', 'repo-pwd')
@@ -607,7 +420,7 @@ class VanRunnerHelper extends OScriptHelper {
         updateConfigFromPackage('path to package')
 
         def flt = newSessionFilter()
-            .setAppFilter(AppNames.appClient, AppNames.appBackgroung, 'some app', 'other app')
+            .addAppBackgroung()
             .setNamesFilter('админ', "польз")
             .toString()
         echo("Test filter filled: $flt")
@@ -616,9 +429,9 @@ class VanRunnerHelper extends OScriptHelper {
                 .toString()
         echo("Test filter empty: $flt")
 
-//        def now = Calendar.getInstance()
-//        now.add(Calendar.MINUTE, 4)
-//        echo("waitForCloseSessions: ${waitForCloseSessions(now.getTime())}")
+        launchUserInterface(false){
+            echo('launchUserInterface with closure')
+        }
 
         echo("finish of selfTest")
         isTestMode = false
@@ -682,11 +495,11 @@ class VanRunnerHelper extends OScriptHelper {
     // endregion
 
     SessionFilter newSessionFilter(){
-        return new SessionFilter()
+        new SessionFilter()
     }
 
     // @NonCPS
-    boolean launchUserInterface(boolean updateMetadata = false){
+    boolean launchUserInterface(boolean updateMetadata = false, String additionalParams = null, Closure closure){
        
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( updateMetadata ? ' (с обновлением метаданных)' : '')
@@ -700,28 +513,30 @@ class VanRunnerHelper extends OScriptHelper {
         // echo ("executing script");
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, updateMetadata)
         retVal = execScript(
-                new ExecParams(this, DeplCommand.dcRun)
+                new ExecParams(this, VanRunnerCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peLaunchParam)
                 .addPair(ParamsEnum.pePathToServiceEpf)
-                .addPair('-uccode', ucCode)
+                .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
+                .addPair(ParamsEnum.peAdditionalRunParams, additionalParams, additionalParams!=null)
         )
         configInfo.readLogInfo(resultLog)
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, updateMetadata)
+        closure?.call(retVal, this)
         retVal
     }
 
-    boolean launchUserInterface(Boolean updateMetadata, Closure closure){
-        // echo "executing launchUserInterfaceWith"
-        boolean res = launchUserInterface(updateMetadata)
-        closure(res)
-        res
-    }
+//    boolean launchUserInterface(Boolean updateMetadata, Closure closure){
+//        // echo "executing launchUserInterfaceWith"
+//        boolean res = launchUserInterface(updateMetadata)
+//        closure(res)
+//        res
+//    }
 
     // @NonCPS
-    private boolean setLockStatus(DeplCommand command, Boolean locked){
+    private boolean setLockStatus(VanRunnerCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock"
         ExecParams params = new ExecParams(this, command)
                 .addValue(op)
@@ -730,7 +545,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-        if (command==DeplCommand.dcSession) {
+        if (command==VanRunnerCommand.dcSession) {
             params = params.addPair('-lockuccode', ucCode)
         }
         execScript(params)
@@ -742,7 +557,7 @@ class VanRunnerHelper extends OScriptHelper {
         String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей'
         notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE(), null, locked)
 
-        boolean retVal = setLockStatus(DeplCommand.dcSession, locked)
+        boolean retVal = setLockStatus(VanRunnerCommand.dcSession, locked)
 
         msg = (locked ? 'Установка': 'Снятие') + ' блокировки сеансов пользователей ' +
                 (retVal ? 'успешно' : 'не') + ' выполнена'
@@ -761,7 +576,7 @@ class VanRunnerHelper extends OScriptHelper {
     boolean setLockStatusForBackgrounds(Boolean locked) {
         String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), null, locked)
-        boolean retVal = setLockStatus(DeplCommand.dcScheduledJobs, locked)
+        boolean retVal = setLockStatus(VanRunnerCommand.dcScheduledJobs, locked)
         msg = (locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
                 (retVal ? 'успешно' : 'не') + ' выполнена'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), retVal, locked)
@@ -779,7 +594,7 @@ class VanRunnerHelper extends OScriptHelper {
         String filter = appFilter.toString()
         String msg = 'Попытка завершения сеансов' + (appFilter!=null && !filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
-        ExecParams params = new ExecParams(this, DeplCommand.dcSession)
+        ExecParams params = new ExecParams(this, VanRunnerCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
@@ -810,13 +625,13 @@ class VanRunnerHelper extends OScriptHelper {
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
         boolean retVal = execScript(
                 new ExecParams(this)
-                .addCommand(DeplCommand.dcLoadCfg)
+                .addCommand(VanRunnerCommand.dcLoadCfg)
                 .addValue(ParamsEnum.peDbConnString)
                 .addValue(pathToPackage)
                 .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-                .addPair("-uccode", ucCode)
+                .addPair(ParamsEnum.peUCCode, ucCode)
         )
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_AFTER(), pathToPackage)
         retVal
@@ -833,7 +648,7 @@ class VanRunnerHelper extends OScriptHelper {
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
-                .addCommand(DeplCommand.dcLoadRepo)
+                .addCommand(VanRunnerCommand.dcLoadRepo)
                 .addValue(ParamsEnum.peRepoPath)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
@@ -851,7 +666,7 @@ class VanRunnerHelper extends OScriptHelper {
         notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
-                .addCommand(DeplCommand.dcUnbindRepo)
+                .addCommand(VanRunnerCommand.dcUnbindRepo)
                 .addValue(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
@@ -863,7 +678,7 @@ class VanRunnerHelper extends OScriptHelper {
 
     def checkDirExists(String dir){
         def params = new ExecParams(this)
-            .addCommand(DeplCommand.dcFileOperations)
+            .addCommand(VanRunnerCommand.dcFileOperations)
             .addValue('direxists')
             .addPair(ParamsEnum.peFileOpDirectory, dir)
         execScript(params)
@@ -878,7 +693,7 @@ class VanRunnerHelper extends OScriptHelper {
     // minModifyDT - минимальное время создания/изменения файлов в формате yyyyMMddHHmmss
     def findFiles(String dir, String fileMask, String minModifyDT = null) {
         ExecParams params = new ExecParams(this)
-            .addCommand(DeplCommand.dcFileOperations)
+            .addCommand(VanRunnerCommand.dcFileOperations)
             .addValue('fileexists')
             .addPair(ParamsEnum.peFileOpDirectory, dir)
             .addPair('-filename', fileMask)
@@ -890,7 +705,7 @@ class VanRunnerHelper extends OScriptHelper {
     // возврат Истина, если сеансы найдены
     def findSessions(def appFilter = null, Closure closure = null) {
         ExecParams params = new ExecParams(this)
-                .addCommand(DeplCommand.dcSession)
+                .addCommand(VanRunnerCommand.dcSession)
                 .addValue('search')
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
@@ -911,7 +726,7 @@ class VanRunnerHelper extends OScriptHelper {
         boolean retVal
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
-        ExecParams params = new ExecParams(this, DeplCommand.dcUpdateDB)
+        ExecParams params = new ExecParams(this, VanRunnerCommand.dcUpdateDB)
             .addValue(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
