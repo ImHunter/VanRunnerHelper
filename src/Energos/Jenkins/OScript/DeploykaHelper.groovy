@@ -74,11 +74,6 @@ class DeploykaHelper extends OScriptHelper {
 
     //region Поля public
     /**
-     * Путь к выполняемому скрипту Деплойка.
-     * Скрипт может быть и любой другой
-     */
-    public pathToDeployka
-    /**
      * Свойства, которые могут быть использованы при выполнении скрипта.
      * Задаются методами set... (например, setDb(...)).
      */
@@ -385,13 +380,13 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner){
             super()
             this.params = owner.params
-            addValue(owner.pathToDeployka)
+            addValue(owner.pathToScript)
         }
 
         ExecParams(DeploykaHelper owner, DeplCommand command){
             super()
             this.params = owner.params
-            addValue(owner.pathToDeployka)
+            addValue(owner.pathToScript)
             if (command!=null) {
                 addValue(command)
             }
@@ -512,11 +507,11 @@ class DeploykaHelper extends OScriptHelper {
 
     // endregion
 
-    DeploykaHelper(def paramScript, String pathToDeployka, String pathToServiceEPF = null){
+    DeploykaHelper(def paramScript, String pathToScript, String pathToServiceEPF = null){
         
         super(paramScript)
 
-        this.pathToDeployka = qStr(pathToDeployka)
+        this.pathToScript = qStr(pathToScript)
 
         setParam(ParamsEnum.pePathToServiceEpf, qStr(pathToServiceEPF), pathToServiceEPF!=null)
         configInfo = new ConfigInfo()
@@ -563,7 +558,7 @@ class DeploykaHelper extends OScriptHelper {
 
 
         setDb('server', 'db')
-        testEcho("selfTest pathToDeployka: $pathToDeployka")
+        testEcho("selfTest pathToScript: $pathToScript")
 
         setDbAuth('польззз', 'паророр')
         testEcho("executed setDbAuth('польззз', 'паророр')")
