@@ -47,7 +47,7 @@ class OScriptHelper {
     /**
      * Запускаемая командная строка
      */
-    private String launchString
+    protected String launchString
     // endregion
 
     /**
