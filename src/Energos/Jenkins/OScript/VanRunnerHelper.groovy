@@ -654,7 +654,7 @@ class VanRunnerHelper extends OScriptHelper {
 //                .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-                .addPair(ParamsEnum.peUCCode, ucCode)
+                .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
         )
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_AFTER(), pathToPackage)
         retVal
@@ -677,7 +677,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peRepoUser)
                 .addPair(ParamsEnum.peRepoPwd)
-                .addPair('-uccode', ucCode)
+                .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
         )
         msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER())
@@ -698,32 +698,6 @@ class VanRunnerHelper extends OScriptHelper {
         notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_AFTER())
         retVal
     }
-
-    def checkDirExists(String dir){
-        def params = new ExecParams(this)
-            .addCommand(VanRunnerCommand.dcFileOperations)
-            .addValue('direxists')
-            .addPair(ParamsEnum.peFileOpDirectory, dir)
-        execScript(params)
-    }
-
-    def checkDirExists(String dir, Closure closure){
-        def retVal = checkDirExists(dir)
-        closure(retVal)
-        return retVal
-    }
-
-    // minModifyDT - минимальное время создания/изменения файлов в формате yyyyMMddHHmmss
-    def findFiles(String dir, String fileMask, String minModifyDT = null) {
-        ExecParams params = new ExecParams(this)
-            .addCommand(VanRunnerCommand.dcFileOperations)
-            .addValue('fileexists')
-            .addPair(ParamsEnum.peFileOpDirectory, dir)
-            .addPair('-filename', fileMask)
-        if (minModifyDT!=null && minModifyDT!='')
-            params = params.addPair('-modified-dt', minModifyDT)
-        return execScript(params)
-    } 
 
     // возврат Истина, если сеансы найдены
     def findSessions(def appFilter = null, Closure closure = null) {
@@ -754,7 +728,8 @@ class VanRunnerHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
             .addValue('-allow-warnings')
-            .addPair('-uccode', ucCode)
+            .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
+
         retVal = execScript(params)
         closure?.call(retVal, this)
         notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER)
