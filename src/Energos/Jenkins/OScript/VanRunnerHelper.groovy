@@ -279,7 +279,7 @@ class VanRunnerHelper extends OScriptHelper {
             this.params = owner.params
         }
 
-        ExecParams(DeploykaHelper owner, VanRunnerCommand command){
+        ExecParams(def owner, VanRunnerCommand command){
             super()
             this.params = owner.params
             addValue(owner.pathToScript)
