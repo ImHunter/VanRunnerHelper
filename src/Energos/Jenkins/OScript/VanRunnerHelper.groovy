@@ -481,7 +481,7 @@ class VanRunnerHelper extends OScriptHelper {
                   (ParamsEnum.peDbUser):dbUser,
                   (ParamsEnum.peDbPwd):qStr(dbPwd),
                   (ParamsEnum.peV8verion):v8version])
-        setParam(ParamsEnum.peDbConnString, "/S$dbServer\\$dbDatabase".toString())
+        setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
         this
     }
 
@@ -649,7 +649,7 @@ class VanRunnerHelper extends OScriptHelper {
         boolean retVal = execScript(
                 new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcUpdateCfg)
-                .addValue(ParamsEnum.peDbConnString)
+                .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                 .addValue(pathToPackage)
 //                .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
                 .addPair(ParamsEnum.peDbUser)
@@ -690,7 +690,7 @@ class VanRunnerHelper extends OScriptHelper {
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcUnbindRepo)
-                .addValue(ParamsEnum.peDbConnString)
+                .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
@@ -750,7 +750,7 @@ class VanRunnerHelper extends OScriptHelper {
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcUpdateDB)
-            .addValue(ParamsEnum.peDbConnString)
+            .addPair(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
             .addValue('-allow-warnings')
