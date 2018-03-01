@@ -244,11 +244,6 @@ class VanRunnerHelper extends OScriptHelper {
             @Override
             String toString() {return '--uccode' }
         },
-        peAdditionalRunParams{
-            @NonCPS
-            @Override
-            String toString() {return '--additional' }
-        },
         peV8verion{
             @NonCPS
             @Override
@@ -530,13 +525,13 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean launchUserInterface(boolean updateMetadata = false, Closure closure = null){
+    boolean launchUserInterface(boolean doUpdateMetadata = false, Closure closure = null){
        
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( updateMetadata ? ' (с обновлением метаданных)' : '')
 
         String launchParam = 'ЗавершитьРаботуСистемы;'
-        if (updateMetadata) 
+        if (doUpdateMetadata)
             launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')
         setParam( ParamsEnum.peLaunchParam, qStr(launchParam))
         testEcho('подготовили параметры запуска launchParam')
@@ -551,7 +546,6 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peLaunchParam)
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
-                .addPair(ParamsEnum.peAdditionalRunParams, additionalParams, additionalParams!=null)
         )
         configInfo.readLogInfo(resultLog)
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, updateMetadata)
