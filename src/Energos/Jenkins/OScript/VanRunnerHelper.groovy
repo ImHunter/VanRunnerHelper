@@ -542,7 +542,7 @@ class VanRunnerHelper extends OScriptHelper {
         testEcho('подготовили параметры запуска launchParam')
 
         // echo ("executing script");
-        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, updateMetadata)
+        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, doUpdateMetadata)
         retVal = execScript(
                 new ExecParams(this, VanRunnerCommand.dcRun)
                 .addValue(ParamsEnum.peDbConnString)
@@ -553,7 +553,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
         )
         configInfo.readLogInfo(resultLog)
-        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, updateMetadata)
+        notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, doUpdateMetadata)
         closure?.call(retVal, this)
         retVal
     }
