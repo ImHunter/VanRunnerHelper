@@ -327,13 +327,6 @@ class VanRunnerHelper extends OScriptHelper {
         }
     }
 
-    /**
-     * Класс для формирования фильтра команды session.
-     * Пример использования:
-     * dep.killSessions(false, dep.newSessionFilter().addAppClient().addAppDesigner().setNamesFilter('user1', 'admin')) // dep - объект класса DeploykaHelper
-     */
-    // endregion
-
     VanRunnerHelper(def paramScript, String pathToScript = null, String pathToServiceEPF = null){
         
         super(paramScript)
@@ -655,10 +648,10 @@ class VanRunnerHelper extends OScriptHelper {
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
         boolean retVal = execScript(
                 new ExecParams(this)
-                .addCommand(VanRunnerCommand.dcLoadCfg)
+                .addCommand(VanRunnerCommand.dcUpdateCfg)
                 .addValue(ParamsEnum.peDbConnString)
                 .addValue(pathToPackage)
-                .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
+//                .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peUCCode, ucCode)
