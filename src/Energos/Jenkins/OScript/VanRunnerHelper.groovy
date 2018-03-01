@@ -282,7 +282,7 @@ class VanRunnerHelper extends OScriptHelper {
         ExecParams(def owner, VanRunnerCommand command){
             super()
             this.params = owner.params
-            addValue(owner.pathToScript)
+//            addValue(owner.pathToScript)
             if (command!=null) {
                 addValue(command)
             }
@@ -326,6 +326,8 @@ class VanRunnerHelper extends OScriptHelper {
                 this
         }
     }
+
+    // endregion
 
     VanRunnerHelper(def paramScript, String pathToScript = null, String pathToServiceEPF = null){
         
