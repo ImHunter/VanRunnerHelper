@@ -248,6 +248,21 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() {return '--additional' }
+        },
+        peV8verion{
+            @NonCPS
+            @Override
+            String toString() {return '--v8version' }
+        },
+        peClusterAdminName{
+            @NonCPS
+            @Override
+            String toString() {return '--cluster-admin' }
+        },
+        peClusterAdminPwd{
+            @NonCPS
+            @Override
+            String toString() {return '--cluster-pwd' }
         }
     }
 
@@ -458,37 +473,53 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-    // @NonCPS
-    VanRunnerHelper setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null) {
+    /**
+     * Установка параметров подключения к БД
+     * @param dbServer Сервер приложений
+     * @param dbDatabase База данных
+     * @param dbUser Имя пользователя конфигурации
+     * @param dbPwd Пароль пользователя конфигурации
+     * @param v8version Версия платформы
+     * @return Этот объект VanRunnerHelper
+     */
+    VanRunnerHelper setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null, String v8version = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase,
                   (ParamsEnum.peDbServer):dbServer,
                   (ParamsEnum.peDbUser):dbUser,
-                  (ParamsEnum.peDbPwd):qStr(dbPwd)])
+                  (ParamsEnum.peDbPwd):qStr(dbPwd),
+                  (ParamsEnum.peV8verion):v8version])
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
         this
     }
 
 //    @NonCPS
     VanRunnerHelper setDbAuth(String dbUser, String dbPwd) {
-        setParam([(ParamsEnum.peDbUser):dbUser, (ParamsEnum.peDbPwd):qStr(dbPwd)])
+        setParam([(ParamsEnum.peDbUser):dbUser,
+                  (ParamsEnum.peDbPwd):qStr(dbPwd)])
         this
     }
 
     // @NonCPS
     VanRunnerHelper setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoPath):repoPath, (ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
+        setParam([(ParamsEnum.peRepoPath):repoPath,
+                  (ParamsEnum.peRepoUser):repoUser,
+                  (ParamsEnum.peRepoPwd):qStr(repoPwd)])
         this
     }
 
     @NonCPS
     VanRunnerHelper setRepoAuth(String repoUser, String repoPwd) {
-        setParam([(ParamsEnum.peRepoUser):repoUser, (ParamsEnum.peRepoPwd):qStr(repoPwd)])
+        setParam([(ParamsEnum.peRepoUser):repoUser,
+                  (ParamsEnum.peRepoPwd):qStr(repoPwd)])
         this
     }
 
     // @NonCPS
-    VanRunnerHelper setRAS(String rasServer, String racUtilPath) {
-        setParam([(ParamsEnum.peRASServer):rasServer, (ParamsEnum.peRACUtility):racUtilPath])
+    VanRunnerHelper setRAS(String rasServer, String racUtilPath, String clusterAdminName = null, String clusterAdminPwd = null) {
+        setParam([(ParamsEnum.peRASServer):rasServer,
+                  (ParamsEnum.peRACUtility):racUtilPath,
+                  (ParamsEnum.peClusterAdminName):clusterAdminName,
+                  (ParamsEnum.peClusterAdminPwd):qStr(clusterAdminPwd)])
         this
     }
 
@@ -722,7 +753,7 @@ class VanRunnerHelper extends OScriptHelper {
         return retVal
     }
 
-    boolean updateDB(Closure closure = null) {
+    boolean updateDB(String addParams = null, Closure closure = null) {
         boolean retVal
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
@@ -733,8 +764,7 @@ class VanRunnerHelper extends OScriptHelper {
             .addValue('-allow-warnings')
             .addPair('-uccode', ucCode)
         retVal = execScript(params)
-        if (closure!=null)
-            closure.call(retVal)
+        closure?.call(retVal, this)
         notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER)
         retVal
     }
