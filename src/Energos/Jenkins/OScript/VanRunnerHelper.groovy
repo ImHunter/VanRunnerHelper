@@ -481,7 +481,7 @@ class VanRunnerHelper extends OScriptHelper {
                   (ParamsEnum.peDbUser):dbUser,
                   (ParamsEnum.peDbPwd):qStr(dbPwd),
                   (ParamsEnum.peV8verion):v8version])
-        setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
+        setParam(ParamsEnum.peDbConnString, "/S$dbServer\\$dbDatabase".toString())
         this
     }
 
