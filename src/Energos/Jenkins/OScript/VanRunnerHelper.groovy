@@ -538,7 +538,7 @@ class VanRunnerHelper extends OScriptHelper {
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, doUpdateMetadata)
         retVal = execScript(
                 new ExecParams(this, VanRunnerCommand.dcRun)
-                .addValue(ParamsEnum.peDbConnString)
+                .addPair(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peLaunchCommand)
