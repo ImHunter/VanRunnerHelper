@@ -569,7 +569,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         if (command==VanRunnerCommand.dcSession) {
-            params = params.addPair('-lockuccode', ucCode)
+            params = params.addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
         }
         execScript(params)
     }
@@ -624,7 +624,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-                .addPair("-lockuccode", ucCode)
+                .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
         if (withNoLock) {
             params = params.addValue("-with-nolock")
         }
