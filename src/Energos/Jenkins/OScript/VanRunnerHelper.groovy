@@ -530,7 +530,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean launchUserInterface(boolean updateMetadata = false, String additionalParams = null, Closure closure){
+    boolean launchUserInterface(boolean updateMetadata = false, Closure closure = null){
        
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( updateMetadata ? ' (с обновлением метаданных)' : '')
