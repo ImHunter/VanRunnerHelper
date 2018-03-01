@@ -107,7 +107,7 @@ class OScriptHelper {
      * @return Запускаемая строка
      */
     String getLaunchString(){
-        this.launchString
+        launchString
     }
 
     /**

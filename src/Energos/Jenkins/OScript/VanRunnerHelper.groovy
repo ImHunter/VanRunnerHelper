@@ -485,7 +485,12 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-//    @NonCPS
+    /**
+     * Установка параметров аутентификации в БД 1С
+     * @param dbUser Имя пользователя ИБ
+     * @param dbPwd Пароль пользователя ИБ
+     * @return Этот объект VanRunnerHelper
+     */
     VanRunnerHelper setDbAuth(String dbUser, String dbPwd) {
         setParam([(ParamsEnum.peDbUser):dbUser,
                   (ParamsEnum.peDbPwd):qStr(dbPwd)])
