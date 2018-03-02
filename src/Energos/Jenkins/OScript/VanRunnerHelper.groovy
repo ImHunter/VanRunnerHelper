@@ -530,7 +530,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean launchUserInterface(boolean doUpdateMetadata = false, Closure closure = null){
+    boolean launchUserInterface(boolean doUpdateMetadata = false, def launchMode = -1, Closure closure = null){
        
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( doUpdateMetadata ? ' (с обновлением метаданных)' : '')
@@ -551,7 +551,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peLaunchCommand)
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
-                .addPair('--ordinaryapp', '1') // чтобы в ключах запуска не было RunModeManagedApplication, т.к. это гасит вывод лога
+                .addPair('--ordinaryapp', launchMode) // чтобы в ключах запуска не было RunModeManagedApplication, т.к. это гасит вывод лога
         )
         configInfo.readLogInfo(resultLog)
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, doUpdateMetadata)
