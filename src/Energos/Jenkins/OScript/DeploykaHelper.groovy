@@ -263,7 +263,7 @@ class DeploykaHelper extends OScriptHelper {
         ExecParams(DeploykaHelper owner, DeplCommand command){
             super()
             this.params = owner.params
-            addValue(owner.pathToScript)
+//            addValue(owner.pathToScript)
             if (command!=null) {
                 addValue(command)
             }
