@@ -447,10 +447,17 @@ class VanRunnerHelper extends OScriptHelper {
         isTestMode = false
     }
 
-    //region Установка параметров
+    /**
+     * Установка значения единичного параметра
+     * @param paramKey Ключ параметра
+     * @param paramValue Значение параметра
+     * @param condition Условие, устанавливать ли значение.
+     * Используется для сокращения количества строк
+     * @return Этот объект VanRunnerHelper
+     */
     @NonCPS
-    def setParam(def paramKey, String paramValue, Boolean isApply = true){
-        if (isApply) {
+    def setParam(def paramKey, String paramValue, Boolean condition = true){
+        if (condition==true) {
             this.params.put paramKey, paramValue
         }
         this
@@ -530,7 +537,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean launchUserInterface(boolean doUpdateMetadata = false, def launchMode = -1, Closure closure = null){
+    boolean launchUserInterface(boolean doUpdateMetadata = false, def launchMode = -1){
        
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( doUpdateMetadata ? ' (с обновлением метаданных)' : '')
@@ -555,16 +562,8 @@ class VanRunnerHelper extends OScriptHelper {
         )
         configInfo.readLogInfo(resultLog)
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, doUpdateMetadata)
-        closure?.call(retVal, this)
         retVal
     }
-
-//    boolean launchUserInterface(Boolean updateMetadata, Closure closure){
-//        // echo "executing launchUserInterfaceWith"
-//        boolean res = launchUserInterface(updateMetadata)
-//        closure(res)
-//        res
-//    }
 
     // @NonCPS
     private boolean setLockStatus(VanRunnerCommand command, Boolean locked){

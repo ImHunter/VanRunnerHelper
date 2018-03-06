@@ -512,13 +512,6 @@ class DeploykaHelper extends OScriptHelper {
         retVal
     }
 
-    boolean launchUserInterface(Boolean updateMetadata, Closure closure){
-        // echo "executing launchUserInterfaceWith"
-        boolean res = launchUserInterface(updateMetadata)
-        closure(res)
-        res
-    }
-
     // @NonCPS
     private boolean setLockStatus(DeplCommand command, Boolean locked){
         String op = locked ? "lock" : "unlock"
