@@ -67,10 +67,15 @@ class VanRunnerHelper extends OScriptHelper {
      * Операция - ожидание завершения сессий, выполнен цикл ожидания (=10)
      */
     final static int OP_WAIT_FOR_CLOSE_CONTINUE = 10
-//    final static int OP_ =
+    /**
+     * Операция - подключение конфигурации к хранилищу (=11)
+     */
+    final static int OP_BIND_REPO = 11
 //    final static int OP_ =
 //    final static int OP_ =
     //endregion
+
+    // REGION Публичные поля
 
     /**
      * Свойства, которые могут быть использованы при выполнении скрипта.
@@ -95,7 +100,18 @@ class VanRunnerHelper extends OScriptHelper {
      * Поле для хранения произвольного контекста.
      * Задумано для того, чтобы понимать, в каком контексте выполняется та или иная операция. Скорее всего, будет применяться для расширенной работы оповещалок через notifyEvent
      */
-    protected def context
+    public def context
+    /**
+     * Значение по умолчанию признака, разрешено ли подключение сеансов.
+     */
+    public def sessionsEnabledDefault = true
+    /**
+     * Значение по умолчанию признака, разрешена ли работа РЗ.
+     */
+    public def scheduledJobsEnabledDefault = true
+
+    // endregion
+
     //endregion
 
     // region Перечисления
@@ -127,6 +143,14 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() {return "loadrepo" }
+        },
+        /**
+         * Подключение конфигурации к хранилищу
+         */
+        dcBindRepo {
+            @NonCPS
+            @Override
+            String toString() {return "bindrepo" }
         },
         /**
          * Отключение конфигурации от хранилища
@@ -294,17 +318,18 @@ class VanRunnerHelper extends OScriptHelper {
         }
 
         @NonCPS
-        ExecParams addValue(def value) {
+        ExecParams addValue(def value, def condition = true) {
             if (value==null) {
                 add(qStr())
             } else {
                 if (value.class==ParamsEnum.class) {
-                    addValue(params.get(value))    
+                    addValue(params.get(value), condition)
                 } else {
                     java.lang.String strVal = "${value}".toString()
                     if (strVal.contains(' '))
                         strVal = qStr(strVal)
-                    add(strVal)
+                    if (condition==true)
+                        add(strVal)
                 }
             }
             this
@@ -571,8 +596,8 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    private boolean setLockStatus(VanRunnerCommand command, Boolean locked){
-        String op = locked ? "lock" : "unlock"
+    private boolean setResourceEnabled(VanRunnerCommand resource, Boolean isEnabled){
+        String op = isEnabled ? 'unlock' : 'lock'
         ExecParams params = new ExecParams(this, command)
                 .addValue(op)
                 .addPair(ParamsEnum.peRASServer)
@@ -580,47 +605,41 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-        if (command==VanRunnerCommand.dcSession) {
+        if (resource==VanRunnerCommand.dcSession) {
             params = params.addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
         }
         execScript(params)
     }
 
     // @NonCPS
-    boolean setLockStatusForUsers(Boolean locked) {
+    boolean setSessionsEnabled(Boolean isEnabled) {
 
-        String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки сеансов пользователей'
-        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE(), null, locked)
+        boolean enabledValue = isEnabled==null ? sessionsEnabledDefault : isEnabled
 
-        boolean retVal = setLockStatus(VanRunnerCommand.dcSession, locked)
+        String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' сеансов приложений'
+        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE(), null, enabledValue)
 
-        msg = (locked ? 'Установка': 'Снятие') + ' блокировки сеансов пользователей ' +
-                (retVal ? 'успешно' : 'не') + ' выполнена'
-        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_AFTER(), retVal, locked)
+        boolean retVal = setResourceEnabled(VanRunnerCommand.dcSession, enabledValue)
 
-        retVal
-    }
+        msg = (enabledValue ? 'Разрешение': 'Запрет') + ' сеансов приложений - ' +
+                (retVal ? 'успешно' : 'не') + ' выполнено'
+        notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_AFTER(), retVal, enabledValue)
 
-    boolean setLockStatusForUsers(Boolean locked, Closure closure) {
-        boolean retVal = setLockStatusForUsers(locked)
-        closure(retVal)
         retVal
     }
 
     // @NonCPS
-    boolean setLockStatusForBackgrounds(Boolean locked) {
-        String msg = 'Попытка ' + (locked ? 'установки': 'снятия') + ' блокировки выполнения регламентных заданий'
-        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), null, locked)
-        boolean retVal = setLockStatus(VanRunnerCommand.dcScheduledJobs, locked)
-        msg = (locked ? 'Установка': 'Снятие') + ' блокировки выполнения регламентных заданий ' +
-                (retVal ? 'успешно' : 'не') + ' выполнена'
-        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), retVal, locked)
-        retVal
-    }
+    boolean setBackgroundsEnabled(Boolean isEnabled) {
 
-    boolean setLockStatusForBackgrounds(Boolean locked, Closure closure) {
-        def retVal = setLockStatusForBackgrounds(locked)
-        closure(retVal)
+        boolean enabledValue = isEnabled==null ? scheduledJobsEnabledDefault : isEnabled
+        String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' выполнения регламентных заданий'
+        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), null, enabledValue)
+
+        boolean retVal = setResourceEnabled(VanRunnerCommand.dcScheduledJobs, enabledValue )
+
+        msg = (enabledValue ? 'Разрешение': 'Запрет') + ' выполнения регламентных заданий - ' +
+                (retVal ? 'успешно' : 'не') + ' выполнено'
+        notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), retVal, enabledValue)
         retVal
     }
 
@@ -697,8 +716,23 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    def bindRepo() {
-
+    def bindRepo(def bindAlreadyBindedUser = true, notReplaceCfg = false) {
+        def msg = 'Попытка подключения конфигурации к хранилищу'
+        notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
+        def retVal = execScript(
+                new ExecParams(this)
+                        .addValue(ParamsEnum.peRepoPath)
+                        .addValue(ParamsEnum.peRepoUser)
+                        .addValue(ParamsEnum.peRepoPwd)
+                        .addValue('--BindAlreadyBindedUser', bindAlreadyBindedUser==true)
+                        .addValue('--NotReplaceCfg', notReplaceCfg==true)
+                        .addPair(ParamsEnum.peDbConnString) // todo Не уверен
+                        .addPair(ParamsEnum.peDbUser)
+                        .addPair(ParamsEnum.peDbPwd)
+        )
+        msg = 'Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
+        notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_AFTER())
+        retVal
     }
 
     def unbindRepo() {
