@@ -117,7 +117,7 @@ class VanRunnerHelper extends OScriptHelper {
     // region Перечисления
 
     /**
-     * Перечисление с возможными командами Деплойки
+     * Перечисление с возможными командами Ванессы
      */
     enum VanRunnerCommand {
         /**
@@ -196,6 +196,9 @@ class VanRunnerHelper extends OScriptHelper {
         }
     }
 
+    /**
+     * Перечисление в возможными параметрами запуска Ванессы
+     */
     enum ParamsEnum {
         peDbServer,
         peDbConnString{
@@ -299,21 +302,21 @@ class VanRunnerHelper extends OScriptHelper {
 
     // region Вложенные классы
 
+    /**
+     * Класс для формирования параметров запуска Ванессы
+     */
     class ExecParams<String> extends ArrayList<String>{
 
+        /**
+         * Все параметры, заданные во владельце
+         * @see VanRunnerHelper
+         */
         def params
 
-        ExecParams(def owner){
+        ExecParams(def owner, VanRunnerCommand command = null){
             super()
             this.params = owner.params
-        }
-
-        ExecParams(def owner, VanRunnerCommand command){
-            super()
-            this.params = owner.params
-//            addValue(owner.pathToScript)
-            if (command!=null) {
-                addValue(command)
+            addValue(command, command!=null)
             }
         }
 
@@ -653,7 +656,15 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    // @NonCPS
+    /**
+     * Принудительное завершение сеансов
+     * @param withNoLock Не блокировать начало сеансов после их принудительного завершения
+     * @param appFilter Фильтр, с помощью которого можно завершать не все сеансы, а согласно каким-то условиям.
+     * Параметр appFilter можно создать с помощью объекта типа SessionFilter. Пример:
+     * {@code newSessionFilter().addAppDesigner()}
+     * @return Булево - успешно ли выполнилась операция.
+     * @see SessionFilter
+     */
     def killSessions(Boolean withNoLock = true, def appFilter = '') {
         String filter = appFilter.toString()
         String msg = 'Попытка завершения сеансов' + (appFilter!=null && !filter.isEmpty() ? '' : '; фильтр: ' + filter)
