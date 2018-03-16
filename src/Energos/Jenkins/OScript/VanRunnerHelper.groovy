@@ -263,6 +263,11 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() {return '--cluster-pwd' }
+        },
+        peClientMode{
+            @NonCPS
+            @Override
+            String toString() {return '--ordinaryapp' }
         }
     }
 
@@ -673,7 +678,7 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    def updateConfigFromRepo() {
+    def updateConfigFromRepo(def repoVersion = null) {
         String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
@@ -685,10 +690,15 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peRepoUser)
                 .addPair(ParamsEnum.peRepoPwd)
                 .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
+                .addPair(ParamsEnum.peRepoVersion, repoVersion, repoVersion!=null)
         )
         msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER())
         retVal
+    }
+
+    def bindRepo() {
+
     }
 
     def unbindRepo() {
@@ -726,7 +736,7 @@ class VanRunnerHelper extends OScriptHelper {
         return retVal
     }
 
-    boolean updateDB(String addParams = null, Closure closure = null) {
+    boolean updateDb(String addParams = null, Closure closure = null) {
         boolean retVal
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
