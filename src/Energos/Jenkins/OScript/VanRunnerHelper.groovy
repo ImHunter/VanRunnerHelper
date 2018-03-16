@@ -313,11 +313,18 @@ class VanRunnerHelper extends OScriptHelper {
          */
         def params
 
+        /**
+         * Конструктор объекта
+         * @param owner Владелец, на основании которого будут заполняться параметры
+         * @param command Опциональная команда, которую будет выполнять Ванесса
+         * Эту команду можно и не передавать в конструкторе. Ее можно, например, добавить отдельно:<br>
+         * {@code addCommand(VanRunnerCommand.dcUpdateCfg)} <br>
+         * или {@code addValue(VanRunnerCommand.dcUpdateCfg)}
+         */
         ExecParams(def owner, VanRunnerCommand command = null){
             super()
             this.params = owner.params
             addValue(command, command!=null)
-            }
         }
 
         @NonCPS
