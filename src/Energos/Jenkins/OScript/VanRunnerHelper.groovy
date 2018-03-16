@@ -560,6 +560,16 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
+    VanRunnerHelper setDefaultEnables(def sessionsEnabledDefault = null, def scheduledJobsEnabledDefault = null, ucCode = null) {
+        if (sessionsEnabledDefault!=null)
+            this.sessionsEnabledDefault = sessionsEnabledDefault
+        if (scheduledJobsEnabledDefault!=null)
+            this.scheduledJobsEnabledDefault = scheduledJobsEnabledDefault
+        if (ucCode!=null)
+            this.ucCode = ucCode
+        this
+    }
+
     // endregion
 
     SessionFilter newSessionFilter(){
