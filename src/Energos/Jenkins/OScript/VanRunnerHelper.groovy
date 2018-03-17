@@ -327,6 +327,16 @@ class VanRunnerHelper extends OScriptHelper {
             addValue(command, command!=null)
         }
 
+        /**
+         * Добавить в параметры какое-либо значение
+         * @param value Добавляемое значение
+         * @param condition Условие, добавлять ли значение.
+         * Условие служит для сокращения количества строк кода. Вместо <br>
+         * {@code if (value>0) addValue(value)}
+         * можем написать <br>
+         * {@code addValue(value, value>0)}
+         * @return Этот объект ExecParams
+         */
         @NonCPS
         ExecParams addValue(def value, def condition = true) {
             if (value==null) {
@@ -345,12 +355,16 @@ class VanRunnerHelper extends OScriptHelper {
             this
         }
 
-        // @NonCPS
+        /**
+         * Добавление команды в параметры запуска.
+         * В принципе, можно было обойтись использованием addValue(...). Но для некоторого улучшения читаемости добавление команды сделано отдельным методом.
+         * @param command Добавляемая команда
+         * @return Этот объект ExecParams
+         */
         ExecParams addCommand(VanRunnerCommand command){
             addValue(command)
         }
 
-        // @NonCPS
         ExecParams addPair(ParamsEnum param, boolean condition = true) {
             if (condition)
                 addValue(param.toString()).addValue(params.get(param))
@@ -358,7 +372,6 @@ class VanRunnerHelper extends OScriptHelper {
                 this
         }
 
-        // @NonCPS
         def addPair(String parKey, String parVal, boolean condition = true) {
             if (condition)
                 addValue(parKey).addValue(parVal)
