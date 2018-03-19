@@ -708,7 +708,7 @@ class VanRunnerHelper extends OScriptHelper {
         // echo execParams;
         boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено')
-        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
+        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE(), retVal)
         retVal
     }
 
@@ -730,7 +730,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
         )
-        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_AFTER(), pathToPackage)
+        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_AFTER(), retVal, pathToPackage)
         retVal
     }
 
@@ -756,7 +756,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peRepoVersion, repoVersion, repoVersion!=null)
         )
         msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
-        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER())
+        notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
@@ -775,7 +775,7 @@ class VanRunnerHelper extends OScriptHelper {
                         .addPair(ParamsEnum.peDbPwd)
         )
         msg = 'Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
-        notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_AFTER())
+        notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
@@ -790,7 +790,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
         )
         msg = 'Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
-        notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_AFTER())
+        notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
@@ -827,7 +827,7 @@ class VanRunnerHelper extends OScriptHelper {
 
         retVal = execScript(params)
         closure?.call(retVal, this)
-        notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER)
+        notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
 
@@ -849,7 +849,7 @@ class VanRunnerHelper extends OScriptHelper {
             }
             if (!retVal)
                 retVal = !findSessions(appFilter)
-            notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, maxDT, minutesPerWaitCycle, appFilter)
+            notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, retVal, maxDT, minutesPerWaitCycle, appFilter)
         }
         retVal
     }
