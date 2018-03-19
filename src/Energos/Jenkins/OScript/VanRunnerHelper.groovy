@@ -738,12 +738,13 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    def updateConfigFromRepo(def repoVersion = null) {
+    def loadConfigFromRepo(def repoVersion = null) {
         String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcLoadRepo)
+                .addValue(ParamsEnum.peDbConnString)
                 .addValue(ParamsEnum.peRepoPath)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
