@@ -752,7 +752,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peRepoUser)
                 .addPair(ParamsEnum.peRepoPwd)
-                .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
+//                .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
                 .addPair(ParamsEnum.peRepoVersion, repoVersion, repoVersion!=null)
         )
         msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
