@@ -647,7 +647,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean setSessionsEnabled(Boolean isEnabled) {
+    boolean setSessionsEnabled(Boolean isEnabled = null) {
 
         boolean enabledValue = isEnabled==null ? sessionsEnabledDefault : isEnabled
 
@@ -664,7 +664,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // @NonCPS
-    boolean setBackgroundsEnabled(Boolean isEnabled) {
+    boolean setBackgroundsEnabled(Boolean isEnabled = null) {
 
         boolean enabledValue = isEnabled==null ? scheduledJobsEnabledDefault : isEnabled
         String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' выполнения регламентных заданий'
