@@ -744,8 +744,8 @@ class VanRunnerHelper extends OScriptHelper {
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcLoadRepo)
-                .addValue(ParamsEnum.peDbConnString)
-                .addValue(ParamsEnum.peRepoPath)
+                .addPair(ParamsEnum.peDbConnString)
+                .addPair(ParamsEnum.peRepoPath)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peRepoUser)
