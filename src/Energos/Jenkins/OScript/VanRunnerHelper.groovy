@@ -764,7 +764,7 @@ class VanRunnerHelper extends OScriptHelper {
         def msg = 'Попытка подключения конфигурации к хранилищу'
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
-                new ExecParams(this)
+                new ExecParams(this, VanRunnerCommand.dcBindRepo)
                         .addValue(ParamsEnum.peRepoPath)
                         .addValue(ParamsEnum.peRepoUser)
                         .addValue(ParamsEnum.peRepoPwd)
