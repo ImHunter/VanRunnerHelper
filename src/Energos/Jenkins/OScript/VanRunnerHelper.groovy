@@ -339,7 +339,7 @@ class VanRunnerHelper extends OScriptHelper {
          */
         @NonCPS
         ExecParams addValue(def value, def condition = true) {
-            if (condition) {
+            if (condition){
                 if (value == null) {
                     add(qStr())
                 } else {
