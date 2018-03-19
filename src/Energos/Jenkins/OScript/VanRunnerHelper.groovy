@@ -633,7 +633,7 @@ class VanRunnerHelper extends OScriptHelper {
     // @NonCPS
     private boolean setResourceEnabled(VanRunnerCommand resource, Boolean isEnabled){
         String op = isEnabled ? 'unlock' : 'lock'
-        ExecParams params = new ExecParams(this, command)
+        ExecParams params = new ExecParams(this, resource)
                 .addValue(op)
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
