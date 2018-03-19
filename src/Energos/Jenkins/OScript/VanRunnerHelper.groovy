@@ -339,17 +339,19 @@ class VanRunnerHelper extends OScriptHelper {
          */
         @NonCPS
         ExecParams addValue(def value, def condition = true) {
-            if (value==null) {
-                add(qStr())
-            } else {
-                if (value.class==ParamsEnum.class) {
-                    addValue(params.get(value), condition)
+            if (condition) {
+                if (value == null) {
+                    add(qStr())
                 } else {
-                    java.lang.String strVal = "${value}".toString()
-                    if (strVal.contains(' '))
-                        strVal = qStr(strVal)
-                    if (condition==true)
-                        add(strVal)
+                    if (value.class == ParamsEnum.class) {
+                        addValue(params.get(value), condition)
+                    } else {
+                        java.lang.String strVal = "${value}".toString()
+                        if (strVal.contains(' '))
+                            strVal = qStr(strVal)
+                        if (condition == true)
+                            add(strVal)
+                    }
                 }
             }
             this
