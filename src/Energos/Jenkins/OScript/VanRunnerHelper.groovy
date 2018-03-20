@@ -640,9 +640,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
-        if (resource==VanRunnerCommand.dcSession) {
-            params = params.addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
-        }
+                .addPair(ParamsEnum.peUCCode, ucCode, resource==VanRunnerCommand.dcSession && ucCode!=null)
         execScript(params)
     }
 
