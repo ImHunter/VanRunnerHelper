@@ -812,7 +812,7 @@ class VanRunnerHelper extends OScriptHelper {
         return retVal
     }
 
-    boolean updateDb(String addParams = null, Closure closure = null) {
+    boolean updateDb(String addParams = null) { // В самой Ванессе, на самом деле, дополнительные параметры запуска не используются.
         boolean retVal
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
@@ -820,11 +820,9 @@ class VanRunnerHelper extends OScriptHelper {
             .addPair(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
             .addPair(ParamsEnum.peDbPwd)
-            .addValue('-allow-warnings')
             .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
 
         retVal = execScript(params)
-        closure?.call(retVal, this)
         notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
