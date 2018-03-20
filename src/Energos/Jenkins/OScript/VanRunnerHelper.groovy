@@ -346,10 +346,10 @@ class VanRunnerHelper extends OScriptHelper {
                     if (ParamsEnum.values().contains(value)) {
                         addValue(params.get(value), condition)
                     } else {
-                        java.lang.String strVal = "${value}".toString()
+                        String strVal = "${value}".toString()
                         if (strVal.contains(' '))
                             strVal = qStr(strVal)
-                        if (condition == true)
+                        if (condition==true)
                             add(strVal)
                     }
                 }
