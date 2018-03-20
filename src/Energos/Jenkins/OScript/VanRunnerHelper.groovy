@@ -344,7 +344,7 @@ class VanRunnerHelper extends OScriptHelper {
                     add(qStr())
                 } else {
                     if (ParamsEnum.values().contains(value)) {
-                        addValue(params.get(value.toString()), condition)
+                        addValue(params.get(value), condition)
                     } else {
                         String strVal = "${value}".toString()
                         if (strVal.contains(' '))
