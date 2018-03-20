@@ -343,7 +343,7 @@ class VanRunnerHelper extends OScriptHelper {
                 if (value == null) {
                     add(qStr())
                 } else {
-                    if (value.class == ParamsEnum.class) {
+                    if (ParamsEnum.values().contains(value)) {
                         addValue(params.get(value), condition)
                     } else {
                         java.lang.String strVal = "${value}".toString()
@@ -414,6 +414,10 @@ class VanRunnerHelper extends OScriptHelper {
     protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, def operationResult = null, Object... params){
         if (notifyEvent!=null)
             notifyEvent.call(msgText, this, msgKind, msgType, operationResult, params)
+    }
+
+    ExecParams newExecParams(VanRunnerCommand command = null) {
+        new ExecParams(this, command)
     }
 
 // @NonCPS
@@ -772,7 +776,7 @@ class VanRunnerHelper extends OScriptHelper {
                         .addPair(ParamsEnum.peDbUser)
                         .addPair(ParamsEnum.peDbPwd)
         )
-        msg = 'Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
+        msg = 'Подключение конфигурации к хранилищу ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
