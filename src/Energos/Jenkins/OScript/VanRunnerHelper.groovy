@@ -771,7 +771,7 @@ class VanRunnerHelper extends OScriptHelper {
                         .addValue(ParamsEnum.peRepoUser)
                         .addValue(ParamsEnum.peRepoPwd)
                         .addValue('--BindAlreadyBindedUser', bindAlreadyBindedUser==true)
-                        .addValue('--NotReplaceCfg', replaceCfg!=true) // в Ванессе неправильно
+                        .addValue('--NotReplaceCfg', replaceCfg==true) // в Ванессе неправильно
                         .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                         .addPair(ParamsEnum.peDbUser)
                         .addPair(ParamsEnum.peDbPwd)
