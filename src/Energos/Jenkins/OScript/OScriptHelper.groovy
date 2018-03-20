@@ -169,8 +169,10 @@ class OScriptHelper {
 
     boolean execScript(List<Object> params) {
         String[] strParams = new String[params.size()]
-        0.upto(params.size() - 1) {
-            strParams[it] = params[it].toString()
+        if (params.size()>0) {
+            0.upto(params.size() - 1) {
+                strParams[it] = params[it].toString()
+            }
         }
         execScript strParams
     }
