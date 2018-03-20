@@ -344,13 +344,13 @@ class VanRunnerHelper extends OScriptHelper {
                     add(qStr())
                 } else {
                     if (ParamsEnum.values().contains(value)) {
-                        addValue(params.get(value), condition)
+                        addValue(params.get(value.toString()), condition)
                     } else {
                         String strVal = "${value}".toString()
                         if (strVal.contains(' '))
                             strVal = qStr(strVal)
 //                        if (condition==true)
-//                            add(strVal)
+                        add(strVal)
                     }
                 }
             }
@@ -766,7 +766,7 @@ class VanRunnerHelper extends OScriptHelper {
         def msg = 'Попытка подключения конфигурации к хранилищу'
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
-                new ExecParams(this, VanRunnerCommand.dcBindRepo)
+                newExecParams(VanRunnerCommand.dcBindRepo)
                         .addValue(ParamsEnum.peRepoPath)
                         .addValue(ParamsEnum.peRepoUser)
                         .addValue(ParamsEnum.peRepoPwd)
