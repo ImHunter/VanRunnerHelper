@@ -762,7 +762,7 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    def bindRepo(def bindAlreadyBindedUser = true, notReplaceCfg = false) {
+    def bindRepo(def bindAlreadyBindedUser = true, replaceCfg = true) {
         def msg = 'Попытка подключения конфигурации к хранилищу'
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
@@ -771,7 +771,7 @@ class VanRunnerHelper extends OScriptHelper {
                         .addValue(ParamsEnum.peRepoUser)
                         .addValue(ParamsEnum.peRepoPwd)
                         .addValue('--BindAlreadyBindedUser', bindAlreadyBindedUser==true)
-                        .addValue('--NotReplaceCfg', notReplaceCfg==true)
+                        .addValue('--NotReplaceCfg', replaceCfg!=true) // в Ванессе неправильно
                         .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                         .addPair(ParamsEnum.peDbUser)
                         .addPair(ParamsEnum.peDbPwd)
