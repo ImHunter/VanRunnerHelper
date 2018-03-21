@@ -376,7 +376,7 @@ class VanRunnerHelper extends OScriptHelper {
 
         def addPair(String parKey, String parVal, boolean condition = true) {
             if (condition)
-                addValue(parKey).addValue(parVal)
+                addValue("$parKey".toString()).addValue(parVal)
             else
                 this
         }
