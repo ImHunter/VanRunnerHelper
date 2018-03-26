@@ -167,6 +167,11 @@ class OScriptHelper {
         res
     }
 
+    /**
+     * Перегруженный метод выполнения скрипта
+     * @param params
+     * @return
+     */
     boolean execScript(List<Object> params) {
         String[] strParams = new String[params.size()]
         if (params.size()>0) {
@@ -189,8 +194,8 @@ class OScriptHelper {
      * Вспомогательный метод для обрамления двойными кавычками.
      * Если передается пустой параметр value (==null || ==''), то возвращается "".<br>
      * Если value начинается с кавычки, то дополнительное обрамление не делается.
-     * @param value
-     * @return
+     * @param value Параметры, с которыми вызывается процесс
+     * @return Успешность выполнения скрипта (булево)
      */
     @NonCPS
     static String qStr(String value = null) {

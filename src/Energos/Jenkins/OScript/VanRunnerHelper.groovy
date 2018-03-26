@@ -367,6 +367,13 @@ class VanRunnerHelper extends OScriptHelper {
             addValue(command)
         }
 
+        /**
+         * Добавление пары значений - строкового представления ключа и значения из поля params по этому ключу
+         * @param param Ключ
+         * @param condition Доп.условие, добавлять ли значения в параметры
+         * @return Этот объект ExecParams
+         * @see params
+         */
         ExecParams addPair(ParamsEnum param, boolean condition = true) {
             if (condition)
                 addValue(param.toString()).addValue(params.get(param))
@@ -374,6 +381,13 @@ class VanRunnerHelper extends OScriptHelper {
                 this
         }
 
+        /**
+         * Добавление пары значений - строкового ключа и его сткорового значения
+         * @param parKey Ключ
+         * @param parVal Значение ключа
+         * @param condition Доп.условие, добавлять ли значения в параметры
+         * @return Этот объект ExecParams
+         */
         def addPair(String parKey, String parVal, boolean condition = true) {
             if (condition)
                 addValue("$parKey".toString()).addValue(parVal)
@@ -420,10 +434,9 @@ class VanRunnerHelper extends OScriptHelper {
         new ExecParams(this, command)
     }
 
-// @NonCPS
     /**
      * Метод для самотестирования библиотеки.
-     * Это некая замена модульному тестированию.
+     * Это некая замена модульному тестированию - изначально были проблемы с запуском тестов. Приходилось тестировать таким вот образом
      * Устанавливается флаг тестирования (isTestMode = true), выполняются некие операции, флаг сбрасывается.
      */
     @Override
@@ -522,7 +535,6 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-    // @NonCPS
     VanRunnerHelper setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
         def filtered
         if (isIgnoreEmptyValues) {
@@ -565,7 +577,6 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-    // @NonCPS
     VanRunnerHelper setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):repoPath,
                   (ParamsEnum.peRepoUser):repoUser,
@@ -580,7 +591,6 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-    // @NonCPS
     VanRunnerHelper setRAS(String rasServer, String racUtilPath, String clusterAdminName = null, String clusterAdminPwd = null) {
         setParam([(ParamsEnum.peRASServer):rasServer,
                   (ParamsEnum.peRACUtility):racUtilPath,
@@ -605,7 +615,6 @@ class VanRunnerHelper extends OScriptHelper {
         new SessionFilter()
     }
 
-    // @NonCPS
     boolean launchUserInterface(boolean doUpdateMetadata = false, def launchMode = -1){
        
         def retVal
@@ -634,7 +643,6 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    // @NonCPS
     private boolean setResourceEnabled(VanRunnerCommand resource, Boolean isEnabled){
         String op = isEnabled ? 'unlock' : 'lock'
         ExecParams params = new ExecParams(this, resource)
@@ -648,7 +656,6 @@ class VanRunnerHelper extends OScriptHelper {
         execScript(params)
     }
 
-    // @NonCPS
     boolean setSessionsEnabled(Boolean isEnabled = null) {
 
         boolean enabledValue = isEnabled==null ? sessionsEnabledDefault : isEnabled
@@ -665,7 +672,6 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    // @NonCPS
     boolean setBackgroundsEnabled(Boolean isEnabled = null) {
 
         boolean enabledValue = isEnabled==null ? scheduledJobsEnabledDefault : isEnabled
@@ -710,7 +716,7 @@ class VanRunnerHelper extends OScriptHelper {
         // echo execParams;
         boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено')
-        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE(), retVal)
+        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
@@ -771,7 +777,7 @@ class VanRunnerHelper extends OScriptHelper {
                         .addValue(ParamsEnum.peRepoUser)
                         .addValue(ParamsEnum.peRepoPwd)
                         .addValue('--BindAlreadyBindedUser', bindAlreadyBindedUser==true)
-                        .addValue('--NotReplaceCfg', replaceCfg==true) // в Ванессе неправильно
+                        .addValue('--NotReplaceCfg', replaceCfg==true) // в Ванессе ключ NotReplaceCfg работает нелогично. Подстраиваюсь под его логику.
                         .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                         .addPair(ParamsEnum.peDbUser)
                         .addPair(ParamsEnum.peDbPwd)
