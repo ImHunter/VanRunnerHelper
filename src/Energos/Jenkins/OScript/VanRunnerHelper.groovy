@@ -295,6 +295,11 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() {return '--ordinaryapp' }
+        },
+        peKillWithNoLock{
+            @NonCPS
+            @Override
+            String toString() { return '--with-nolock' }
         }
     }
 
@@ -372,7 +377,6 @@ class VanRunnerHelper extends OScriptHelper {
          * @param param Ключ
          * @param condition Доп.условие, добавлять ли значения в параметры
          * @return Этот объект ExecParams
-         * @see params
          */
         ExecParams addPair(ParamsEnum param, boolean condition = true) {
             if (condition)
@@ -708,7 +712,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
         if (withNoLock) {
-            params = params.addValue("-with-nolock")
+            params = params.addValue(ParamsEnum.peKillWithNoLock.toString())
         }
         if (appFilter!=null && !filter.isEmpty()) {
             params = params.addPair(ParamsEnum.peSessionFilter, filter)
