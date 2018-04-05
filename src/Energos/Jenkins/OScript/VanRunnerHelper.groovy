@@ -2,7 +2,7 @@ package Energos.Jenkins.OScript
 
 import java.lang.*
 
-import static Energos.Jenkins.OScript.DatabaseInfoReader.readInfo
+import static Energos.Jenkins.OScript.DatabaseInfoReader.*
 
 /**
  * Класс-обертка для операций Vanessa-runner.
