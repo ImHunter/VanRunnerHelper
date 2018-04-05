@@ -2,8 +2,6 @@ package Energos.Jenkins.OScript
 
 import java.lang.*
 
-import static Energos.Jenkins.OScript.DatabaseInfoReader.*
-
 /**
  * Класс-обертка для операций Vanessa-runner.
  */
@@ -881,7 +879,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
-        readInfo(resultLog, databaseInfo)
+        DatabaseInfoReader.readInfo(resultLog, databaseInfo)
         notifyAbout('Информация о базе данных прочитана', oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
