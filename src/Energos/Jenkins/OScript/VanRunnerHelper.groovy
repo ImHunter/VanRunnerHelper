@@ -97,6 +97,8 @@ class VanRunnerHelper extends OScriptHelper {
      * внешней обработки. Результаты ее работы (лог) разбираются и интерпретируются.
      */
     public ConfigInfo configInfo
+
+    public DatabaseInfo databaseInfo
     /**
      * Поле для хранения произвольного контекста.
      * Задумано для того, чтобы понимать, в каком контексте выполняется та или иная операция. Скорее всего, будет применяться для расширенной работы оповещалок через notifyEvent
@@ -411,6 +413,7 @@ class VanRunnerHelper extends OScriptHelper {
 
         setParam(ParamsEnum.pePathToServiceEpf, qStr(pathToServiceEPF), pathToServiceEPF!=null)
         configInfo = new ConfigInfo()
+        databaseInfo = new DatabaseInfo()
 
     }
 
@@ -877,6 +880,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
+        databaseInfo.readInfo(resultLog)
         notifyAbout('Информация о базе данных прочитана', oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }

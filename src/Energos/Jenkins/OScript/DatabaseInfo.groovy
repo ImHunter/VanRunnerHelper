@@ -9,7 +9,7 @@ class DatabaseInfo {
         fillMapParameters(textParameters)
     }
 
-    private String getTextParameters(String log){
+    private String[] getTextParameters(String log){
 
         def ArrayList<String> retVal = new ArrayList<>()
 
@@ -27,9 +27,25 @@ class DatabaseInfo {
                 retVal.add(line)
         }
         scanner.close()
+
+        retVal.toArray()
+
     }
 
     private void fillMapParameters(String[] textParameters){
+
+        def splitterPos
+        def paramKey, paramValue
+
+        parameters.clear()
+        textParameters.each {String ln ->
+            splitterPos = ln.indexOf(':')
+            if (splitterPos>0){
+                paramKey = ln.substring(0, splitterPos - 1).trim()
+                paramValue = ln.substring(splitterPos + 1).trim()
+                parameters.put(paramKey, paramValue)
+            }
+        }
 
     }
 
