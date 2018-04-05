@@ -71,7 +71,8 @@ class VanRunnerHelper extends OScriptHelper {
      * Операция - подключение конфигурации к хранилищу (=11)
      */
     final static int OP_BIND_REPO = 11
-//    final static int OP_ =
+
+    final static int OP_ASK_DATABASEINFO = 12
 //    final static int OP_ =
     //endregion
 
@@ -865,6 +866,19 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-
+    boolean askDatabaseInfo(){
+        boolean retVal
+        def oper = OP_ASK_DATABASEINFO
+        notifyAbout('Попытка запроса информации о базе данных', oper, NOTIFY_TYPE_BEFORE)
+        ExecParams params = new ExecParams(this, VanRunnerCommand.dcInfo)
+                .addPair(ParamsEnum.peRASServer)
+                .addPair(ParamsEnum.peRACUtility)
+                .addPair(ParamsEnum.peDbDatabase)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+        retVal = execScript(params)
+        notifyAbout('Информация о базе данных прочитана', oper, NOTIFY_TYPE_AFTER, retVal)
+        retVal
+    }
 
  }
