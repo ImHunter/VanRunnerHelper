@@ -1,15 +1,14 @@
 package Energos.Jenkins.OScript
 
-class DatabaseInfo {
+class DatabaseInfoReader {
 
-    Map<String, String> parameters = [:]
-
-    void readInfo(String log){
-        String textParameters = getTextParameters(log)
-        fillMapParameters(textParameters)
+    static void readInfo(String log, Map<String, String> mapParameters){
+        mapParameters.clear()
+        String[] textParameters = getTextParameters(log)
+        fillMapParameters(textParameters, mapParameters)
     }
 
-    private String[] getTextParameters(String log){
+    private static String[] getTextParameters(String log){
 
         def ArrayList<String> retVal = new ArrayList<>()
 
@@ -32,18 +31,17 @@ class DatabaseInfo {
 
     }
 
-    private void fillMapParameters(String[] textParameters){
+    private static void fillMapParameters(String[] textParameters, Map<String, String> mapParameters){
 
         def splitterPos
         def paramKey, paramValue
 
-        parameters.clear()
         textParameters.each {String ln ->
             splitterPos = ln.indexOf(':')
             if (splitterPos>0){
                 paramKey = ln.substring(0, splitterPos - 1).trim()
                 paramValue = ln.substring(splitterPos + 1).trim()
-                parameters.put(paramKey, paramValue)
+                mapParameters.put(paramKey, paramValue)
             }
         }
 
