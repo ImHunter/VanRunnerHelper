@@ -702,7 +702,7 @@ class VanRunnerHelper extends OScriptHelper {
      * @return Булево - успешно ли выполнилась операция.
      * @see SessionFilter
      */
-    def killSessions(Boolean withNoLock = true, def appFilter = '') {
+    def killSessions(Boolean withNoLock = true, def appFilter = '', def attemptsCount = 5) {
         resultLog = null
         String filter = appFilter.toString()
         String msg = 'Попытка завершения сеансов' + (appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
@@ -715,6 +715,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
+                .addPair('--try', attemptsCount, attemptsCount!=null && attemptsCount>0)
         if (withNoLock) {
             params = params.addValue(ParamsEnum.peKillWithNoLock.toString())
         }
