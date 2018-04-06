@@ -846,8 +846,9 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     boolean waitForCloseSessions(Date maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
-        boolean retVal = !findSessions(appFilter)
         int oper = OP_WAIT_FOR_CLOSE
+        notifyAbout("Попытка ожидания завершения процессов. Фильтр \"$appFilter\"; ждем до $maxDT с периодом $minutesPerWaitCycle мин", oper, NOTIFY_TYPE_BEFORE)
+        boolean retVal = !findSessions(appFilter)
         if (!retVal) {
             int sleepTime = minutesPerWaitCycle>0 ? minutesPerWaitCycle * 60 * 1000 : maxDT - Date.newInstance()
             notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
