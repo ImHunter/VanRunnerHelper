@@ -705,7 +705,7 @@ class VanRunnerHelper extends OScriptHelper {
     def killSessions(Boolean withNoLock = true, def appFilter = '') {
         resultLog = null
         String filter = appFilter.toString()
-        String msg = 'Попытка завершения сеансов' + (appFilter!=null && !filter.isEmpty() ? '' : '; фильтр: ' + filter)
+        String msg = 'Попытка завершения сеансов' + (appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcSession)
                 .addValue('kill')
