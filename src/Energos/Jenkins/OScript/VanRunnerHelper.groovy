@@ -816,7 +816,7 @@ class VanRunnerHelper extends OScriptHelper {
     def findSessions(def appFilter = null, Closure closure = null) {
         ExecParams params = new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcSession)
-                .addValue('search')
+                .addValue('closed')
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
                 .addPair(ParamsEnum.peDbDatabase)
