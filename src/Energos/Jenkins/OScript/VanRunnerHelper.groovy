@@ -849,7 +849,7 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    @NonCPS
+//    @NonCPS
     boolean waitForCloseSessions(def maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
         def oper = OP_WAIT_FOR_CLOSE
         def retVal = true
