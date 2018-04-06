@@ -855,23 +855,23 @@ class VanRunnerHelper extends OScriptHelper {
         def retVal = true
         notifyAbout("Попытка ожидания завершения процессов. Фильтр '${appFilter}'; ждем до ${maxDT.toString()} с периодом ${minutesPerWaitCycle.toString()} мин", oper, NOTIFY_TYPE_BEFORE)
         retVal = isSessionsClosed(appFilter)
-//        if (!retVal) {
-//            int sleepTime = minutesPerWaitCycle>0 ? minutesPerWaitCycle * 60 * 1000 : maxDT - Date.newInstance()
-//            notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
-//            int iter = 0
-//            while (Date.newInstance() < maxDT) {
-//                iter++
-//                sleep(sleepTime)
-//                retVal = isSessionsClosed(appFilter)
-//                if (retVal)
-//                    break
-//                else
-//                    notifyAbout("Продолжение ожидания завершения процессов. Цикл: $iter", OP_WAIT_FOR_CLOSE_CONTINUE, NOTIFY_TYPE_UNDEFINED)
-//            }
-//            if (!retVal)
-//                retVal = isSessionsClosed(appFilter)
-//            notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, retVal, maxDT, minutesPerWaitCycle, appFilter)
-//        }
+        if (!retVal) {
+            int sleepTime = minutesPerWaitCycle>0 ? minutesPerWaitCycle * 60 * 1000 : maxDT - Date.newInstance()
+            notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
+            int iter = 0
+            while (Date.newInstance() < maxDT) {
+                iter++
+                sleep(sleepTime)
+                retVal = isSessionsClosed(appFilter)
+                if (retVal)
+                    break
+                else
+                    notifyAbout("Продолжение ожидания завершения процессов. Цикл: $iter", OP_WAIT_FOR_CLOSE_CONTINUE, NOTIFY_TYPE_UNDEFINED)
+            }
+            if (!retVal)
+                retVal = isSessionsClosed(appFilter)
+        }
+        notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, retVal, maxDT, minutesPerWaitCycle, appFilter)
         retVal
     }
 
