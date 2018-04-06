@@ -829,7 +829,7 @@ class VanRunnerHelper extends OScriptHelper {
         if (closure!=null) {
             closure(retVal)
         }
-        return retVal
+        retVal
     }
 
     boolean updateDb(String addParams = null) {
