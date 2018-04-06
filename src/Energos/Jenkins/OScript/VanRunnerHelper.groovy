@@ -703,6 +703,7 @@ class VanRunnerHelper extends OScriptHelper {
      * @see SessionFilter
      */
     def killSessions(Boolean withNoLock = true, def appFilter = '') {
+        resultLog = null
         String filter = appFilter.toString()
         String msg = 'Попытка завершения сеансов' + (appFilter!=null && !filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
@@ -756,6 +757,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     def loadConfigFromRepo(def repoVersion = null) {
+        resultLog = null
         String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
@@ -776,6 +778,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     def bindRepo(def bindAlreadyBindedUser = true, replaceCfg = true) {
+        resultLog = null
         def msg = 'Попытка подключения конфигурации к хранилищу'
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
@@ -832,6 +835,7 @@ class VanRunnerHelper extends OScriptHelper {
     boolean updateDb(String addParams = null) {
         // В самой Ванессе, на самом деле, дополнительные параметры запуска не используются.
         boolean retVal
+        resultLog = null
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcUpdateDB)
