@@ -125,8 +125,7 @@ class OScriptHelper {
         }
 
         boolean res
-        resultCode = null
-        resultLog = null
+        resetResults()
 
         Boolean interrupted = false
 
@@ -188,6 +187,12 @@ class OScriptHelper {
             strParams[it] = args[it]==null ? null : args[it].toString()
         }
         execScript strParams
+    }
+
+    void resetResults(){
+        launchString = null
+        resultLog = null
+        resultCode = null
     }
 
     /**

@@ -623,7 +623,8 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     boolean launchUserInterface(boolean doUpdateMetadata = false, def launchMode = -1){
-       
+
+        resetResults()
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( doUpdateMetadata ? ' (с обновлением метаданных)' : '')
 
@@ -665,6 +666,7 @@ class VanRunnerHelper extends OScriptHelper {
 
     boolean setSessionsEnabled(Boolean isEnabled = null) {
 
+        resetResults()
         boolean enabledValue = isEnabled==null ? sessionsEnabledDefault : isEnabled
 
         String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' сеансов приложений'
@@ -681,6 +683,7 @@ class VanRunnerHelper extends OScriptHelper {
 
     boolean setBackgroundsEnabled(Boolean isEnabled = null) {
 
+        resetResults()
         boolean enabledValue = isEnabled==null ? scheduledJobsEnabledDefault : isEnabled
         String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' выполнения регламентных заданий'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), null, enabledValue)
@@ -703,10 +706,11 @@ class VanRunnerHelper extends OScriptHelper {
      * @see SessionFilter
      */
     def killSessions(Boolean withNoLock = true, def appFilter = '', def attemptsCount = 5) {
-        resultLog = null
+        resetResults()
         String filter = appFilter.toString()
         String msg = 'Попытка завершения сеансов' + (appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
-        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_BEFORE())
+        int oper = OP_KILL_SESSIONS
+        notifyAbout(msg, oper, getNOTIFY_TYPE_BEFORE())
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
@@ -725,7 +729,7 @@ class VanRunnerHelper extends OScriptHelper {
         // echo execParams;
         boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
-        notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_AFTER(), retVal)
+        notifyAbout(msg, oper, getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
@@ -736,6 +740,7 @@ class VanRunnerHelper extends OScriptHelper {
      */
     boolean updateConfigFromPackage(String pathToPackage) {
         String msg = 'Попытка обновления конфигурации из пакета обновлений'
+        resetResults()
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
         boolean retVal = execScript(
                 new ExecParams(this)
@@ -758,7 +763,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     def loadConfigFromRepo(def repoVersion = null) {
-        resultLog = null
+        resetResults()
         String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
@@ -779,8 +784,8 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     def bindRepo(def bindAlreadyBindedUser = true, replaceCfg = true) {
-        resultLog = null
         def msg = 'Попытка подключения конфигурации к хранилищу'
+        resetResults()
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 newExecParams(VanRunnerCommand.dcBindRepo)
@@ -800,6 +805,7 @@ class VanRunnerHelper extends OScriptHelper {
 
     def unbindRepo() {
         def msg = 'Попытка отключения конфигурации от хранилища'
+        resetResults()
         notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
@@ -835,8 +841,8 @@ class VanRunnerHelper extends OScriptHelper {
 
     boolean updateDb(String addParams = null) {
         // В самой Ванессе, на самом деле, дополнительные параметры запуска не используются.
+        resetResults()
         boolean retVal
-        resultLog = null
         def oper = OP_UPDATE_DB
         notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcUpdateDB)
@@ -852,6 +858,7 @@ class VanRunnerHelper extends OScriptHelper {
 
 //    @NonCPS
     boolean waitForCloseSessions(def maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
+        resetResults()
         def oper = OP_WAIT_FOR_CLOSE
         def retVal = true
         notifyAbout("Попытка ожидания завершения процессов. Фильтр '${appFilter}'; ждем до ${maxDT.toString()} с периодом ${minutesPerWaitCycle.toString()} мин", oper, NOTIFY_TYPE_BEFORE)
@@ -877,6 +884,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     boolean askDatabaseInfo(){
+        resetResults()
         boolean retVal
         def oper = OP_ASK_DATABASEINFO
         notifyAbout('Попытка запроса информации о базе данных', oper, NOTIFY_TYPE_BEFORE)
