@@ -813,7 +813,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     // возврат Истина, если сеансы найдены
-    def findSessions(def appFilter = null, Closure closure = null) {
+    def isSessionsClosed(def appFilter = null, Closure closure = null) {
         ExecParams params = new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcSession)
                 .addValue('closed')
@@ -853,7 +853,7 @@ class VanRunnerHelper extends OScriptHelper {
     boolean waitForCloseSessions(def maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
         int oper = OP_WAIT_FOR_CLOSE
         notifyAbout("Попытка ожидания завершения процессов. Фильтр \"${appFilter}\"; ждем до ${maxDT} с периодом ${minutesPerWaitCycle} мин", oper, NOTIFY_TYPE_BEFORE)
-        boolean retVal = !findSessions(appFilter)
+        boolean retVal = isSessionsClosed(appFilter)
         if (!retVal) {
             int sleepTime = minutesPerWaitCycle>0 ? minutesPerWaitCycle * 60 * 1000 : maxDT - Date.newInstance()
             notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
@@ -861,14 +861,14 @@ class VanRunnerHelper extends OScriptHelper {
             while (Date.newInstance() < maxDT) {
                 iter++
                 sleep(sleepTime)
-                retVal = !findSessions(appFilter)
+                retVal = isSessionsClosed(appFilter)
                 if (retVal)
                     break
                 else
                     notifyAbout("Продолжение ожидания завершения процессов. Цикл: $iter", OP_WAIT_FOR_CLOSE_CONTINUE, NOTIFY_TYPE_UNDEFINED)
             }
             if (!retVal)
-                retVal = !findSessions(appFilter)
+                retVal = isSessionsClosed(appFilter)
             notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, retVal, maxDT, minutesPerWaitCycle, appFilter)
         }
         retVal
