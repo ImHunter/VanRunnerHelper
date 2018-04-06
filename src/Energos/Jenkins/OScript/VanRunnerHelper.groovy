@@ -850,7 +850,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
 //    @NonCPS
-    boolean waitForCloseSessions(Date maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
+    boolean waitForCloseSessions(def maxDT, int minutesPerWaitCycle = 2, def appFilter = null){
         int oper = OP_WAIT_FOR_CLOSE
         notifyAbout("Попытка ожидания завершения процессов. Фильтр \"$appFilter\"; ждем до $maxDT с периодом $minutesPerWaitCycle мин", oper, NOTIFY_TYPE_BEFORE)
         boolean retVal = !findSessions(appFilter)
