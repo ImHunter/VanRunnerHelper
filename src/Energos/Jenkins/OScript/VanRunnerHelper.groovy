@@ -888,7 +888,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
         DatabaseInfoReader.readInfo(resultLog, databaseInfo)
-        notifyAbout('Информация о базе данных прочитана', oper, NOTIFY_TYPE_AFTER, retVal)
+        notifyAbout('Информация о базе данных '.concat(retVal==true ? 'успешно' : 'не').concat(' прочитана'), oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
 
