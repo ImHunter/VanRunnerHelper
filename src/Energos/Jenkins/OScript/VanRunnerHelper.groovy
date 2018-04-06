@@ -724,7 +724,7 @@ class VanRunnerHelper extends OScriptHelper {
         }
         // echo execParams;
         boolean retVal = execScript(params)
-        msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено')
+        msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, getOP_KILL_SESSIONS(), getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
