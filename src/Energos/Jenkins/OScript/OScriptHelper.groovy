@@ -48,6 +48,7 @@ class OScriptHelper {
      * Запускаемая командная строка
      */
     protected String launchString
+    protected Integer currentExecTimeout = null
     // endregion
 
     /**
@@ -116,7 +117,7 @@ class OScriptHelper {
      * @param params Параметры, с которыми вызывается процесс
      * @return Возвращается Истина/true, когда процесс завершен с кодом возврата ==0. Иначе - возврат Ложь/false.
      */
-    boolean execScript(String[] params, Integer secondsTimeout = null) {
+    boolean execScript(String[] params) {
 
         def readLog = {InputStream st ->
             String resLog
@@ -129,9 +130,9 @@ class OScriptHelper {
 
         Boolean interrupted = false
         def maxExecTime = null
-        if (secondsTimeout!=null){
+        if (currentExecTimeout!=null){
             maxExecTime = Calendar.getInstance()
-            maxExecTime.add(Calendar.SECOND, secondsTimeout)
+            maxExecTime.add(Calendar.SECOND, currentExecTimeout)
         }
 
         String[] initParams = [mainProcessName]
@@ -155,16 +156,15 @@ class OScriptHelper {
                 resultLog = readLog(proc.getIn())
             } catch (InterruptedException e) {
                 interrupted = true
-//                resultCode = interruptErrorCode
                 resultLog = e.getMessage()
             }
 
             if (interrupted) {
                 while (proc.isAlive()) {
-                    Thread.sleep(5000)
+                    Thread.sleep(2500)
                     if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
-                        resultCode = proc.exitValue()
-                        resultLog = readLog(proc.getIn())
+                        resultCode = null
+                        resultLog = 'Прервано по таймауту\n'.concat(readLog(proc.getIn()))
                         break
                     }
                 }
@@ -172,6 +172,7 @@ class OScriptHelper {
                 resultLog = readLog(proc.getIn())
             }
         }
+        setCurrentTimeout(null) // сбрасываем значение тайаута
         res = resultCode==0
         res
     }
@@ -220,6 +221,10 @@ class OScriptHelper {
         } else if (!retVal.startsWith('\"'))
             retVal = "\"$retVal\"".toString()
         retVal
+    }
+
+    public void setCurrentTimeout(Integer secondsTimeout) {
+        currentExecTimeout = secondsTimeout
     }
 
 }

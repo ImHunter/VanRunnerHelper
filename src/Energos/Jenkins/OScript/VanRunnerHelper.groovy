@@ -727,7 +727,8 @@ class VanRunnerHelper extends OScriptHelper {
             params = params.addPair(ParamsEnum.peSessionFilter, filter)
         }
         // echo execParams;
-        boolean retVal = execScript(params, execTimeout)
+        setCurrentTimeout(15)
+        boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, oper, getNOTIFY_TYPE_AFTER(), retVal)
         retVal
