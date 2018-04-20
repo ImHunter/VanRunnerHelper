@@ -116,7 +116,7 @@ class OScriptHelper {
      * @param params Параметры, с которыми вызывается процесс
      * @return Возвращается Истина/true, когда процесс завершен с кодом возврата ==0. Иначе - возврат Ложь/false.
      */
-    boolean execScript(String[] params) {
+    boolean execScript(String[] params, Integer secondsTimeout = null) {
 
         def readLog = {InputStream st ->
             String resLog
@@ -128,6 +128,11 @@ class OScriptHelper {
         resetResults()
 
         Boolean interrupted = false
+        def maxExecTime = null
+        if (secondsTimeout!=null){
+            maxExecTime = Calendar.getInstance()
+            maxExecTime.add(Calendar.SECOND, secondsTimeout)
+        }
 
         String[] initParams = [mainProcessName]
         if (pathToScript!=null)
@@ -157,6 +162,11 @@ class OScriptHelper {
             if (interrupted) {
                 while (proc.isAlive()) {
                     Thread.sleep(5000)
+                    if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
+                        resultCode = proc.exitValue()
+                        resultLog = readLog(proc.getIn())
+                        break
+                    }
                 }
                 resultCode = proc.exitValue()
                 resultLog = readLog(proc.getIn())
