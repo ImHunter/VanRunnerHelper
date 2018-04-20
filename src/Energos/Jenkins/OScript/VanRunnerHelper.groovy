@@ -705,7 +705,7 @@ class VanRunnerHelper extends OScriptHelper {
      * @return Булево - успешно ли выполнилась операция.
      * @see SessionFilter
      */
-    def killSessions(Boolean withNoLock = true, def appFilter = '', def attemptsCount = 5) {
+    def killSessions(Boolean withNoLock = true, def appFilter = '', def attemptsCount = 5, def execTimeout = null) {
         resetResults()
         String filter = appFilter.toString()
         String msg = 'Попытка завершения сеансов' + (appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
@@ -727,7 +727,7 @@ class VanRunnerHelper extends OScriptHelper {
             params = params.addPair(ParamsEnum.peSessionFilter, filter)
         }
         // echo execParams;
-        boolean retVal = execScript(params)
+        boolean retVal = execScript(params, execTimeout)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, oper, getNOTIFY_TYPE_AFTER(), retVal)
         retVal
