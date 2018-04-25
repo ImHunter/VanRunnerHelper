@@ -119,9 +119,13 @@ class OScriptHelper {
      */
     boolean execScript(String[] params) {
 
-        def readLog = {InputStream st ->
+        def readLog = {def st ->
             String resLog
-            resLog = new String(st.getBytes(), outputLogEncoding)
+            try {
+                resLog = new String(st.getBytes(), outputLogEncoding)
+            } catch (e) {
+                resLog = 'Ошибка чтения лога:\n'.concat(e.getMessage())
+            }
             resLog
         }
 
@@ -148,12 +152,11 @@ class OScriptHelper {
 
         } else {
             ProcessBuilder pb = new ProcessBuilder(fullParams)
-
             Process proc = pb.start()
             try {
                 proc.waitFor()
-                resultCode = proc.exitValue()
                 resultLog = readLog(proc.getIn())
+                resultCode = proc.exitValue()
             } catch (InterruptedException e) {
                 interrupted = true
                 resultLog = e.getMessage()
