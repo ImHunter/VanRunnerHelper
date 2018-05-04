@@ -719,11 +719,11 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
-                .addPair('--try', attemptsCount, attemptsCount!=null && attemptsCount>0)
+                .addPair('--try', attemptsCount.toString(), attemptsCount!=null && attemptsCount>0)
                 .addValue(ParamsEnum.peKillWithNoLock.toString(), withNoLock)
                 .addPair(ParamsEnum.peSessionFilter, filter, appFilter!=null && !filter.isEmpty())
 
-        // echo execParams;
+        notifyAbout("Параметры запуска при прерывании сеансов: $params".toString(), oper, getNOTIFY_TYPE_BEFORE())
         boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, oper, getNOTIFY_TYPE_AFTER(), retVal)
