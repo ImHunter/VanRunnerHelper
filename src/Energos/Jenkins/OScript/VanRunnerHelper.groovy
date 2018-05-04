@@ -373,6 +373,7 @@ class VanRunnerHelper extends OScriptHelper {
          */
         ExecParams addCommand(VanRunnerCommand command){
             addValue(command)
+            this
         }
 
         /**
@@ -384,8 +385,7 @@ class VanRunnerHelper extends OScriptHelper {
         ExecParams addPair(ParamsEnum param, boolean condition = true) {
             if (condition)
                 addValue(param.toString()).addValue(params.get(param))
-            else
-                this
+            this
         }
 
         /**
@@ -398,8 +398,7 @@ class VanRunnerHelper extends OScriptHelper {
         def addPair(String parKey, String parVal, boolean condition = true) {
             if (condition)
                 addValue("$parKey".toString()).addValue(parVal)
-            else
-                this
+            this
         }
     }
 
@@ -711,6 +710,7 @@ class VanRunnerHelper extends OScriptHelper {
         String msg = 'Попытка завершения сеансов' + (appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         int oper = OP_KILL_SESSIONS
         notifyAbout(msg, oper, getNOTIFY_TYPE_BEFORE())
+
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcSession)
                 .addValue('kill')
                 .addPair(ParamsEnum.peRASServer)
@@ -720,12 +720,9 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
                 .addPair('--try', attemptsCount, attemptsCount!=null && attemptsCount>0)
-        if (withNoLock) {
-            params = params.addValue(ParamsEnum.peKillWithNoLock.toString())
-        }
-        if (appFilter!=null && !filter.isEmpty()) {
-            params = params.addPair(ParamsEnum.peSessionFilter, filter)
-        }
+                .addValue(ParamsEnum.peKillWithNoLock.toString(), withNoLock)
+                .addPair(ParamsEnum.peSessionFilter, filter, appFilter!=null && !filter.isEmpty())
+
         // echo execParams;
         boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
