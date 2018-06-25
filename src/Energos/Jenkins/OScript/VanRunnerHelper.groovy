@@ -73,6 +73,9 @@ class VanRunnerHelper extends OScriptHelper {
     final static int OP_BIND_REPO = 11
 
     final static int OP_ASK_DATABASEINFO = 12
+
+    final static int OP_UNLOAD_CF = 13
+
 //    final static int OP_ =
     //endregion
 
@@ -196,6 +199,14 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() { return "updatedb" }
+        },
+        /**
+         * Выгрузка конфигурации БД
+         */
+        dcUnloadCF {
+            @NonCPS
+            @Override
+            String toString() { return "unload" }
         }
     }
 
@@ -897,4 +908,21 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
- }
+    boolean unloadCF(def resultFileName){
+        resetResults()
+        boolean retVal
+        def oper = OP_UNLOAD_CF
+        notifyAbout('Попытка выгрузки конфигурации', oper, NOTIFY_TYPE_BEFORE)
+        ExecParams params = new ExecParams(this, VanRunnerCommand.dcUnloadCF)
+                .addValue(resultFileName)
+                .addPair(ParamsEnum.peDbConnString)
+                .addPair(ParamsEnum.peDbDatabase)
+                .addPair(ParamsEnum.peDbUser)
+                .addPair(ParamsEnum.peDbPwd)
+        retVal = execScript(params)
+        DatabaseInfoReader.readInfo(resultLog, databaseInfo)
+        notifyAbout('Выгрузка конфигурации '.concat(retVal==true ? 'успешно' : 'не').concat(' выполнена'), oper, NOTIFY_TYPE_AFTER, retVal)
+        retVal
+    }
+
+}
