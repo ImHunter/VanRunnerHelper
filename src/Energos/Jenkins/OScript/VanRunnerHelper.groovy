@@ -71,9 +71,13 @@ class VanRunnerHelper extends OScriptHelper {
      * Операция - подключение конфигурации к хранилищу (=11)
      */
     final static int OP_BIND_REPO = 11
-
+    /**
+     * Запрос информации о БД через службу RAS (=12)
+     */
     final static int OP_ASK_DATABASEINFO = 12
-
+    /**
+     * Выгрузка конфигурации БД (=13)
+     */
     final static int OP_UNLOAD_CONFIG_DB = 13
 
 //    final static int OP_ =
