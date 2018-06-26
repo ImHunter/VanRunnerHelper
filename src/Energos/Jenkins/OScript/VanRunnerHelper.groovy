@@ -920,7 +920,6 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
-        DatabaseInfoReader.readInfo(resultLog, databaseInfo)
         notifyAbout('Выгрузка конфигурации БД '.concat(retVal==true ? 'успешно' : 'не').concat(' выполнена'), oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
