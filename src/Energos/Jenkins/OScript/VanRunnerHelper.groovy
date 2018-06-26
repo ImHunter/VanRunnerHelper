@@ -920,7 +920,7 @@ class VanRunnerHelper extends OScriptHelper {
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcUnloadConfigDB)
                 .addValue(resultFileName)
                 .addPair(ParamsEnum.peDbConnString)
-                .addPair(ParamsEnum.peDbDatabase)
+//                .addPair(ParamsEnum.peDbDatabase)
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
