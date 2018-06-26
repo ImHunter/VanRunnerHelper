@@ -74,7 +74,7 @@ class VanRunnerHelper extends OScriptHelper {
 
     final static int OP_ASK_DATABASEINFO = 12
 
-    final static int OP_UNLOAD_CF = 13
+    final static int OP_UNLOAD_CONFIG_DB = 13
 
 //    final static int OP_ =
     //endregion
@@ -203,7 +203,7 @@ class VanRunnerHelper extends OScriptHelper {
         /**
          * Выгрузка конфигурации БД
          */
-        dcUnloadCF {
+        dcUnloadConfigDB {
             @NonCPS
             @Override
             String toString() { return "unload" }
@@ -908,12 +908,12 @@ class VanRunnerHelper extends OScriptHelper {
         retVal
     }
 
-    boolean unloadCF(def resultFileName){
+    boolean unloadConfigDB(def resultFileName){
         resetResults()
         boolean retVal
-        def oper = OP_UNLOAD_CF
-        notifyAbout('Попытка выгрузки конфигурации', oper, NOTIFY_TYPE_BEFORE)
-        ExecParams params = new ExecParams(this, VanRunnerCommand.dcUnloadCF)
+        def oper = OP_UNLOAD_CONFIG_DB
+        notifyAbout('Попытка выгрузки конфигурации БД', oper, NOTIFY_TYPE_BEFORE)
+        ExecParams params = new ExecParams(this, VanRunnerCommand.dcUnloadConfigDB)
                 .addValue(resultFileName)
                 .addPair(ParamsEnum.peDbConnString)
                 .addPair(ParamsEnum.peDbDatabase)
@@ -921,7 +921,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
         DatabaseInfoReader.readInfo(resultLog, databaseInfo)
-        notifyAbout('Выгрузка конфигурации '.concat(retVal==true ? 'успешно' : 'не').concat(' выполнена'), oper, NOTIFY_TYPE_AFTER, retVal)
+        notifyAbout('Выгрузка конфигурации БД '.concat(retVal==true ? 'успешно' : 'не').concat(' выполнена'), oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
 
