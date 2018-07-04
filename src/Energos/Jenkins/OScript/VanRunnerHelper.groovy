@@ -589,14 +589,13 @@ class VanRunnerHelper extends OScriptHelper {
     @NonCPS
     VanRunnerHelper setDbFromConnectString(String connString, String dbUser = null, String dbPwd = null, String v8version = null){
         // Srvr="upr-1cdevel:3041";Ref="oree_dolinin";
-        def reader
         def props
         String valServer, valDB
         connString.split(';').each {def partConnStr ->
             props = new Properties()
             props.load(new StringReader(partConnStr))
-            props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', '')}
-            props.getProperty('Ref')?.with {valDB = it.replaceAll('"', '')}
+            props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', ''); echo(it)}
+            props.getProperty('Ref')?.with {valDB = it.replaceAll('"', ''); echo(it)}
         }
         echo("valServer=$valServer valDB=$valDB")
         setDb(valServer, valDB, dbUser, dbPwd, v8version)
