@@ -591,10 +591,9 @@ class VanRunnerHelper extends OScriptHelper {
         def reader
         def props
         String valServer, valDB
-        connString.split(';').each {
-            reader = new StringReader(it)
+        connString.split(';').each {def partConnStr ->
             props = new Properties()
-            props.load(reader)
+            props.load(new StringReader(partConnStr))
             props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', '')}
             props.getProperty('Ref')?.with {valDB = it.replaceAll('"', '')}
         }
