@@ -593,19 +593,20 @@ class VanRunnerHelper extends OScriptHelper {
         def valDB = ''
         def curVal
         connString.split(';').each {def partConnStr ->
-            echo(partConnStr)
             props = new Properties()
             props.load(new StringReader(partConnStr))
-            echo(props)
-            curVal = props.getProperty('﻿Srvr') // хз, откуда такой символ
-            echo(curVal)
-            valServer = curVal ?: valServer
-            curVal = props.getProperty('Srvr')
-            echo(curVal)
-            valServer = curVal ?: valServer
-            curVal = props.getProperty('Ref')
-            echo(curVal)
-            valDB = curVal ?: valDB
+            props.getProperty('﻿Srvr')?.with {valServer = it.replaceAll('"', ''); echo(it)}
+            props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', ''); echo(it)}
+            props.getProperty('Ref')?.with {valDB = it.replaceAll('"', ''); echo(it)}
+//            curVal = props.getProperty('﻿Srvr') // хз, откуда такой символ
+//            echo(curVal)
+//            valServer = curVal ?: valServer
+//            curVal = props.getProperty('Srvr')
+//            echo(curVal)
+//            valServer = curVal ?: valServer
+//            curVal = props.getProperty('Ref')
+//            echo(curVal)
+//            valDB = curVal ?: valDB
 
 //            valServer = props.getProperty('Srvr', valServer)
 //            valDB = props.getProperty('Ref', valDB)
