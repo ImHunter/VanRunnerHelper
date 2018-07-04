@@ -593,8 +593,10 @@ class VanRunnerHelper extends OScriptHelper {
         def valDB = ''
         def curVal
         connString.split(';').each {def partConnStr ->
+            echo(partConnStr)
             props = new Properties()
             props.load(new StringReader(partConnStr))
+            echo(props)
             curVal = props.getProperty('Srvr')
             echo(curVal)
             valServer = curVal ?: valServer
