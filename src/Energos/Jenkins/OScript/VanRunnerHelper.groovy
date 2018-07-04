@@ -586,7 +586,6 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-    @NonCPS
     VanRunnerHelper setDbFromConnectString(String connString, String dbUser = null, String dbPwd = null, String v8version = null){
         // Srvr="upr-1cdevel:3041";Ref="oree_dolinin";
         def props
