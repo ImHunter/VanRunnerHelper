@@ -598,6 +598,7 @@ class VanRunnerHelper extends OScriptHelper {
             props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', '')}
             props.getProperty('Ref')?.with {valDB = it.replaceAll('"', '')}
         }
+        echo("valServer=$valServer valDB=$valDB")
         setDb(valServer, valDB, dbUser, dbPwd, v8version)
     }
 
