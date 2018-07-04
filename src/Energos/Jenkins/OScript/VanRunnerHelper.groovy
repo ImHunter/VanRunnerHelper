@@ -586,6 +586,21 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
+    VanRunnerHelper setDbFromConnectString(String connString, String dbUser = null, String dbPwd = null, String v8version = null){
+        // Srvr="upr-1cdevel:3041";Ref="oree_dolinin";
+        def reader
+        def props
+        String valServer, valDB
+        connString.split(';').each {
+            reader = new StringReader(it)
+            props = new Properties()
+            props.load(reader)
+            props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', '')}
+            props.getProperty('Ref')?.with {valDB = it.replaceAll('"', '')}
+        }
+        setDb(valServer, valDB, dbUser, dbPwd, v8version)
+    }
+
     /**
      * Установка параметров аутентификации в БД 1С
      * @param dbUser Имя пользователя ИБ
