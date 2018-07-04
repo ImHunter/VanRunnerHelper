@@ -596,8 +596,10 @@ class VanRunnerHelper extends OScriptHelper {
             props = new Properties()
             props.load(new StringReader(partConnStr))
             curVal = props.getProperty('Srvr')
+            echo(curVal)
             valServer = curVal ?: valServer
             curVal = props.getProperty('Ref')
+            echo(curVal)
             valDB = curVal ?: valDB
 
 //            valServer = props.getProperty('Srvr', valServer)
