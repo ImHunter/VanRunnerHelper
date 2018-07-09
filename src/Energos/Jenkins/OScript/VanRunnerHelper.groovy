@@ -419,6 +419,12 @@ class VanRunnerHelper extends OScriptHelper {
 
     // endregion
 
+    /**
+     * Конструктор
+     * @param paramScript Объект script из Jenkins. В основном используется для echo.
+     * @param pathToScript Путь к библиотеке Vanessa-runner
+     * @param pathToServiceEPF Путь к сервисной внешней обработке. Используется лишь при запусках в режиме Предприятие для авто-завершения работы.
+     */
     VanRunnerHelper(def paramScript, String pathToScript = null, String pathToServiceEPF = null){
         
         super(paramScript)
@@ -451,13 +457,19 @@ class VanRunnerHelper extends OScriptHelper {
             notifyEvent.call(msgText, this, msgKind, msgType, operationResult, params)
     }
 
+    /**
+     * Метод для создания объекта, хранящего параметры запуска
+     * @param command Опциональная команда, которая сразу добавляется в параметры запуска. Реализовано, в основном, для наглядности.
+     * @return Созданный объект.
+     */
     ExecParams newExecParams(VanRunnerCommand command = null) {
         new ExecParams(this, command)
     }
 
     /**
      * Метод для самотестирования библиотеки.
-     * Это некая замена модульному тестированию - изначально были проблемы с запуском тестов. Приходилось тестировать таким вот образом
+     * Это некая замена модульному тестированию - изначально были проблемы с запуском тестов. Приходилось тестировать таким вот образом.
+     * Еще одна причина необходимости этой функции - это тестирование библиотеки в среде Jenkins на предмет необходимости NonCPS.
      * Устанавливается флаг тестирования (isTestMode = true), выполняются некие операции, флаг сбрасывается.
      */
     @Override
@@ -556,9 +568,9 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
-    VanRunnerHelper setParam(Map<Object, String> newParams, isIgnoreEmptyValues = true){
+    VanRunnerHelper setParam(Map<Object, String> newParams, ignoreEmptyValues = true){
         def filtered
-        if (isIgnoreEmptyValues) {
+        if (ignoreEmptyValues) {
             filtered = newParams.findAll { it.value != null }
         } else {
             filtered = newParams
@@ -586,6 +598,14 @@ class VanRunnerHelper extends OScriptHelper {
         this
     }
 
+    /**
+     * Установка параметров подключения к БД с помощью строки соединения
+     * @param connString Строка соединения ИБ
+     * @param dbUser Имя пользователя ИБ (опционально)
+     * @param dbPwd Пароль пользователя ИБ (опционально)
+     * @param v8version Версия платформы (опционально)
+     * @return Этот объект VanRunnerHelper
+     */
     VanRunnerHelper setDbFromConnectString(String connString, String dbUser = null, String dbPwd = null, String v8version = null){
         // Srvr="upr-1cdevel:3041";Ref="oree_dolinin";
         def props
@@ -609,21 +629,34 @@ class VanRunnerHelper extends OScriptHelper {
      * @param dbPwd Пароль пользователя ИБ
      * @return Этот объект VanRunnerHelper
      */
-    VanRunnerHelper setDbAuth(String dbUser, String dbPwd) {
+    VanRunnerHelper setDbAuth(String dbUser, String dbPwd = null) {
         setParam([(ParamsEnum.peDbUser):dbUser,
                   (ParamsEnum.peDbPwd):qStr(dbPwd)])
         this
     }
 
-    VanRunnerHelper setRepo(String repoPath, String repoUser = null, String repoPwd = null) {
+    /**
+     * Установка параметров для подключения к хранилищу
+     * @param repoPath Путь к хранилищу
+     * @param repoUser Имя пользователя хранилища
+     * @param repoPwd Пароль пользователя хранилища (опционально)
+     * @return Этот объект VanRunnerHelper
+     */
+    VanRunnerHelper setRepo(String repoPath, String repoUser, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):repoPath,
                   (ParamsEnum.peRepoUser):repoUser,
                   (ParamsEnum.peRepoPwd):qStr(repoPwd)])
         this
     }
 
+    /**
+     * Установка параметров аутентификации в хранилище
+     * @param repoUser Имя пользователя хранилища
+     * @param repoPwd Пароль пользователя хранилища (опционально)
+     * @return
+     */
     @NonCPS
-    VanRunnerHelper setRepoAuth(String repoUser, String repoPwd) {
+    VanRunnerHelper setRepoAuth(String repoUser, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoUser):repoUser,
                   (ParamsEnum.peRepoPwd):qStr(repoPwd)])
         this
@@ -646,8 +679,6 @@ class VanRunnerHelper extends OScriptHelper {
             this.ucCode = ucCode
         this
     }
-
-    // endregion
 
     SessionFilter newSessionFilter(){
         new SessionFilter()
