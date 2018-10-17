@@ -696,7 +696,6 @@ class VanRunnerHelper extends OScriptHelper {
         setParam( ParamsEnum.peLaunchCommand, qStr(launchParam))
         testEcho('подготовили параметры запуска launchParam')
 
-        // echo ("executing script");
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, doUpdateMetadata)
         retVal = execScript(
                 new ExecParams(this, VanRunnerCommand.dcRun)
