@@ -705,7 +705,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
                 .addPair(ParamsEnum.peLaunchCommand)
                 .addPair(ParamsEnum.pePathToServiceEpf)
-                .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null)
+                .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null && ucCode.empty==false)
                 .addPair('--ordinaryapp', launchMode) // чтобы в ключах запуска не было RunModeManagedApplication, т.к. это гасит вывод лога
         )
         configInfo.readLogInfo(resultLog)
