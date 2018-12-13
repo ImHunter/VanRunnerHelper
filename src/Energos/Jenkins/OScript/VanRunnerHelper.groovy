@@ -714,6 +714,7 @@ class VanRunnerHelper extends OScriptHelper {
         )
         configInfo.readLogInfo(resultLog)
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, doUpdateMetadata)
+        printCmdOnce = false
         retVal
     }
 
@@ -921,6 +922,7 @@ class VanRunnerHelper extends OScriptHelper {
 
         retVal = execScript(params)
         notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER, retVal)
+        printCmdOnce = false
         retVal
     }
 
