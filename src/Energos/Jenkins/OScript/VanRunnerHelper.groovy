@@ -120,6 +120,8 @@ class VanRunnerHelper extends OScriptHelper {
      */
     public def scheduledJobsEnabledDefault = true
 
+    public def printCmdOnce = true
+
     // endregion
 
     //endregion
@@ -453,8 +455,11 @@ class VanRunnerHelper extends OScriptHelper {
      * К примеру, при выполнении метода setLockStatusForUsers(locked), здесь передается параметр locked.
      */
     protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, def operationResult = null, Object... params){
-        if (notifyEvent!=null)
+        if (notifyEvent!=null) {
             notifyEvent.call(msgText, this, msgKind, msgType, operationResult, params)
+            if (printCmdOnce==true)
+                notifyEvent.call(launchString, this, msgKind, msgType, operationResult, params)
+        }
     }
 
     /**
@@ -754,6 +759,7 @@ class VanRunnerHelper extends OScriptHelper {
         msg = (enabledValue ? 'Разрешение': 'Запрет') + ' выполнения регламентных заданий - ' +
                 (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), retVal, enabledValue)
+        printCmdOnce = false
         retVal
     }
 
@@ -789,6 +795,7 @@ class VanRunnerHelper extends OScriptHelper {
         boolean retVal = execScript(params)
         msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, oper, getNOTIFY_TYPE_AFTER(), retVal)
+        printCmdOnce = false
         retVal
     }
 
@@ -822,6 +829,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     def loadConfigFromRepo(def repoVersion = null) {
+
         resetResults()
         String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
@@ -839,6 +847,7 @@ class VanRunnerHelper extends OScriptHelper {
         )
         msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER(), retVal)
+        printCmdOnce = false
         retVal
     }
 
