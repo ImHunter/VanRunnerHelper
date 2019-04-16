@@ -30,7 +30,7 @@ class JenkinsBatchExecuter extends CustomBatchExecuter {
     private def executeBat(String scriptText){
         def executed = true
         try {
-            execLog = script.bat( returnStdout: true, script: 'rrr')
+            execLog = script.bat( returnStdout: true, script: "@echo off\n".concat("chcp 65001\n").concat(scriptText))
         }
         catch (e){
             execLog = 'Не выполнено'
