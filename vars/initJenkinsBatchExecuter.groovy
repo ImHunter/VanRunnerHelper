@@ -1,6 +1,6 @@
 import Energos.Jenkins.OScript.JenkinsBatchExecuter
 
-def call(def pathToScript = null, def pathToServiceEPF = null){
+def call(){
 
     new JenkinsBatchExecuter(this)
 

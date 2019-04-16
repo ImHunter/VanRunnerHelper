@@ -11,7 +11,7 @@ abstract class CustomBatchExecuter {
     // constructors
     CustomBatchExecuter() {}
 
-    CustomBatchExecuter(Script scr) {
+    CustomBatchExecuter(def scr) {
         script = scr
     }
 
