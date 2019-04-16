@@ -23,6 +23,10 @@ class JenkinsBatchExecuter extends CustomBatchExecuter {
         return executed
     }
 
+    JenkinsBatchExecuter(def scr) {
+        super(scr)
+    }
+
     private def executeBat(String scriptText){
         def executed = true
         try {

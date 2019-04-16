@@ -11,7 +11,6 @@ abstract class CustomBatchExecuter {
     // constructors
     CustomBatchExecuter() {}
 
-    @NonCPS
     CustomBatchExecuter(def scr) {
         this.script = scr
     }
