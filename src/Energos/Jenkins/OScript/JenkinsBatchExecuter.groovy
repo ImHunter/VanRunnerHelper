@@ -7,16 +7,16 @@ class JenkinsBatchExecuter extends CustomBatchExecuter {
         def executed
 
         if (execTimeout > 0) {
-            try {
+//            try {
                 script.timeout(time: execTimeout, unit: 'SECONDS') {
                     executed = executeBat(scriptText)
                 }
-            }
-            catch (e){
-                execLog = 'Прервано по таймауту'
-                echo(execLog)
-                executed = false
-            }
+//            }
+//            catch (e){
+//                execLog = 'Прервано по таймауту'
+//                echo(execLog)
+//                executed = false
+//            }
         } else {
             executed = executeBat(scriptText)
         }
