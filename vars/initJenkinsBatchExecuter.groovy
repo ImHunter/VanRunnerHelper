@@ -2,6 +2,7 @@ import Energos.Jenkins.OScript.JenkinsBatchExecuter
 
 def call(){
 
-    new JenkinsBatchExecuter(this)
+    final def executer = new JenkinsBatchExecuter(this)
+    executer
 
 }
