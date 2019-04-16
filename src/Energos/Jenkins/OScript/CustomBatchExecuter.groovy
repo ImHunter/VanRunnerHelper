@@ -3,7 +3,7 @@ package Energos.Jenkins.OScript
 abstract class CustomBatchExecuter {
 
     // closed vars
-    protected Script script
+    protected def script
 
     public String execLog
     public int execTimeout = 0
