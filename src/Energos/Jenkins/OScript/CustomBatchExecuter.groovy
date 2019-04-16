@@ -12,7 +12,7 @@ abstract class CustomBatchExecuter {
     CustomBatchExecuter() {}
 
     CustomBatchExecuter(def scr) {
-        script = scr
+        this.script = scr
     }
 
     def echo(def msg) {
