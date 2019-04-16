@@ -14,6 +14,7 @@ class JenkinsBatchExecuter extends CustomBatchExecuter {
             }
             catch (e){
                 execLog = 'Прервано по таймауту'
+                echo(execLog)
                 executed = false
             }
         } else {
