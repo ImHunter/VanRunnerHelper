@@ -713,7 +713,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair('--ordinaryapp', launchMode) // чтобы в ключах запуска не было RunModeManagedApplication, т.к. это гасит вывод лога
         )
         configInfo.readLogInfo(resultLog)
-        echo(resultLog) // todo Убрать!
+        echo(resultLog) // todo Потом убрать!
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, doUpdateMetadata)
         printCmdOnce = false
         retVal
