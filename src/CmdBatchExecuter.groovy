@@ -1,31 +1,20 @@
-import java.util.Map
-import java.io.File
-import java.lang.ProcessBuilder
-import java.lang.ProcessBuilder.Redirect
-import java.lang.Runtime
-import java.lang.System
+import Energos.Jenkins.OScript.CustomBatchExecuter
 
-class BatchExecuter {
+class CmdBatchExecuter extends CustomBatchExecuter {
 
     // public vars
 
     // closed vars
-    private Script script
     private Map<String, String> envVariables
 
     // constructor
-    BatchExecuter(Script scr) {
-        script = scr
+    CmdBatchExecuter(Script scr) {
+        super(scr)
         envVariables = System.getenv()
     }
 
     ////////////////////////////////////
     // code
-
-    def echo(def msg) {
-        script.echo("${msg}")
-        true
-    }
 
     def setEnvVariables(Map<String,String> envVars = null) {
         // envVariables = [:];
@@ -36,11 +25,14 @@ class BatchExecuter {
         envVariables
     }
 
-    def execCmd(String cmdText, Map<String,String> envVars = null, Boolean returnResultAsLog = true) {
+    def execute(String batchText){
+        execCmd(batchText, null, false)
+    }
+
+    def execCmd(String cmdText) {
 
         def resLog = ""
-        Integer resCode
-        def res
+        def executed = false
 
         // echo cmdText;
         setEnvVariables(envVars)
@@ -57,24 +49,15 @@ class BatchExecuter {
 
             Process proc = pb.start()
             proc.waitFor()
-            resCode = proc.exitValue()
-            resLog = proc.getText()
-
-            echo "resCode=${resCode}"
-            echo "resLog=${resLog}"
+            executed = proc.exitValue()==0
+            execLog = proc.getText()
 
         } finally {
             batFile.delete()
             // log.delete();
         }
 
-        if (returnResultAsLog) {
-            res = resLog
-        } else {
-            res = resCode
-        }
-
-        res
+        return executed
 
     }
 

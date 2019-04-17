@@ -15,7 +15,7 @@ class OScriptHelper {
     /**
      * Переменная для хранения контекста скрипта Jenkins, чтобы можно было выполнять любые его операции.
      */
-    protected Script script
+    protected def script
     /**
      * Переменная, указывающая, что действует тестовый режим. При этом процесс не запускается, а лишь в консоль выводятся параметры запуска процесса.
      */
@@ -49,17 +49,23 @@ class OScriptHelper {
      */
     protected String launchString
     protected Integer currentExecTimeout = null
+    protected CustomBatchExecuter executer
     // endregion
 
     /**
      * Конструктор класса
      * @param script В конструктор передаем контекст выполняемого скрипта Jenkins. В принципе, можно передавать null. Тогда всякие echo работать не будут. Вместо них будет использоваться println.
      */
-    OScriptHelper(Script script) {
+    OScriptHelper(def script) {
         this.script = script
+        createExecuter(script)
     }
 
-    // @NonCPS
+    @NonCPS
+    protected void createExecuter(def script){
+        executer = new JenkinsBatchExecuter(script)
+    }
+
     void selfTest(){
         echo("Включаем режим тестирования")
         isTestMode = true
@@ -145,39 +151,47 @@ class OScriptHelper {
         String[] fullParams = initParams + params
         launchString = fullParams.join(' ')
 
+        def executed = true
+
         if (isTestMode) {
             echo("Вызов execScript в тестовом режиме с параметрами $fullParams")
             resultCode = 0
             resultLog = 'Тестовый лог'
 
         } else {
-            ProcessBuilder pb = new ProcessBuilder(fullParams)
-            Process proc = pb.start()
-            try {
-                proc.waitFor()
-                resultLog = readLog(proc.getIn())
-                resultCode = proc.exitValue()
-            } catch (InterruptedException e) {
-                interrupted = true
-                resultLog = e.getMessage()
-            }
-
-            if (interrupted) {
-                while (proc.isAlive()) {
-                    Thread.sleep(2500)
-                    if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
-                        resultCode = null
-                        resultLog = 'Прервано по таймауту\n'.concat(readLog(proc.getIn()))
-                        break
-                    }
-                }
-                resultCode = proc.exitValue()
-                resultLog = readLog(proc.getIn())
-            }
+            executed = executer.execute(launchString)
+            resultLog = executer.execLog
+            resultCode = executed ? 0 : 1
         }
-        setCurrentTimeout(null) // сбрасываем значение тайаута
-        res = resultCode==0
-        res
+//            ProcessBuilder pb = new ProcessBuilder(fullParams)
+//            Process proc = pb.start()
+//            try {
+//                proc.waitFor()
+//                resultLog = readLog(proc.getIn())
+//                resultCode = proc.exitValue()
+//            } catch (InterruptedException e) {
+//                interrupted = true
+//                resultLog = e.getMessage()
+//            }
+//
+//            if (interrupted) {
+//                while (proc.isAlive()) {
+//                    Thread.sleep(2500)
+//                    if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
+//                        resultCode = null
+//                        resultLog = 'Прервано по таймауту\n'.concat(readLog(proc.getIn()))
+//                        break
+//                    }
+//                }
+//                resultCode = proc.exitValue()
+//                resultLog = readLog(proc.getIn())
+//            }
+//        }
+//        setCurrentTimeout(null) // сбрасываем значение тайаута
+//        res = resultCode==0
+//        res
+        setCurrentTimeout(null)
+        return executed
     }
 
     /**
@@ -228,6 +242,7 @@ class OScriptHelper {
 
     public void setCurrentTimeout(Integer secondsTimeout) {
         currentExecTimeout = secondsTimeout
+        executer.execTimeout = secondsTimeout==null ? 0 : secondsTimeout
     }
 
 }
