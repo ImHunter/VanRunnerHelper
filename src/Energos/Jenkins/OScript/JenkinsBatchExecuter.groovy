@@ -2,7 +2,7 @@ package Energos.Jenkins.OScript
 
 class JenkinsBatchExecuter extends CustomBatchExecuter {
 
-    def execute(String scriptText){
+    protected def doExecute(String scriptText){
 
         def executed
 

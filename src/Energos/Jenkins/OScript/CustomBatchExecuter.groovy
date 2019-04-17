@@ -20,11 +20,17 @@ abstract class CustomBatchExecuter {
         this
     }
 
+    def execute(String batchText){
+        def executed = doExecute(batchText)
+        execTimeout = 0
+        executed
+    }
+
     def printMsg(def text){
         script?.println("$text")
         this
     }
 
-    abstract def execute(String batchText)
+    abstract protected def doExecute(String batchText)
 
 }
