@@ -61,6 +61,7 @@ class OScriptHelper {
         createExecuter(script)
     }
 
+    @NonCPS
     private void createExecuter(def script){
         executer = new JenkinsBatchExecuter(script)
     }
@@ -190,7 +191,7 @@ class OScriptHelper {
 //        res = resultCode==0
 //        res
         setCurrentTimeout(null)
-        executed
+        return executed
     }
 
     /**
