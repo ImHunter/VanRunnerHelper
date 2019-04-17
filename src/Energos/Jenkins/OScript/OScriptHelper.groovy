@@ -62,7 +62,7 @@ class OScriptHelper {
     }
 
 //    @NonCPS
-    private def createExecuter(def script){
+    protected def createExecuter(def script){
         executer = new JenkinsBatchExecuter(script)
         this
     }
