@@ -15,7 +15,7 @@ class OScriptHelper {
     /**
      * Переменная для хранения контекста скрипта Jenkins, чтобы можно было выполнять любые его операции.
      */
-    protected Script script
+    protected def script
     /**
      * Переменная, указывающая, что действует тестовый режим. При этом процесс не запускается, а лишь в консоль выводятся параметры запуска процесса.
      */
@@ -56,7 +56,7 @@ class OScriptHelper {
      * Конструктор класса
      * @param script В конструктор передаем контекст выполняемого скрипта Jenkins. В принципе, можно передавать null. Тогда всякие echo работать не будут. Вместо них будет использоваться println.
      */
-    OScriptHelper(Script script) {
+    OScriptHelper(def script) {
         this.script = script
         createExecuter(script)
     }
