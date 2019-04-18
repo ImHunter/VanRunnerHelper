@@ -1,3 +1,5 @@
+package Energos.Jenkins.OScript
+
 import Energos.Jenkins.OScript.CustomBatchExecuter
 
 class CmdBatchExecuter extends CustomBatchExecuter {
