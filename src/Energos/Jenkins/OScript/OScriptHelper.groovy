@@ -147,8 +147,7 @@ class OScriptHelper {
         }
 
         String[] initParams = [mainProcessName]
-        echo("pathToScript='$pathToScript'")
-        if (pathToScript!=null && pathToScript.length()>0)
+        if (pathToScript!=null && pathToScript.length()>0 && !pathToScript.equalsIgnoreCase('""'))
             initParams = initParams + [pathToScript]
         String[] fullParams = initParams + params
         launchString = fullParams.join(' ')
