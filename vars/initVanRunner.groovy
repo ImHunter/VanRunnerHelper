@@ -8,6 +8,6 @@ import Energos.Jenkins.OScript.VanRunnerHelper
  */
 def call(def pathToScript = null, def pathToServiceEPF = null){
 
-    new VanRunnerHelper(this, pathToScript?.toString(), pathToServiceEPF?.toString())
+    new VanRunnerHelper(this, pathToScript, pathToServiceEPF?.toString())
 
 }
