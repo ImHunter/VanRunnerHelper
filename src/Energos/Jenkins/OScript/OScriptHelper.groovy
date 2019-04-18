@@ -147,14 +147,10 @@ class OScriptHelper {
         }
 
         String[] initParams = [mainProcessName]
-        if (pathToScript!=null && !pathToScript.empty)
+        if (pathToScript!=null && pathToScript.length()>0)
             initParams = initParams + [pathToScript]
         String[] fullParams = initParams + params
         launchString = fullParams.join(' ')
-
-        //todo Убрать эхо
-        echo("$params")
-        echo("$fullParams")
 
         def executed = true
 
