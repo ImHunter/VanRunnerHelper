@@ -159,39 +159,39 @@ class OScriptHelper {
             resultLog = 'Тестовый лог'
 
         } else {
-            executed = executer.execute(launchString)
-            resultLog = executer.execLog
-            resultCode = executed ? 0 : 1
-        }
-//            ProcessBuilder pb = new ProcessBuilder(fullParams)
-//            Process proc = pb.start()
-//            try {
-//                proc.waitFor()
-//                resultLog = readLog(proc.getIn())
-//                resultCode = proc.exitValue()
-//            } catch (InterruptedException e) {
-//                interrupted = true
-//                resultLog = e.getMessage()
-//            }
-//
-//            if (interrupted) {
-//                while (proc.isAlive()) {
-//                    Thread.sleep(2500)
-//                    if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
-//                        resultCode = null
-//                        resultLog = 'Прервано по таймауту\n'.concat(readLog(proc.getIn()))
-//                        break
-//                    }
-//                }
-//                resultCode = proc.exitValue()
-//                resultLog = readLog(proc.getIn())
-//            }
+//            executed = executer.execute(launchString)
+//            resultLog = executer.execLog
+//            resultCode = executed ? 0 : 1
 //        }
-//        setCurrentTimeout(null) // сбрасываем значение тайаута
-//        res = resultCode==0
-//        res
-        setCurrentTimeout(null)
-        return executed
+            ProcessBuilder pb = new ProcessBuilder(fullParams)
+            Process proc = pb.start()
+            try {
+                proc.waitFor()
+                resultLog = readLog(proc.getIn())
+                resultCode = proc.exitValue()
+            } catch (InterruptedException e) {
+                interrupted = true
+                resultLog = e.getMessage()
+            }
+
+            if (interrupted) {
+                while (proc.isAlive()) {
+                    Thread.sleep(2500)
+                    if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
+                        resultCode = null
+                        resultLog = 'Прервано по таймауту\n'.concat(readLog(proc.getIn()))
+                        break
+                    }
+                }
+                resultCode = proc.exitValue()
+                resultLog = readLog(proc.getIn())
+            }
+        }
+        setCurrentTimeout(null) // сбрасываем значение тайаута
+        res = resultCode==0
+        res
+//        setCurrentTimeout(null)
+//        return executed
     }
 
     /**
