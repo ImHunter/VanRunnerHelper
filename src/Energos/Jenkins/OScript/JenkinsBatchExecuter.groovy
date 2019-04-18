@@ -18,7 +18,7 @@ class JenkinsBatchExecuter extends CustomBatchExecuter {
 //                executed = false
 //            }
         } else {
-            executed = executeBat(scriptText)
+            executed = executeBat(params)
         }
 
         return executed
