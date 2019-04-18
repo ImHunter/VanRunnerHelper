@@ -152,7 +152,7 @@ class OScriptHelper {
         String[] fullParams = initParams + params
         launchString = fullParams.join(' ')
 
-        // todo Убрать эхо
+        //todo Убрать эхо
         echo("$params")
         echo("$fullParams")
 
