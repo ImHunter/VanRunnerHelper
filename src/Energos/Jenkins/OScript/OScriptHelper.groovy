@@ -152,6 +152,10 @@ class OScriptHelper {
         String[] fullParams = initParams + params
         launchString = fullParams.join(' ')
 
+        // todo Убрать эхо
+        echo("$params")
+        echo("$fullParams")
+
         def executed = true
 
         if (isTestMode) {
