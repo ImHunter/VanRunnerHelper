@@ -147,7 +147,7 @@ class OScriptHelper {
         }
 
         String[] initParams = [mainProcessName]
-        if (pathToScript!=null)
+        if (pathToScript!=null && !pathToScript.empty)
             initParams = initParams + [pathToScript]
         String[] fullParams = initParams + params
         launchString = fullParams.join(' ')
@@ -160,7 +160,7 @@ class OScriptHelper {
             resultLog = 'Тестовый лог'
 
         } else {
-            executed = executer.execute(launchString)
+            executed = executer.execute(fullParams)
             resultLog = executer.execLog
             resultCode = executed ? 0 : 1
         }
