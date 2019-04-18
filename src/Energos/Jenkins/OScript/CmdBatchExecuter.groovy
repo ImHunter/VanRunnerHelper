@@ -39,7 +39,7 @@ class CmdBatchExecuter extends CustomBatchExecuter {
             resLog
         }
 
-        def proc = batchText.execute()
+        def proc = Runtime.getRuntime().exec()
         Boolean interrupted = false
         def resultCode, res
 
