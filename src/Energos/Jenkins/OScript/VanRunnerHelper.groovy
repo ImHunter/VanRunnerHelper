@@ -320,6 +320,11 @@ class VanRunnerHelper extends OScriptHelper {
             @NonCPS
             @Override
             String toString() { return '--with-nolock' }
+        },
+        peOnlineFile{
+            @NonCPS
+            @Override
+            String toString() { return '--online-file' }
         }
     }
 
@@ -711,6 +716,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null && ucCode.empty==false)
                 .addPair('--ordinaryapp', launchMode) // чтобы в ключах запуска не было RunModeManagedApplication, т.к. это гасит вывод лога
+                .addPair(ParamsEnum.peOnlineFile, "C:\\OScripts\\log.txt")
         )
         configInfo.readLogInfo(resultLog)
         echo(resultLog) // todo Потом убрать!
