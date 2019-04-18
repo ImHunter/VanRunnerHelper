@@ -25,8 +25,51 @@ class CmdBatchExecuter extends CustomBatchExecuter {
         envVariables
     }
 
-    def execute(String batchText){
-        execCmd(batchText, null, false)
+    def doExecute(String batchText){
+
+        def readLog = {def st ->
+            String resLog
+            try {
+                resLog = new String(st.getBytes(), 'Cp866')
+            } catch (e) {
+                resLog = 'Ошибка чтения лога:\n'.concat(e.getMessage())
+            }
+            resLog
+        }
+
+        def proc = batchText.execute()
+        Boolean interrupted = false
+        def resultCode, res
+
+        try {
+            proc.waitFor()
+            execLog = readLog(proc.getIn())
+            resultCode = proc.exitValue()
+        } catch (InterruptedException e) {
+            interrupted = true
+            execLog = e.getMessage()
+        }
+
+        def maxExecTime = null
+        if (execTimeout!=null && execTimeout>0){
+            maxExecTime = Calendar.getInstance()
+            maxExecTime.add(Calendar.SECOND, execTimeout)
+        }
+
+        if (interrupted) {
+            while (proc.isAlive()) {
+                Thread.sleep(2500)
+                if (maxExecTime!=null && Calendar.getInstance()>maxExecTime) {
+                    resultCode = null
+                    execLog = 'Прервано по таймауту\n'.concat(readLog(proc.getIn()))
+                    break
+                }
+            }
+            resultCode = proc.exitValue()
+            execLog = readLog(proc.getIn())
+        }
+        res = resultCode==0
+        res
     }
 
     def execCmd(String cmdText) {
