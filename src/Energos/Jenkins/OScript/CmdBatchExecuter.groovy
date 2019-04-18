@@ -27,7 +27,7 @@ class CmdBatchExecuter extends CustomBatchExecuter {
         envVariables
     }
 
-    def doExecute(String batchText){
+    def doExecute(String[] params){
 
         def readLog = {def st ->
             String resLog
@@ -39,7 +39,7 @@ class CmdBatchExecuter extends CustomBatchExecuter {
             resLog
         }
 
-        def proc = Runtime.getRuntime().exec()
+        def proc = Runtime.getRuntime().exec(params)
         Boolean interrupted = false
         def resultCode, res
 

@@ -20,8 +20,8 @@ abstract class CustomBatchExecuter {
         this
     }
 
-    def execute(String batchText){
-        def executed = doExecute(batchText)
+    def execute(String[] params){
+        def executed = doExecute(params)
         execTimeout = 0
         executed
     }
@@ -31,6 +31,6 @@ abstract class CustomBatchExecuter {
         this
     }
 
-    abstract protected def doExecute(String batchText)
+    abstract protected def doExecute(String[] params)
 
 }
