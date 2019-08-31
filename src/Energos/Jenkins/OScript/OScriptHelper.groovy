@@ -155,7 +155,7 @@ class OScriptHelper {
         def executed = true
 
         if (isTestMode) {
-            echo(new String("Вызов execScript в тестовом режиме с параметрами $fullParams".getBytes(), "UTF-8"))
+            echo(utf8("Вызов execScript в тестовом режиме с параметрами $fullParams"))
             resultCode = 0
             resultLog = 'Тестовый лог'
 
