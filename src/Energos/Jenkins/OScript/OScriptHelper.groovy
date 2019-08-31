@@ -241,6 +241,7 @@ class OScriptHelper {
         retVal
     }
 
+    @NonCPS
     def utf8(String value){
         new String(value.getBytes(), "UTF-8")
     }
