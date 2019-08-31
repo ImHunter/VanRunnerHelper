@@ -155,7 +155,7 @@ class OScriptHelper {
         def executed = true
 
         if (isTestMode) {
-            echo(utf8("Вызов execScript в тестовом режиме с параметрами $fullParams"))
+            echo("Вызов execScript в тестовом режиме с параметрами $fullParams")
             resultCode = 0
             resultLog = 'Тестовый лог'
 
@@ -248,7 +248,7 @@ class OScriptHelper {
 
     @NonCPS
     def ansi(String value){
-        new String(value.getBytes(), "windows-1251")
+        new String(value.getBytes("UTF-8"), "windows-1251")
     }
 
     public void setCurrentTimeout(Integer secondsTimeout) {
