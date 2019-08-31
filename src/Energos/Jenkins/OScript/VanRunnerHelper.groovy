@@ -641,7 +641,8 @@ class VanRunnerHelper extends OScriptHelper {
      */
     VanRunnerHelper setDbAuth(String dbUser, String dbPwd = null) {
         setParam([(ParamsEnum.peDbUser):ansi(dbUser),
-                  (ParamsEnum.peDbPwd):ansi(qStr(dbPwd)]))
+                  (ParamsEnum.peDbPwd):qStr(ansi(dbPwd))
+        ])
         this
     }
 
