@@ -3,120 +3,120 @@ package Energos.Jenkins.OScript
 import java.lang.*
 
 /**
- * РљР»Р°СЃСЃ-РѕР±РµСЂС‚РєР° РґР»СЏ РѕРїРµСЂР°С†РёР№ Vanessa-runner.
+ * Класс-обертка для операций Vanessa-runner.
  */
 class VanRunnerHelper extends OScriptHelper {
 
-    //region РљРѕРЅСЃС‚Р°РЅС‚С‹ С‚РёРїРѕРІ РѕРїРѕРІРµС‰РµРЅРёР№
+    //region Константы типов оповещений
     /**
-     * РўРёРї РѕРїРѕРІРµС‰РµРЅРёСЏ - РЅРµРѕРїСЂРµРґРµР»РµРЅРѕ
+     * Тип оповещения - неопределено
      */
     final static int NOTIFY_TYPE_UNDEFINED = 0
     /**
-     * РўРёРї РѕРїРѕРІРµС‰РµРЅРёСЏ - РїРµСЂРµРґ РІС‹РїРѕР»РЅРµРЅРёРµРј РѕРїРµСЂР°С†РёРё
+     * Тип оповещения - перед выполнением операции
      */
     final static int NOTIFY_TYPE_BEFORE = 1
     /**
-     * РўРёРї РѕРїРѕРІРµС‰РµРЅРёСЏ - РїРѕСЃР»Рµ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё
+     * Тип оповещения - после выполнения операции
      */
     final static int NOTIFY_TYPE_AFTER = 2
     //endregion
 
-    //region РљРѕРЅСЃС‚Р°РЅС‚С‹ РІРёРґРѕРІ РѕРїРѕРІРµС‰РµРЅРёР№ (РѕРїРµСЂР°С†РёР№)
+    //region Константы видов оповещений (операций)
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - РЅРµРѕРїСЂРµРґРµР»РµРЅРѕ (=0).
+     * Вид операции - неопределено (=0).
      */
     final static int OP_UNDEFINED = 0
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - Р·Р°РїСѓСЃРє РІ СЂРµР¶РёРјРµ 1РЎ:РџСЂРµРґРїСЂРёСЏС‚РёРµ (=1)
+     * Вид операции - запуск в режиме 1С:Предприятие (=1)
      */
     final static int OP_LAUNCH_USER_INTERFACE = 1
     /**
-     * Р’РёРґ РѕРїСЂРµР°С†РёРё - Р±Р»РѕРєРёСЂРѕРІРєР°/СЂР°Р·Р±Р»РѕРєРёСЂРѕРІРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёС… СЃРµР°РЅСЃРѕРІ (=2)
+     * Вид опреации - блокировка/разблокировка пользовательских сеансов (=2)
      */
     final static int OP_SET_LOCK_USERS = 2
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - Р±Р»РѕРєРёСЂРѕРІРєР°/СЂР°Р·Р±Р»РѕРєРёСЂРѕРІРєР° СЂРµРіР»Р°РјРµРЅС‚РЅС‹С… Р·Р°РґР°РЅРёР№ (=3)
+     * Вид операции - блокировка/разблокировка регламентных заданий (=3)
      */
     final static int OP_SET_LOCK_BACKGROUNDS = 3
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - Р·Р°РІРµСЂС€РµРЅРёРµ СЃРµР°РЅСЃРѕРІ (=4)
+     * Вид операции - завершение сеансов (=4)
      */
     final static int OP_KILL_SESSIONS = 4
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· РїР°РєРµС‚Р° РѕР±РЅРѕРІР»РµРЅРёСЏ (=5)
+     * Вид операции - обновление конфигурации из пакета обновления (=5)
      */
     final static int OP_UPDATE_CONFIG_FROM_PACKAGE = 5
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· С…СЂР°РЅРёР»РёС‰Р° (=6)
+     * Вид операции - обновление конфигурации из хранилища (=6)
      */
     final static int OP_UPDATE_CONFIG_FROM_REPO = 6
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - РѕС‚РєР»СЋС‡РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РѕС‚ С…СЂР°РЅРёР»РёС‰Р° (=7)
+     * Вид операции - отключение конфигурации от хранилища (=7)
      */
     final static int OP_UNBIND_REPO = 7
     /**
-     * Р’РёРґ РѕРїРµСЂР°С†РёРё - РѕР±РЅРѕРІР»РµРЅРёРµ Р‘Р” (=8)
+     * Вид операции - обновление БД (=8)
      */
     final static int OP_UPDATE_DB = 8
     /**
-     * РћРїРµСЂР°С†РёСЏ - РѕР¶РёРґР°РЅРёРµ Р·Р°РІРµСЂС€РµРЅРёСЏ СЃРµСЃСЃРёР№ (=9)
+     * Операция - ожидание завершения сессий (=9)
      */
     final static int OP_WAIT_FOR_CLOSE = 9
     /**
-     * РћРїРµСЂР°С†РёСЏ - РѕР¶РёРґР°РЅРёРµ Р·Р°РІРµСЂС€РµРЅРёСЏ СЃРµСЃСЃРёР№, РІС‹РїРѕР»РЅРµРЅ С†РёРєР» РѕР¶РёРґР°РЅРёСЏ (=10)
+     * Операция - ожидание завершения сессий, выполнен цикл ожидания (=10)
      */
     final static int OP_WAIT_FOR_CLOSE_CONTINUE = 10
     /**
-     * РћРїРµСЂР°С†РёСЏ - РїРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Рє С…СЂР°РЅРёР»РёС‰Сѓ (=11)
+     * Операция - подключение конфигурации к хранилищу (=11)
      */
     final static int OP_BIND_REPO = 11
     /**
-     * Р—Р°РїСЂРѕСЃ РёРЅС„РѕСЂРјР°С†РёРё Рѕ Р‘Р” С‡РµСЂРµР· СЃР»СѓР¶Р±Сѓ RAS (=12)
+     * Запрос информации о БД через службу RAS (=12)
      */
     final static int OP_ASK_DATABASEINFO = 12
     /**
-     * Р’С‹РіСЂСѓР·РєР° РєРѕРЅС„РёРіСѓСЂР°С†РёРё Р‘Р” (=13)
+     * Выгрузка конфигурации БД (=13)
      */
     final static int OP_UNLOAD_CONFIG_DB = 13
 
 //    final static int OP_ =
     //endregion
 
-    // REGION РџСѓР±Р»РёС‡РЅС‹Рµ РїРѕР»СЏ
+    // REGION Публичные поля
 
     /**
-     * РЎРІРѕР№СЃС‚РІР°, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅС‹ РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё СЃРєСЂРёРїС‚Р°.
-     * Р—Р°РґР°СЋС‚СЃСЏ РјРµС‚РѕРґР°РјРё set... (РЅР°РїСЂРёРјРµСЂ, setDb(...)).
+     * Свойства, которые могут быть использованы при выполнении скрипта.
+     * Задаются методами set... (например, setDb(...)).
      */
     public Map<Object, String> params = [:]
     /**
-     * Р—РЅР°С‡РµРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅРѕ, РЅР°РїСЂРёРјРµСЂ, РїСЂРё Р±Р»РѕРєРёСЂРѕРІРєРµ СЃРµР°РЅСЃРѕРІ. Рў.Рµ., С‚Рѕ, С‡С‚Рѕ РїРµСЂРµРґР°РµС‚СЃСЏ РІ РєР»СЋС‡Рµ /UC
+     * Значение, которое может быть указано, например, при блокировке сеансов. Т.е., то, что передается в ключе /UC
      */
     public String ucCode = 'blocked'
     /**
-     * Closure, РєРѕС‚РѕСЂР°СЏ РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅР° РґР»СЏ Р»РѕРіРёСЂРѕРІР°РЅРёСЏ РѕРїРµСЂР°С†РёР№. Р’С‹Р·С‹РІР°РµС‚СЃСЏ РІРЅСѓС‚СЂРё РјРµС‚РѕРґР° notifyAbout().
+     * Closure, которая может быть использована для логирования операций. Вызывается внутри метода notifyAbout().
      */
     public Closure notifyEvent = null
     /**
-     * РћР±СЉРµРєС‚, СЃРѕРґРµСЂР¶Р°С‰РёР№ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РєРѕРЅС„РёРіСѓСЂР°С†РёРё.
-     * РРЅС„РѕСЂРјР°С†РёСЏ Р·Р°РїРѕР»РЅСЏРµС‚СЃСЏ РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё Р·Р°РїСѓСЃРєР° 1РЎ РІ СЂРµР¶РёРјРµ РџСЂРµРґРїСЂРёСЏС‚РёРµ. РџСЂРё СЌС‚РѕРј, РїСЂРѕРёСЃС…РѕРґРёС‚ Р·Р°РїСѓСЃРє СЃРїРµС†РёР°Р»РёР·РёСЂРѕРІР°РЅРЅРѕР№
-     * РІРЅРµС€РЅРµР№ РѕР±СЂР°Р±РѕС‚РєРё. Р РµР·СѓР»СЊС‚Р°С‚С‹ РµРµ СЂР°Р±РѕС‚С‹ (Р»РѕРі) СЂР°Р·Р±РёСЂР°СЋС‚СЃСЏ Рё РёРЅС‚РµСЂРїСЂРµС‚РёСЂСѓСЋС‚СЃСЏ.
+     * Объект, содержащий информацию о конфигурации.
+     * Информация заполняется при выполнении запуска 1С в режиме Предприятие. При этом, происходит запуск специализированной
+     * внешней обработки. Результаты ее работы (лог) разбираются и интерпретируются.
      */
     public ConfigInfo configInfo
 
     public Map<String, String> databaseInfo = [:]
     /**
-     * РџРѕР»Рµ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРіРѕ РєРѕРЅС‚РµРєСЃС‚Р°.
-     * Р—Р°РґСѓРјР°РЅРѕ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РїРѕРЅРёРјР°С‚СЊ, РІ РєР°РєРѕРј РєРѕРЅС‚РµРєСЃС‚Рµ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ С‚Р° РёР»Рё РёРЅР°СЏ РѕРїРµСЂР°С†РёСЏ. РЎРєРѕСЂРµРµ РІСЃРµРіРѕ, Р±СѓРґРµС‚ РїСЂРёРјРµРЅСЏС‚СЊСЃСЏ РґР»СЏ СЂР°СЃС€РёСЂРµРЅРЅРѕР№ СЂР°Р±РѕС‚С‹ РѕРїРѕРІРµС‰Р°Р»РѕРє С‡РµСЂРµР· notifyEvent
+     * Поле для хранения произвольного контекста.
+     * Задумано для того, чтобы понимать, в каком контексте выполняется та или иная операция. Скорее всего, будет применяться для расширенной работы оповещалок через notifyEvent
      */
     public def context
     /**
-     * Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїСЂРёР·РЅР°РєР°, СЂР°Р·СЂРµС€РµРЅРѕ Р»Рё РїРѕРґРєР»СЋС‡РµРЅРёРµ СЃРµР°РЅСЃРѕРІ.
+     * Значение по умолчанию признака, разрешено ли подключение сеансов.
      */
     public def sessionsEnabledDefault = true
     /**
-     * Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїСЂРёР·РЅР°РєР°, СЂР°Р·СЂРµС€РµРЅР° Р»Рё СЂР°Р±РѕС‚Р° Р Р—.
+     * Значение по умолчанию признака, разрешена ли работа РЗ.
      */
     public def scheduledJobsEnabledDefault = true
 
@@ -126,14 +126,14 @@ class VanRunnerHelper extends OScriptHelper {
 
     //endregion
 
-    // region РџРµСЂРµС‡РёСЃР»РµРЅРёСЏ
+    // region Перечисления
 
     /**
-     * РџРµСЂРµС‡РёСЃР»РµРЅРёРµ СЃ РІРѕР·РјРѕР¶РЅС‹РјРё РєРѕРјР°РЅРґР°РјРё Р’Р°РЅРµСЃСЃС‹
+     * Перечисление с возможными командами Ванессы
      */
     enum VanRunnerCommand {
         /**
-         * Р—Р°РїСѓСЃРє РІ СЂРµР¶РёРјРµ РџСЂРµРґРїСЂРёСЏС‚РёРµ
+         * Запуск в режиме Предприятие
          */
         dcRun {
             @NonCPS
@@ -141,7 +141,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() { return "run" }
         },
         /**
-         * РћР±РЅРѕРІР»РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· РїР°РєРµС‚Р° РѕР±РЅРѕРІР»РµРЅРёР№
+         * Обновление конфигурации из пакета обновлений
          */
         dcUpdateCfg {
             @NonCPS
@@ -149,7 +149,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() {return "update" }
         },
         /**
-         * РћР±РЅРѕРІР»РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· С…СЂР°РЅРёР»РёС‰Р°
+         * Обновление конфигурации из хранилища
          */
         dcLoadRepo {
             @NonCPS
@@ -157,7 +157,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() {return "loadrepo" }
         },
         /**
-         * РџРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Рє С…СЂР°РЅРёР»РёС‰Сѓ
+         * Подключение конфигурации к хранилищу
          */
         dcBindRepo {
             @NonCPS
@@ -165,7 +165,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() {return "bindrepo" }
         },
         /**
-         * РћС‚РєР»СЋС‡РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РѕС‚ С…СЂР°РЅРёР»РёС‰Р°
+         * Отключение конфигурации от хранилища
          */
         dcUnbindRepo {
             @NonCPS
@@ -173,7 +173,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() {return "unbindrepo" }
         },
         /**
-         * РћРїРµСЂР°С†РёРё СЃ СЃРµР°РЅСЃР°РјРё
+         * Операции с сеансами
          */
         dcSession {
             @NonCPS
@@ -181,7 +181,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() {return "session" }
         },
         /**
-         * РћРїРµСЂР°С†РёРё СЃ СЂРµРіР»Р°РјРµРЅС‚РЅС‹РјРё Р·Р°РґР°РЅРёСЏРјРё
+         * Операции с регламентными заданиями
          */
         dcScheduledJobs {
             @NonCPS
@@ -189,7 +189,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() {return "scheduledjobs" }
         },
         /**
-         * РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
+         * Получение информации о базе данных
          */
         dcInfo {
             @NonCPS
@@ -199,7 +199,7 @@ class VanRunnerHelper extends OScriptHelper {
             }
         },
         /**
-         * РћР±РЅРѕРІР»РµРЅРёРµ Р‘Р”
+         * Обновление БД
          */
         dcUpdateDB {
             @NonCPS
@@ -207,7 +207,7 @@ class VanRunnerHelper extends OScriptHelper {
             String toString() { return "updatedb" }
         },
         /**
-         * Р’С‹РіСЂСѓР·РєР° РєРѕРЅС„РёРіСѓСЂР°С†РёРё Р‘Р”
+         * Выгрузка конфигурации БД
          */
         dcUnloadConfigDB {
             @NonCPS
@@ -217,7 +217,7 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РџРµСЂРµС‡РёСЃР»РµРЅРёРµ РІ РІРѕР·РјРѕР¶РЅС‹РјРё РїР°СЂР°РјРµС‚СЂР°РјРё Р·Р°РїСѓСЃРєР° Р’Р°РЅРµСЃСЃС‹
+     * Перечисление в возможными параметрами запуска Ванессы
      */
     enum ParamsEnum {
         peDbServer,
@@ -330,26 +330,26 @@ class VanRunnerHelper extends OScriptHelper {
 
     // endregion
 
-    // region Р’Р»РѕР¶РµРЅРЅС‹Рµ РєР»Р°СЃСЃС‹
+    // region Вложенные классы
 
     /**
-     * РљР»Р°СЃСЃ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ Р·Р°РїСѓСЃРєР° Р’Р°РЅРµСЃСЃС‹
+     * Класс для формирования параметров запуска Ванессы
      */
     class ExecParams<String> extends ArrayList<String>{
 
         /**
-         * Р’СЃРµ РїР°СЂР°РјРµС‚СЂС‹, Р·Р°РґР°РЅРЅС‹Рµ РІРѕ РІР»Р°РґРµР»СЊС†Рµ
+         * Все параметры, заданные во владельце
          * @see VanRunnerHelper
          */
         def params
 
         /**
-         * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РѕР±СЉРµРєС‚Р°
-         * @param owner Р’Р»Р°РґРµР»РµС†, РЅР° РѕСЃРЅРѕРІР°РЅРёРё РєРѕС‚РѕСЂРѕРіРѕ Р±СѓРґСѓС‚ Р·Р°РїРѕР»РЅСЏС‚СЊСЃСЏ РїР°СЂР°РјРµС‚СЂС‹
-         * @param command РћРїС†РёРѕРЅР°Р»СЊРЅР°СЏ РєРѕРјР°РЅРґР°, РєРѕС‚РѕСЂСѓСЋ Р±СѓРґРµС‚ РІС‹РїРѕР»РЅСЏС‚СЊ Р’Р°РЅРµСЃСЃР°
-         * Р­С‚Сѓ РєРѕРјР°РЅРґСѓ РјРѕР¶РЅРѕ Рё РЅРµ РїРµСЂРµРґР°РІР°С‚СЊ РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ. Р•Рµ РјРѕР¶РЅРѕ, РЅР°РїСЂРёРјРµСЂ, РґРѕР±Р°РІРёС‚СЊ РѕС‚РґРµР»СЊРЅРѕ:<br>
+         * Конструктор объекта
+         * @param owner Владелец, на основании которого будут заполняться параметры
+         * @param command Опциональная команда, которую будет выполнять Ванесса
+         * Эту команду можно и не передавать в конструкторе. Ее можно, например, добавить отдельно:<br>
          * {@code addCommand(VanRunnerCommand.dcUpdateCfg)} <br>
-         * РёР»Рё {@code addValue(VanRunnerCommand.dcUpdateCfg)}
+         * или {@code addValue(VanRunnerCommand.dcUpdateCfg)}
          */
         ExecParams(def owner, VanRunnerCommand command = null){
             super()
@@ -358,14 +358,14 @@ class VanRunnerHelper extends OScriptHelper {
         }
 
         /**
-         * Р”РѕР±Р°РІРёС‚СЊ РІ РїР°СЂР°РјРµС‚СЂС‹ РєР°РєРѕРµ-Р»РёР±Рѕ Р·РЅР°С‡РµРЅРёРµ
-         * @param value Р”РѕР±Р°РІР»СЏРµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ
-         * @param condition РЈСЃР»РѕРІРёРµ, РґРѕР±Р°РІР»СЏС‚СЊ Р»Рё Р·РЅР°С‡РµРЅРёРµ.
-         * РЈСЃР»РѕРІРёРµ СЃР»СѓР¶РёС‚ РґР»СЏ СЃРѕРєСЂР°С‰РµРЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє РєРѕРґР°. Р’РјРµСЃС‚Рѕ <br>
+         * Добавить в параметры какое-либо значение
+         * @param value Добавляемое значение
+         * @param condition Условие, добавлять ли значение.
+         * Условие служит для сокращения количества строк кода. Вместо <br>
          * {@code if (value>0) addValue(value)}
-         * РјРѕР¶РµРј РЅР°РїРёСЃР°С‚СЊ <br>
+         * можем написать <br>
          * {@code addValue(value, value>0)}
-         * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ ExecParams
+         * @return Этот объект ExecParams
          */
         @NonCPS
         ExecParams addValue(def value, def condition = true) {
@@ -388,10 +388,10 @@ class VanRunnerHelper extends OScriptHelper {
         }
 
         /**
-         * Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРјР°РЅРґС‹ РІ РїР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСѓСЃРєР°.
-         * Р’ РїСЂРёРЅС†РёРїРµ, РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РѕР±РѕР№С‚РёСЃСЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј addValue(...). РќРѕ РґР»СЏ РЅРµРєРѕС‚РѕСЂРѕРіРѕ СѓР»СѓС‡С€РµРЅРёСЏ С‡РёС‚Р°РµРјРѕСЃС‚Рё РґРѕР±Р°РІР»РµРЅРёРµ РєРѕРјР°РЅРґС‹ СЃРґРµР»Р°РЅРѕ РѕС‚РґРµР»СЊРЅС‹Рј РјРµС‚РѕРґРѕРј.
-         * @param command Р”РѕР±Р°РІР»СЏРµРјР°СЏ РєРѕРјР°РЅРґР°
-         * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ ExecParams
+         * Добавление команды в параметры запуска.
+         * В принципе, можно было обойтись использованием addValue(...). Но для некоторого улучшения читаемости добавление команды сделано отдельным методом.
+         * @param command Добавляемая команда
+         * @return Этот объект ExecParams
          */
         ExecParams addCommand(VanRunnerCommand command){
             addValue(command)
@@ -399,10 +399,10 @@ class VanRunnerHelper extends OScriptHelper {
         }
 
         /**
-         * Р”РѕР±Р°РІР»РµРЅРёРµ РїР°СЂС‹ Р·РЅР°С‡РµРЅРёР№ - СЃС‚СЂРѕРєРѕРІРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РєР»СЋС‡Р° Рё Р·РЅР°С‡РµРЅРёСЏ РёР· РїРѕР»СЏ params РїРѕ СЌС‚РѕРјСѓ РєР»СЋС‡Сѓ
-         * @param param РљР»СЋС‡
-         * @param condition Р”РѕРї.СѓСЃР»РѕРІРёРµ, РґРѕР±Р°РІР»СЏС‚СЊ Р»Рё Р·РЅР°С‡РµРЅРёСЏ РІ РїР°СЂР°РјРµС‚СЂС‹
-         * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ ExecParams
+         * Добавление пары значений - строкового представления ключа и значения из поля params по этому ключу
+         * @param param Ключ
+         * @param condition Доп.условие, добавлять ли значения в параметры
+         * @return Этот объект ExecParams
          */
         ExecParams addPair(ParamsEnum param, boolean condition = true) {
             if (condition)
@@ -411,11 +411,11 @@ class VanRunnerHelper extends OScriptHelper {
         }
 
         /**
-         * Р”РѕР±Р°РІР»РµРЅРёРµ РїР°СЂС‹ Р·РЅР°С‡РµРЅРёР№ - СЃС‚СЂРѕРєРѕРІРѕРіРѕ РєР»СЋС‡Р° Рё РµРіРѕ СЃС‚РєРѕСЂРѕРІРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
-         * @param parKey РљР»СЋС‡
-         * @param parVal Р—РЅР°С‡РµРЅРёРµ РєР»СЋС‡Р°
-         * @param condition Р”РѕРї.СѓСЃР»РѕРІРёРµ, РґРѕР±Р°РІР»СЏС‚СЊ Р»Рё Р·РЅР°С‡РµРЅРёСЏ РІ РїР°СЂР°РјРµС‚СЂС‹
-         * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ ExecParams
+         * Добавление пары значений - строкового ключа и его сткорового значения
+         * @param parKey Ключ
+         * @param parVal Значение ключа
+         * @param condition Доп.условие, добавлять ли значения в параметры
+         * @return Этот объект ExecParams
          */
         def addPair(String parKey, String parVal, boolean condition = true) {
             if (condition)
@@ -427,10 +427,10 @@ class VanRunnerHelper extends OScriptHelper {
     // endregion
 
     /**
-     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
-     * @param paramScript РћР±СЉРµРєС‚ script РёР· Jenkins. Р’ РѕСЃРЅРѕРІРЅРѕРј РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ echo.
-     * @param pathToScript РџСѓС‚СЊ Рє Р±РёР±Р»РёРѕС‚РµРєРµ Vanessa-runner
-     * @param pathToServiceEPF РџСѓС‚СЊ Рє СЃРµСЂРІРёСЃРЅРѕР№ РІРЅРµС€РЅРµР№ РѕР±СЂР°Р±РѕС‚РєРµ. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р»РёС€СЊ РїСЂРё Р·Р°РїСѓСЃРєР°С… РІ СЂРµР¶РёРјРµ РџСЂРµРґРїСЂРёСЏС‚РёРµ РґР»СЏ Р°РІС‚Рѕ-Р·Р°РІРµСЂС€РµРЅРёСЏ СЂР°Р±РѕС‚С‹.
+     * Конструктор
+     * @param paramScript Объект script из Jenkins. В основном используется для echo.
+     * @param pathToScript Путь к библиотеке Vanessa-runner
+     * @param pathToServiceEPF Путь к сервисной внешней обработке. Используется лишь при запусках в режиме Предприятие для авто-завершения работы.
      */
     VanRunnerHelper(def paramScript, String pathToScript = null, String pathToServiceEPF = null){
         
@@ -444,20 +444,20 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РњРµС‚РѕРґ РґР»СЏ РѕРїРѕРІРµС‰РµРЅРёСЏ Рѕ РєР°РєРѕРј-Р»РёР±Рѕ СЃРѕР±С‹С‚РёРё.
-     * Р’С‹Р·С‹РІР°РµС‚ РІС‹РїРѕР»РЅРµРЅРёРµ notifyEvent, РµСЃР»Рё СЌС‚Р° Closure Р·Р°РґР°РЅР°.
-     * Р’ notifyEvent РїРµСЂРµРґР°СЋС‚СЃСЏ РЅРµСЃРєРѕР»СЊРєРѕ РїР°СЂР°РјРµС‚СЂРѕРІ: msgText - СЃРѕРѕР±С‰Р°РµРјРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ; С‚РµРєСѓС‰РёР№ РѕР±СЉРµРєС‚ this, msgKind, msgType, params.
-     * РўР°РєР°СЏ РґРµС‚Р°Р»РёР·Р°С†РёСЏ Р·Р°РґСѓРјР°РЅР° РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РїСЂРѕСЃС‚Рѕ РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РІС‹РІРѕРґРёРјС‹Рµ РѕРїРѕРІРµС‰РµРЅРёСЏ. Р РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё -
-     * С‡Р°СЃС‚РёС‡РЅРѕ РёР»Рё РїРѕР»РЅРѕСЃС‚СЊСЋ РїРµСЂРµРїРёСЃР°С‚СЊ Р°Р»РіРѕСЂРёС‚Рј С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ С‚РµРєСЃС‚РѕРІРєРё Рё СЃРѕСЃС‚Р°РІР° РѕРїРѕРІРµС‰РµРЅРёР№.
-     * @param msgText РЎРѕРѕР±С‰Р°РµРјРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ.
-     * @param msgKind Р’РёРґ РѕРїРµСЂР°С†РёРё, Рѕ РєРѕС‚РѕСЂРѕР№ РїСЂРѕРёСЃС…РѕРґРёС‚ РѕРїРѕРІРµС‰РµРЅРёРµ.
-     * РСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ Р·РЅР°С‡РµРЅРёСЏ РєРѕРЅСЃС‚Р°РЅС‚ OP_*
-     * @param msgType РўРёРї РѕРїРѕРІРµС‰РµРЅРёСЏ (РґРѕ, РїРµСЂРµРґ, РЅРµ Р·Р°РґР°РЅРѕ).
-     * РСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ Р·РЅР°С‡РµРЅРёСЏ РєРѕРЅСЃС‚Р°РЅС‚ NOTIFY_TYPE_*
-     * @param operationResult Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё
-     * @param params Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ РїРµСЂРµРґР°РЅС‹ СЃ РѕРїРѕРІРµС‰РµРЅРёРµРј.
-     * Р­С‚РёРј РїР°СЂР°РјРµС‚СЂРѕРј РїРµСЂРµРґР°СЋС‚СЃСЏ РїР°СЂР°РјРµС‚СЂС‹ РІС‹РїРѕР»РЅРµРЅРёСЏ РєР°РєРѕРіРѕ-Р»РёР±Рѕ РјРµС‚РѕРґР°.
-     * Рљ РїСЂРёРјРµСЂСѓ, РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё РјРµС‚РѕРґР° setLockStatusForUsers(locked), Р·РґРµСЃСЊ РїРµСЂРµРґР°РµС‚СЃСЏ РїР°СЂР°РјРµС‚СЂ locked.
+     * Метод для оповещения о каком-либо событии.
+     * Вызывает выполнение notifyEvent, если эта Closure задана.
+     * В notifyEvent передаются несколько параметров: msgText - сообщаемое сообщение; текущий объект this, msgKind, msgType, params.
+     * Такая детализация задумана для того, чтобы можно было достаточно просто обрабатывать выводимые оповещения. И при необходимости -
+     * частично или полностью переписать алгоритм формирования текстовки и состава оповещений.
+     * @param msgText Сообщаемое сообщение.
+     * @param msgKind Вид операции, о которой происходит оповещение.
+     * Используются значения констант OP_*
+     * @param msgType Тип оповещения (до, перед, не задано).
+     * Используются значения констант NOTIFY_TYPE_*
+     * @param operationResult Результат выполнения операции
+     * @param params Дополнительные параметры, которые могут быть переданы с оповещением.
+     * Этим параметром передаются параметры выполнения какого-либо метода.
+     * К примеру, при выполнении метода setLockStatusForUsers(locked), здесь передается параметр locked.
      */
     protected void notifyAbout(String msgText, int msgKind = OP_UNDEFINED, int msgType = NOTIFY_TYPE_UNDEFINED, def operationResult = null, Object... params){
         if (notifyEvent!=null) {
@@ -468,19 +468,19 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РњРµС‚РѕРґ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РѕР±СЉРµРєС‚Р°, С…СЂР°РЅСЏС‰РµРіРѕ РїР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСѓСЃРєР°
-     * @param command РћРїС†РёРѕРЅР°Р»СЊРЅР°СЏ РєРѕРјР°РЅРґР°, РєРѕС‚РѕСЂР°СЏ СЃСЂР°Р·Сѓ РґРѕР±Р°РІР»СЏРµС‚СЃСЏ РІ РїР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСѓСЃРєР°. Р РµР°Р»РёР·РѕРІР°РЅРѕ, РІ РѕСЃРЅРѕРІРЅРѕРј, РґР»СЏ РЅР°РіР»СЏРґРЅРѕСЃС‚Рё.
-     * @return РЎРѕР·РґР°РЅРЅС‹Р№ РѕР±СЉРµРєС‚.
+     * Метод для создания объекта, хранящего параметры запуска
+     * @param command Опциональная команда, которая сразу добавляется в параметры запуска. Реализовано, в основном, для наглядности.
+     * @return Созданный объект.
      */
     ExecParams newExecParams(VanRunnerCommand command = null) {
         new ExecParams(this, command)
     }
 
     /**
-     * РњРµС‚РѕРґ РґР»СЏ СЃР°РјРѕС‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ Р±РёР±Р»РёРѕС‚РµРєРё.
-     * Р­С‚Рѕ РЅРµРєР°СЏ Р·Р°РјРµРЅР° РјРѕРґСѓР»СЊРЅРѕРјСѓ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЋ - РёР·РЅР°С‡Р°Р»СЊРЅРѕ Р±С‹Р»Рё РїСЂРѕР±Р»РµРјС‹ СЃ Р·Р°РїСѓСЃРєРѕРј С‚РµСЃС‚РѕРІ. РџСЂРёС…РѕРґРёР»РѕСЃСЊ С‚РµСЃС‚РёСЂРѕРІР°С‚СЊ С‚Р°РєРёРј РІРѕС‚ РѕР±СЂР°Р·РѕРј.
-     * Р•С‰Рµ РѕРґРЅР° РїСЂРёС‡РёРЅР° РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё СЌС‚РѕР№ С„СѓРЅРєС†РёРё - СЌС‚Рѕ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ Р±РёР±Р»РёРѕС‚РµРєРё РІ СЃСЂРµРґРµ Jenkins РЅР° РїСЂРµРґРјРµС‚ РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё NonCPS.
-     * РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ С„Р»Р°Рі С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ (isTestMode = true), РІС‹РїРѕР»РЅСЏСЋС‚СЃСЏ РЅРµРєРёРµ РѕРїРµСЂР°С†РёРё, С„Р»Р°Рі СЃР±СЂР°СЃС‹РІР°РµС‚СЃСЏ.
+     * Метод для самотестирования библиотеки.
+     * Это некая замена модульному тестированию - изначально были проблемы с запуском тестов. Приходилось тестировать таким вот образом.
+     * Еще одна причина необходимости этой функции - это тестирование библиотеки в среде Jenkins на предмет необходимости NonCPS.
+     * Устанавливается флаг тестирования (isTestMode = true), выполняются некие операции, флаг сбрасывается.
      */
     @Override
     void selfTest() {
@@ -497,8 +497,8 @@ class VanRunnerHelper extends OScriptHelper {
         setDb('server', 'db')
         testEcho("selfTest pathToScript: $pathToScript")
 
-        setDbAuth('РїРѕР»СЊР·Р·Р·', 'РїР°СЂРѕСЂРѕСЂ')
-        testEcho("executed setDbAuth('РїРѕР»СЊР·Р·Р·', 'РїР°СЂРѕСЂРѕСЂ')")
+        setDbAuth('польззз', 'паророр')
+        testEcho("executed setDbAuth('польззз', 'паророр')")
 
         params = new ExecParams(this)
         echo("test params new ExecParams(this): $params")
@@ -546,7 +546,7 @@ class VanRunnerHelper extends OScriptHelper {
 
         def flt = newSessionFilter()
             .addAppBackgroung()
-            .setNamesFilter('Р°РґРјРёРЅ', "РїРѕР»СЊР·")
+            .setNamesFilter('админ', "польз")
             .toString()
         echo("Test filter filled: $flt")
 
@@ -563,12 +563,12 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РЈСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ РµРґРёРЅРёС‡РЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
-     * @param paramKey РљР»СЋС‡ РїР°СЂР°РјРµС‚СЂР°
-     * @param paramValue Р—РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°
-     * @param condition РЈСЃР»РѕРІРёРµ, СѓСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊ Р»Рё Р·РЅР°С‡РµРЅРёРµ.
-     * РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЃРѕРєСЂР°С‰РµРЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє
-     * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ VanRunnerHelper
+     * Установка значения единичного параметра
+     * @param paramKey Ключ параметра
+     * @param paramValue Значение параметра
+     * @param condition Условие, устанавливать ли значение.
+     * Используется для сокращения количества строк
+     * @return Этот объект VanRunnerHelper
      */
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean condition = true){
@@ -590,13 +590,13 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РЈСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє Р‘Р”
-     * @param dbServer РЎРµСЂРІРµСЂ РїСЂРёР»РѕР¶РµРЅРёР№
-     * @param dbDatabase Р‘Р°Р·Р° РґР°РЅРЅС‹С…
-     * @param dbUser РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
-     * @param dbPwd РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
-     * @param v8version Р’РµСЂСЃРёСЏ РїР»Р°С‚С„РѕСЂРјС‹
-     * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ VanRunnerHelper
+     * Установка параметров подключения к БД
+     * @param dbServer Сервер приложений
+     * @param dbDatabase База данных
+     * @param dbUser Имя пользователя конфигурации
+     * @param dbPwd Пароль пользователя конфигурации
+     * @param v8version Версия платформы
+     * @return Этот объект VanRunnerHelper
      */
     VanRunnerHelper setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null, String v8version = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase,
@@ -609,12 +609,12 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РЈСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє Р‘Р” СЃ РїРѕРјРѕС‰СЊСЋ СЃС‚СЂРѕРєРё СЃРѕРµРґРёРЅРµРЅРёСЏ
-     * @param connString РЎС‚СЂРѕРєР° СЃРѕРµРґРёРЅРµРЅРёСЏ РР‘
-     * @param dbUser РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РР‘ (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)
-     * @param dbPwd РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РР‘ (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)
-     * @param v8version Р’РµСЂСЃРёСЏ РїР»Р°С‚С„РѕСЂРјС‹ (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)
-     * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ VanRunnerHelper
+     * Установка параметров подключения к БД с помощью строки соединения
+     * @param connString Строка соединения ИБ
+     * @param dbUser Имя пользователя ИБ (опционально)
+     * @param dbPwd Пароль пользователя ИБ (опционально)
+     * @param v8version Версия платформы (опционально)
+     * @return Этот объект VanRunnerHelper
      */
     VanRunnerHelper setDbFromConnectString(String connString, String dbUser = null, String dbPwd = null, String v8version = null){
         // Srvr="upr-1cdevel:3041";Ref="oree_dolinin";
@@ -625,8 +625,8 @@ class VanRunnerHelper extends OScriptHelper {
         connString.split(';').each {def partConnStr ->
             props = new Properties()
             props.load(new StringReader(partConnStr))
-            // todo РїРѕРґСѓРјР°С‚СЊ Рё СЃРґРµР»Р°С‚СЊ СЂРµРіРёСЃС‚СЂ-РЅРµР·Р°РІРёСЃРёРјРѕ
-            props.getProperty('п»їSrvr')?.with {valServer = it.replaceAll('"', ''); echo(it)}
+            // todo подумать и сделать регистр-независимо
+            props.getProperty('?Srvr')?.with {valServer = it.replaceAll('"', ''); echo(it)}
             props.getProperty('Srvr')?.with {valServer = it.replaceAll('"', ''); echo(it)}
             props.getProperty('Ref')?.with {valDB = it.replaceAll('"', ''); echo(it)}
         }
@@ -634,10 +634,10 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РЈСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё РІ Р‘Р” 1РЎ
-     * @param dbUser РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РР‘
-     * @param dbPwd РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РР‘
-     * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ VanRunnerHelper
+     * Установка параметров аутентификации в БД 1С
+     * @param dbUser Имя пользователя ИБ
+     * @param dbPwd Пароль пользователя ИБ
+     * @return Этот объект VanRunnerHelper
      */
     VanRunnerHelper setDbAuth(String dbUser, String dbPwd = null) {
         setParam([(ParamsEnum.peDbUser):ansi(dbUser),
@@ -647,11 +647,11 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РЈСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє С…СЂР°РЅРёР»РёС‰Сѓ
-     * @param repoPath РџСѓС‚СЊ Рє С…СЂР°РЅРёР»РёС‰Сѓ
-     * @param repoUser РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ С…СЂР°РЅРёР»РёС‰Р°
-     * @param repoPwd РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ С…СЂР°РЅРёР»РёС‰Р° (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)
-     * @return Р­С‚РѕС‚ РѕР±СЉРµРєС‚ VanRunnerHelper
+     * Установка параметров для подключения к хранилищу
+     * @param repoPath Путь к хранилищу
+     * @param repoUser Имя пользователя хранилища
+     * @param repoPwd Пароль пользователя хранилища (опционально)
+     * @return Этот объект VanRunnerHelper
      */
     VanRunnerHelper setRepo(String repoPath, String repoUser, String repoPwd = null) {
         setParam([(ParamsEnum.peRepoPath):ansi(repoPath),
@@ -662,9 +662,9 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     /**
-     * РЈСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё РІ С…СЂР°РЅРёР»РёС‰Рµ
-     * @param repoUser РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ С…СЂР°РЅРёР»РёС‰Р°
-     * @param repoPwd РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ С…СЂР°РЅРёР»РёС‰Р° (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)
+     * Установка параметров аутентификации в хранилище
+     * @param repoUser Имя пользователя хранилища
+     * @param repoPwd Пароль пользователя хранилища (опционально)
      * @return
      */
     @NonCPS
@@ -702,13 +702,13 @@ class VanRunnerHelper extends OScriptHelper {
 
         resetResults()
         def retVal
-        def opName = 'Р—Р°РїСѓСЃРє 1РЎ:РџСЂРµРґРїСЂРёСЏС‚РёРµ'.concat( doUpdateMetadata ? ' (СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РјРµС‚Р°РґР°РЅРЅС‹С…)' : '')
+        def opName = 'Запуск 1С:Предприятие'.concat( doUpdateMetadata ? ' (с обновлением метаданных)' : '')
 
-        String launchParam = 'Р—Р°РІРµСЂС€РёС‚СЊР Р°Р±РѕС‚СѓРЎРёСЃС‚РµРјС‹;'.toString()
+        String launchParam = 'ЗавершитьРаботуСистемы;'.toString()
         if (doUpdateMetadata)
-            launchParam = launchParam.concat('Р—Р°РїСѓСЃС‚РёС‚СЊРћР±РЅРѕРІР»РµРЅРёРµРРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕР№Р‘Р°Р·С‹;'.toString())
+            launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;'.toString())
         setParam( ParamsEnum.peLaunchCommand, qStr(utf8(launchParam)))
-        testEcho('РїРѕРґРіРѕС‚РѕРІРёР»Рё РїР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСѓСЃРєР° launchParam')
+        testEcho('подготовили параметры запуска launchParam')
 
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, doUpdateMetadata)
         retVal = execScript(
@@ -719,11 +719,11 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peLaunchCommand)
                 .addPair(ParamsEnum.pePathToServiceEpf)
                 .addPair(ParamsEnum.peUCCode.toString(), ucCode, ucCode!=null && ucCode.empty==false)
-                .addPair('--ordinaryapp', launchMode) // С‡С‚РѕР±С‹ РІ РєР»СЋС‡Р°С… Р·Р°РїСѓСЃРєР° РЅРµ Р±С‹Р»Рѕ RunModeManagedApplication, С‚.Рє. СЌС‚Рѕ РіР°СЃРёС‚ РІС‹РІРѕРґ Р»РѕРіР°
+                .addPair('--ordinaryapp', launchMode) // чтобы в ключах запуска не было RunModeManagedApplication, т.к. это гасит вывод лога
 //                .addPair(ParamsEnum.peOnlineFile, "C:\\OScripts\\log.txt")
         )
         configInfo.readLogInfo(resultLog)
-        echo(resultLog) // todo РџРѕС‚РѕРј СѓР±СЂР°С‚СЊ!
+        echo(resultLog) // todo Потом убрать!
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_AFTER(), retVal, doUpdateMetadata)
         printCmdOnce = false
         retVal
@@ -747,13 +747,13 @@ class VanRunnerHelper extends OScriptHelper {
         resetResults()
         boolean enabledValue = isEnabled==null ? sessionsEnabledDefault : isEnabled
 
-        String msg = 'РџРѕРїС‹С‚РєР° ' + (enabledValue ? 'СЂР°Р·СЂРµС€РµРЅРёСЏ': 'Р·Р°РїСЂРµС‚Р°') + ' СЃРµР°РЅСЃРѕРІ РїСЂРёР»РѕР¶РµРЅРёР№'
+        String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' сеансов приложений'
         notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_BEFORE(), null, enabledValue)
 
         boolean retVal = setResourceEnabled(VanRunnerCommand.dcSession, enabledValue)
 
-        msg = (enabledValue ? 'Р Р°Р·СЂРµС€РµРЅРёРµ': 'Р—Р°РїСЂРµС‚') + ' СЃРµР°РЅСЃРѕРІ РїСЂРёР»РѕР¶РµРЅРёР№ - ' +
-                (retVal ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ') + ' РІС‹РїРѕР»РЅРµРЅРѕ'
+        msg = (enabledValue ? 'Разрешение': 'Запрет') + ' сеансов приложений - ' +
+                (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_SET_LOCK_USERS(), getNOTIFY_TYPE_AFTER(), retVal, enabledValue)
 
         retVal
@@ -763,31 +763,31 @@ class VanRunnerHelper extends OScriptHelper {
 
         resetResults()
         boolean enabledValue = isEnabled==null ? scheduledJobsEnabledDefault : isEnabled
-        String msg = 'РџРѕРїС‹С‚РєР° ' + (enabledValue ? 'СЂР°Р·СЂРµС€РµРЅРёСЏ': 'Р·Р°РїСЂРµС‚Р°') + ' РІС‹РїРѕР»РЅРµРЅРёСЏ СЂРµРіР»Р°РјРµРЅС‚РЅС‹С… Р·Р°РґР°РЅРёР№'
+        String msg = 'Попытка ' + (enabledValue ? 'разрешения': 'запрета') + ' выполнения регламентных заданий'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_BEFORE(), null, enabledValue)
 
         boolean retVal = setResourceEnabled(VanRunnerCommand.dcScheduledJobs, enabledValue )
 
-        msg = (enabledValue ? 'Р Р°Р·СЂРµС€РµРЅРёРµ': 'Р—Р°РїСЂРµС‚') + ' РІС‹РїРѕР»РЅРµРЅРёСЏ СЂРµРіР»Р°РјРµРЅС‚РЅС‹С… Р·Р°РґР°РЅРёР№ - ' +
-                (retVal ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ') + ' РІС‹РїРѕР»РЅРµРЅРѕ'
+        msg = (enabledValue ? 'Разрешение': 'Запрет') + ' выполнения регламентных заданий - ' +
+                (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_SET_LOCK_BACKGROUNDS(), getNOTIFY_TYPE_AFTER(), retVal, enabledValue)
         printCmdOnce = false
         retVal
     }
 
     /**
-     * РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ Р·Р°РІРµСЂС€РµРЅРёРµ СЃРµР°РЅСЃРѕРІ
-     * @param withNoLock РќРµ Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ РЅР°С‡Р°Р»Рѕ СЃРµР°РЅСЃРѕРІ РїРѕСЃР»Рµ РёС… РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРіРѕ Р·Р°РІРµСЂС€РµРЅРёСЏ
-     * @param appFilter Р¤РёР»СЊС‚СЂ, СЃ РїРѕРјРѕС‰СЊСЋ РєРѕС‚РѕСЂРѕРіРѕ РјРѕР¶РЅРѕ Р·Р°РІРµСЂС€Р°С‚СЊ РЅРµ РІСЃРµ СЃРµР°РЅСЃС‹, Р° СЃРѕРіР»Р°СЃРЅРѕ РєР°РєРёРј-С‚Рѕ СѓСЃР»РѕРІРёСЏРј.
-     * РџР°СЂР°РјРµС‚СЂ appFilter РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ СЃ РїРѕРјРѕС‰СЊСЋ РѕР±СЉРµРєС‚Р° С‚РёРїР° SessionFilter. РџСЂРёРјРµСЂ:
+     * Принудительное завершение сеансов
+     * @param withNoLock Не блокировать начало сеансов после их принудительного завершения
+     * @param appFilter Фильтр, с помощью которого можно завершать не все сеансы, а согласно каким-то условиям.
+     * Параметр appFilter можно создать с помощью объекта типа SessionFilter. Пример:
      * {@code newSessionFilter().addAppDesigner()}
-     * @return Р‘СѓР»РµРІРѕ - СѓСЃРїРµС€РЅРѕ Р»Рё РІС‹РїРѕР»РЅРёР»Р°СЃСЊ РѕРїРµСЂР°С†РёСЏ.
+     * @return Булево - успешно ли выполнилась операция.
      * @see SessionFilter
      */
     def killSessions(Boolean withNoLock = true, def appFilter = '', def attemptsCount = 5) {
         resetResults()
         String filter = appFilter.toString()
-        String msg = 'РџРѕРїС‹С‚РєР° Р·Р°РІРµСЂС€РµРЅРёСЏ СЃРµР°РЅСЃРѕРІ' + (appFilter==null || filter.isEmpty() ? '' : '; С„РёР»СЊС‚СЂ: ' + filter)
+        String msg = 'Попытка завершения сеансов' + (appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         int oper = OP_KILL_SESSIONS
         notifyAbout(msg, oper, getNOTIFY_TYPE_BEFORE())
 
@@ -803,27 +803,27 @@ class VanRunnerHelper extends OScriptHelper {
                 .addValue(ParamsEnum.peKillWithNoLock.toString(), withNoLock)
                 .addPair(ParamsEnum.peSessionFilter, filter, appFilter!=null && !filter.isEmpty())
 
-        notifyAbout("РџР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСѓСЃРєР° РїСЂРё РїСЂРµСЂС‹РІР°РЅРёРё СЃРµР°РЅСЃРѕРІ: $params".toString(), oper, getNOTIFY_TYPE_BEFORE())
+        notifyAbout("Параметры запуска при прерывании сеансов: $params".toString(), oper, getNOTIFY_TYPE_BEFORE())
         boolean retVal = execScript(params)
-        msg = 'Р—Р°РІРµСЂС€РµРЅРёРµ СЃРµР°РЅСЃРѕРІ '.concat(retVal ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ').concat(' РІС‹РїРѕР»РЅРµРЅРѕ').concat(appFilter==null || filter.isEmpty() ? '' : '; С„РёР»СЊС‚СЂ: ' + filter)
+        msg = 'Завершение сеансов '.concat(retVal ? 'успешно' : 'не').concat(' выполнено').concat(appFilter==null || filter.isEmpty() ? '' : '; фильтр: ' + filter)
         notifyAbout(msg, oper, getNOTIFY_TYPE_AFTER(), retVal)
         printCmdOnce = false
         retVal
     }
 
     /**
-     * РћР±РЅРѕРІР»РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· РїР°РєРµС‚Р° РѕР±РЅРѕРІР»РµРЅРёР№
-     * @param pathToPackage РџСѓС‚СЊ Рє РїР°РєРµС‚Сѓ РѕР±РЅРѕРІР»РµРЅРёР№
-     * @return Р РµР·СѓР»СЊС‚Р°С‚ РѕР±РЅРѕРІР»РµРЅРёСЏ
+     * Обновление конфигурации из пакета обновлений
+     * @param pathToPackage Путь к пакету обновлений
+     * @return Результат обновления
      */
     boolean updateConfigFromPackage(String pathToPackage) {
-        String msg = 'РџРѕРїС‹С‚РєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· РїР°РєРµС‚Р° РѕР±РЅРѕРІР»РµРЅРёР№'
+        String msg = 'Попытка обновления конфигурации из пакета обновлений'
         resetResults()
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_PACKAGE(), getNOTIFY_TYPE_BEFORE(), pathToPackage)
         boolean retVal = execScript(
                 new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcUpdateCfg)
-                .addPair(ParamsEnum.peDbConnString) // todo РќРµ СѓРІРµСЂРµРЅ
+                .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                 .addValue(pathToPackage)
 //                .addPair(ParamsEnum.peConfigUpdateMode, "-auto")
                 .addPair(ParamsEnum.peDbUser)
@@ -843,7 +843,7 @@ class VanRunnerHelper extends OScriptHelper {
     def loadConfigFromRepo(def repoVersion = null) {
 
         resetResults()
-        String msg = 'РџРѕРїС‹С‚РєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· С…СЂР°РЅРёР»РёС‰Р°'
+        String msg = 'Попытка обновления конфигурации из хранилища'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
@@ -857,14 +857,14 @@ class VanRunnerHelper extends OScriptHelper {
 //                .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
                 .addPair(ParamsEnum.peRepoVersion, repoVersion, repoVersion!=null)
         )
-        msg = 'РћР±РЅРѕРІР»РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· С…СЂР°РЅРёР»РёС‰Р° ' + (retVal ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ') + ' РІС‹РїРѕР»РЅРµРЅРѕ'
+        msg = 'Обновление конфигурации из хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_UPDATE_CONFIG_FROM_REPO(), getNOTIFY_TYPE_AFTER(), retVal)
         printCmdOnce = false
         retVal
     }
 
     def bindRepo(def bindAlreadyBindedUser = true, replaceCfg = true) {
-        def msg = 'РџРѕРїС‹С‚РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Рє С…СЂР°РЅРёР»РёС‰Сѓ'
+        def msg = 'Попытка подключения конфигурации к хранилищу'
         resetResults()
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
@@ -873,33 +873,33 @@ class VanRunnerHelper extends OScriptHelper {
                         .addValue(ParamsEnum.peRepoUser)
                         .addValue(ParamsEnum.peRepoPwd)
                         .addValue('--BindAlreadyBindedUser', bindAlreadyBindedUser==true)
-                        .addValue('--NotReplaceCfg', replaceCfg==true) // РІ Р’Р°РЅРµСЃСЃРµ РєР»СЋС‡ NotReplaceCfg СЂР°Р±РѕС‚Р°РµС‚ РЅРµР»РѕРіРёС‡РЅРѕ. РџРѕРґСЃС‚СЂР°РёРІР°СЋСЃСЊ РїРѕРґ РµРіРѕ Р»РѕРіРёРєСѓ.
-                        .addPair(ParamsEnum.peDbConnString) // todo РќРµ СѓРІРµСЂРµРЅ
+                        .addValue('--NotReplaceCfg', replaceCfg==true) // в Ванессе ключ NotReplaceCfg работает нелогично. Подстраиваюсь под его логику.
+                        .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                         .addPair(ParamsEnum.peDbUser)
                         .addPair(ParamsEnum.peDbPwd)
         )
-        msg = 'РџРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Рє С…СЂР°РЅРёР»РёС‰Сѓ ' + (retVal ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ') + ' РІС‹РїРѕР»РЅРµРЅРѕ'
+        msg = 'Подключение конфигурации к хранилищу ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, OP_BIND_REPO, getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
     def unbindRepo() {
-        def msg = 'РџРѕРїС‹С‚РєР° РѕС‚РєР»СЋС‡РµРЅРёСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РѕС‚ С…СЂР°РЅРёР»РёС‰Р°'
+        def msg = 'Попытка отключения конфигурации от хранилища'
         resetResults()
         notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_BEFORE())
         def retVal = execScript(
                 new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcUnbindRepo)
-                .addPair(ParamsEnum.peDbConnString) // todo РќРµ СѓРІРµСЂРµРЅ
+                .addPair(ParamsEnum.peDbConnString) // todo Не уверен
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         )
-        msg = 'РћС‚РєР»СЋС‡РµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РѕС‚ С…СЂР°РЅРёР»РёС‰Р° ' + (retVal ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ') + ' РІС‹РїРѕР»РЅРµРЅРѕ'
+        msg = 'Отключение конфигурации от хранилища ' + (retVal ? 'успешно' : 'не') + ' выполнено'
         notifyAbout(msg, getOP_UNBIND_REPO(), getNOTIFY_TYPE_AFTER(), retVal)
         retVal
     }
 
-    // РІРѕР·РІСЂР°С‚ РСЃС‚РёРЅР°, РµСЃР»Рё СЃРµР°РЅСЃС‹ РЅР°Р№РґРµРЅС‹
+    // возврат Истина, если сеансы найдены
     def isSessionsClosed(def appFilter = null, Closure closure = null) {
         ExecParams params = new ExecParams(this)
                 .addCommand(VanRunnerCommand.dcSession)
@@ -920,11 +920,11 @@ class VanRunnerHelper extends OScriptHelper {
     }
 
     boolean updateDb(String addParams = null) {
-        // Р’ СЃР°РјРѕР№ Р’Р°РЅРµСЃСЃРµ, РЅР° СЃР°РјРѕРј РґРµР»Рµ, РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСѓСЃРєР° РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ.
+        // В самой Ванессе, на самом деле, дополнительные параметры запуска не используются.
         resetResults()
         boolean retVal
         def oper = OP_UPDATE_DB
-        notifyAbout('РџРѕРїС‹С‚РєР° РѕР±РЅРѕРІР»РµРЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С…', oper, NOTIFY_TYPE_BEFORE)
+        notifyAbout('Попытка обновления базы данных', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcUpdateDB)
             .addPair(ParamsEnum.peDbConnString)
             .addPair(ParamsEnum.peDbUser)
@@ -932,7 +932,7 @@ class VanRunnerHelper extends OScriptHelper {
             .addPair(ParamsEnum.peUCCode, ucCode, ucCode!=null)
 
         retVal = execScript(params)
-        notifyAbout('Р’С‹РїРѕР»РЅРµРЅРѕ РѕР±РЅРѕРІР»РµРЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С…', oper, NOTIFY_TYPE_AFTER, retVal)
+        notifyAbout('Выполнено обновление базы данных', oper, NOTIFY_TYPE_AFTER, retVal)
         printCmdOnce = false
         retVal
     }
@@ -942,11 +942,11 @@ class VanRunnerHelper extends OScriptHelper {
         resetResults()
         def oper = OP_WAIT_FOR_CLOSE
         def retVal = true
-        notifyAbout("РџРѕРїС‹С‚РєР° РѕР¶РёРґР°РЅРёСЏ Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРѕС†РµСЃСЃРѕРІ. Р¤РёР»СЊС‚СЂ '${appFilter}'; Р¶РґРµРј РґРѕ ${maxDT.toString()} СЃ РїРµСЂРёРѕРґРѕРј ${minutesPerWaitCycle.toString()} РјРёРЅ", oper, NOTIFY_TYPE_BEFORE)
+        notifyAbout("Попытка ожидания завершения процессов. Фильтр '${appFilter}'; ждем до ${maxDT.toString()} с периодом ${minutesPerWaitCycle.toString()} мин", oper, NOTIFY_TYPE_BEFORE)
         retVal = isSessionsClosed(appFilter)
         if (!retVal) {
             int sleepTime = minutesPerWaitCycle>0 ? minutesPerWaitCycle * 60 * 1000 : maxDT - Date.newInstance()
-            notifyAbout("РќР°С‡Р°Р»Рѕ РѕР¶РёРґР°РЅРёСЏ Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРѕС†РµСЃСЃРѕРІ. Р¤РёР»СЊС‚СЂ \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
+            notifyAbout("Начало ожидания завершения процессов. Фильтр \"$appFilter\"", oper, NOTIFY_TYPE_BEFORE)
             int iter = 0
             while (Date.newInstance() < maxDT) {
                 iter++
@@ -955,12 +955,12 @@ class VanRunnerHelper extends OScriptHelper {
                 if (retVal)
                     break
                 else
-                    notifyAbout("РџСЂРѕРґРѕР»Р¶РµРЅРёРµ РѕР¶РёРґР°РЅРёСЏ Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРѕС†РµСЃСЃРѕРІ. Р¦РёРєР»: $iter", OP_WAIT_FOR_CLOSE_CONTINUE, NOTIFY_TYPE_UNDEFINED)
+                    notifyAbout("Продолжение ожидания завершения процессов. Цикл: $iter", OP_WAIT_FOR_CLOSE_CONTINUE, NOTIFY_TYPE_UNDEFINED)
             }
             if (!retVal)
                 retVal = isSessionsClosed(appFilter)
         }
-        notifyAbout('РћР¶РёРґР°РЅРёРµ Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРѕС†РµСЃСЃРѕРІ РѕРєРѕРЅС‡РµРЅРѕ. Р”РѕР¶РґР°Р»РёСЃСЊ: '.concat(retVal ? 'Р”Р°' : 'РќРµС‚'), oper, NOTIFY_TYPE_AFTER, retVal, maxDT, minutesPerWaitCycle, appFilter)
+        notifyAbout('Ожидание завершения процессов окончено. Дождались: '.concat(retVal ? 'Да' : 'Нет'), oper, NOTIFY_TYPE_AFTER, retVal, maxDT, minutesPerWaitCycle, appFilter)
         retVal
     }
 
@@ -968,7 +968,7 @@ class VanRunnerHelper extends OScriptHelper {
         resetResults()
         boolean retVal
         def oper = OP_ASK_DATABASEINFO
-        notifyAbout('РџРѕРїС‹С‚РєР° Р·Р°РїСЂРѕСЃР° РёРЅС„РѕСЂРјР°С†РёРё Рѕ Р±Р°Р·Рµ РґР°РЅРЅС‹С…', oper, NOTIFY_TYPE_BEFORE)
+        notifyAbout('Попытка запроса информации о базе данных', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcInfo)
                 .addPair(ParamsEnum.peRASServer)
                 .addPair(ParamsEnum.peRACUtility)
@@ -977,7 +977,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
         DatabaseInfoReader.readInfo(resultLog, databaseInfo)
-        notifyAbout('РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р±Р°Р·Рµ РґР°РЅРЅС‹С… '.concat(retVal==true ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ').concat(' РїСЂРѕС‡РёС‚Р°РЅР°'), oper, NOTIFY_TYPE_AFTER, retVal)
+        notifyAbout('Информация о базе данных '.concat(retVal==true ? 'успешно' : 'не').concat(' прочитана'), oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
 
@@ -985,7 +985,7 @@ class VanRunnerHelper extends OScriptHelper {
         resetResults()
         boolean retVal
         def oper = OP_UNLOAD_CONFIG_DB
-        notifyAbout('РџРѕРїС‹С‚РєР° РІС‹РіСЂСѓР·РєРё РєРѕРЅС„РёРіСѓСЂР°С†РёРё Р‘Р”', oper, NOTIFY_TYPE_BEFORE)
+        notifyAbout('Попытка выгрузки конфигурации БД', oper, NOTIFY_TYPE_BEFORE)
         ExecParams params = new ExecParams(this, VanRunnerCommand.dcUnloadConfigDB)
                 .addValue(resultFileName)
                 .addPair(ParamsEnum.peDbConnString)
@@ -993,7 +993,7 @@ class VanRunnerHelper extends OScriptHelper {
                 .addPair(ParamsEnum.peDbUser)
                 .addPair(ParamsEnum.peDbPwd)
         retVal = execScript(params)
-        notifyAbout('Р’С‹РіСЂСѓР·РєР° РєРѕРЅС„РёРіСѓСЂР°С†РёРё Р‘Р” '.concat(retVal==true ? 'СѓСЃРїРµС€РЅРѕ' : 'РЅРµ').concat(' РІС‹РїРѕР»РЅРµРЅР°'), oper, NOTIFY_TYPE_AFTER, retVal)
+        notifyAbout('Выгрузка конфигурации БД '.concat(retVal==true ? 'успешно' : 'не').concat(' выполнена'), oper, NOTIFY_TYPE_AFTER, retVal)
         retVal
     }
 
