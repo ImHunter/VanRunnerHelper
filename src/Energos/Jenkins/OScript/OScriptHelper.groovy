@@ -80,7 +80,7 @@ class OScriptHelper {
         String echoMsg = "${msg}".toString()
         if (script!=null)
             try {
-                script.echo(echoMsg)
+                script.echo(utf8(echoMsg))
             } catch (e) { println echoMsg }
         else
             println echoMsg
@@ -244,6 +244,11 @@ class OScriptHelper {
     @NonCPS
     def utf8(String value){
         new String(value.getBytes(), "UTF-8")
+    }
+
+    @NonCPS
+    def ansi(String value){
+        new String(value.getBytes(), "windows-1251")
     }
 
     public void setCurrentTimeout(Integer secondsTimeout) {

@@ -436,9 +436,9 @@ class VanRunnerHelper extends OScriptHelper {
         
         super(paramScript)
 
-        this.pathToScript = qStr(pathToScript)
+        this.pathToScript = qStr(ansi(pathToScript))
 
-        setParam(ParamsEnum.pePathToServiceEpf, qStr(pathToServiceEPF), pathToServiceEPF!=null)
+        setParam(ParamsEnum.pePathToServiceEpf, qStr(ansi(pathToServiceEPF)), pathToServiceEPF!=null)
         configInfo = new ConfigInfo()
 
     }
