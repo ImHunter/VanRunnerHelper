@@ -640,8 +640,8 @@ class VanRunnerHelper extends OScriptHelper {
      * @return Ётот объект VanRunnerHelper
      */
     VanRunnerHelper setDbAuth(String dbUser, String dbPwd = null) {
-        setParam([(ParamsEnum.peDbUser):ansi(dbUser),
-                  (ParamsEnum.peDbPwd):qStr(ansi(dbPwd))
+        setParam([(ParamsEnum.peDbUser):dbUser,
+                  (ParamsEnum.peDbPwd):qStr(dbPwd)
         ])
         this
     }
@@ -654,9 +654,9 @@ class VanRunnerHelper extends OScriptHelper {
      * @return Ётот объект VanRunnerHelper
      */
     VanRunnerHelper setRepo(String repoPath, String repoUser, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoPath):ansi(repoPath),
-                  (ParamsEnum.peRepoUser):ansi(repoUser),
-                  (ParamsEnum.peRepoPwd):qStr(ansi(repoPwd))
+        setParam([(ParamsEnum.peRepoPath):repoPath,
+                  (ParamsEnum.peRepoUser):repoUser,
+                  (ParamsEnum.peRepoPwd):qStr(repoPwd)
         ])
         this
     }
@@ -669,8 +669,8 @@ class VanRunnerHelper extends OScriptHelper {
      */
     @NonCPS
     VanRunnerHelper setRepoAuth(String repoUser, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoUser):ansi(repoUser),
-                  (ParamsEnum.peRepoPwd):qStr(ansi(repoPwd))
+        setParam([(ParamsEnum.peRepoUser):repoUser,
+                  (ParamsEnum.peRepoPwd):qStr(repoPwd)
         ])
         this
     }
@@ -678,8 +678,8 @@ class VanRunnerHelper extends OScriptHelper {
     VanRunnerHelper setRAS(String rasServer, String racUtilPath, String clusterAdminName = null, String clusterAdminPwd = null) {
         setParam([(ParamsEnum.peRASServer):rasServer,
                   (ParamsEnum.peRACUtility):racUtilPath,
-                  (ParamsEnum.peClusterAdminName):ansi(clusterAdminName),
-                  (ParamsEnum.peClusterAdminPwd):qStr(ansi(clusterAdminPwd))
+                  (ParamsEnum.peClusterAdminName):clusterAdminName,
+                  (ParamsEnum.peClusterAdminPwd):qStr(clusterAdminPwd)
         ])
         this
     }
@@ -707,7 +707,7 @@ class VanRunnerHelper extends OScriptHelper {
         String launchParam = '«авершить–аботу—истемы;'.toString()
         if (doUpdateMetadata)
             launchParam = launchParam.concat('«апуститьќбновление»нформационнойЅазы;'.toString())
-        setParam( ParamsEnum.peLaunchCommand, qStr(utf8(launchParam)))
+        setParam( ParamsEnum.peLaunchCommand, qStr(launchParam))
         testEcho('подготовили параметры запуска launchParam')
 
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, doUpdateMetadata)

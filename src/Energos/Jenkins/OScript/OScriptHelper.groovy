@@ -157,7 +157,7 @@ class OScriptHelper {
         if (isTestMode) {
             echo("Вызов execScript в тестовом режиме с параметрами $fullParams")
             resultCode = 0
-            resultLog = utf8('Тестовый лог')
+            resultLog = 'Тестовый лог'
 
         } else {
 //            executed = executer.execute(fullParams)
@@ -241,21 +241,21 @@ class OScriptHelper {
         retVal
     }
 
-    @NonCPS
-    def utf8(String value){
-        if (value!=null)
-            new String(value.getBytes(), "UTF-8")
-        else
-            value
-    }
-
-    @NonCPS
-    def ansi(String value){
-        if (value!=null)
-            new String(value.getBytes("UTF-8"), "windows-1251")
-        else
-            value
-    }
+//    @NonCPS
+//    def utf8(String value){
+//        if (value!=null)
+//            new String(value.getBytes(), "UTF-8")
+//        else
+//            value
+//    }
+//
+//    @NonCPS
+//    def ansi(String value){
+//        if (value!=null)
+//            new String(value.getBytes("UTF-8"), "windows-1251")
+//        else
+//            value
+//    }
 
     public void setCurrentTimeout(Integer secondsTimeout) {
         currentExecTimeout = secondsTimeout
