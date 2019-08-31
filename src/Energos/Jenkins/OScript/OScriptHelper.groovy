@@ -241,6 +241,10 @@ class OScriptHelper {
         retVal
     }
 
+    def utf8(String value){
+        new String(value.getBytes(), "UTF-8")
+    }
+
     public void setCurrentTimeout(Integer secondsTimeout) {
         currentExecTimeout = secondsTimeout
         executer.execTimeout = secondsTimeout==null ? 0 : secondsTimeout
