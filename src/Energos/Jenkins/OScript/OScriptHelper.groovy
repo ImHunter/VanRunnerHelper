@@ -243,12 +243,18 @@ class OScriptHelper {
 
     @NonCPS
     def utf8(String value){
-        new String(value.getBytes(), "UTF-8")
+        if (value!=null)
+            new String(value.getBytes(), "UTF-8")
+        else
+            value
     }
 
     @NonCPS
     def ansi(String value){
-        new String(value.getBytes("UTF-8"), "windows-1251")
+        if (value!=null)
+            new String(value.getBytes("UTF-8"), "windows-1251")
+        else
+            value
     }
 
     public void setCurrentTimeout(Integer secondsTimeout) {

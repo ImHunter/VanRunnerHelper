@@ -601,7 +601,7 @@ class VanRunnerHelper extends OScriptHelper {
     VanRunnerHelper setDb(String dbServer, String dbDatabase, String dbUser = null, String dbPwd = null, String v8version = null) {
         setParam([(ParamsEnum.peDbDatabase): dbDatabase,
                   (ParamsEnum.peDbServer):dbServer,
-                  (ParamsEnum.peDbUser):dbUser,
+                  (ParamsEnum.peDbUser):ansi(dbUser),
                   (ParamsEnum.peDbPwd):qStr(dbPwd),
                   (ParamsEnum.peV8verion):v8version])
         setParam((ParamsEnum.peDbConnString), "/S$dbServer\\$dbDatabase".toString())
