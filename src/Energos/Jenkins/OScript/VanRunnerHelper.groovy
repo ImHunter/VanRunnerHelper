@@ -640,8 +640,8 @@ class VanRunnerHelper extends OScriptHelper {
      * @return Этот объект VanRunnerHelper
      */
     VanRunnerHelper setDbAuth(String dbUser, String dbPwd = null) {
-        setParam([(ParamsEnum.peDbUser):dbUser,
-                  (ParamsEnum.peDbPwd):qStr(dbPwd)])
+        setParam([(ParamsEnum.peDbUser):ansi(dbUser),
+                  (ParamsEnum.peDbPwd):ansi(qStr(dbPwd)]))
         this
     }
 
@@ -653,9 +653,10 @@ class VanRunnerHelper extends OScriptHelper {
      * @return Этот объект VanRunnerHelper
      */
     VanRunnerHelper setRepo(String repoPath, String repoUser, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoPath):repoPath,
-                  (ParamsEnum.peRepoUser):repoUser,
-                  (ParamsEnum.peRepoPwd):qStr(repoPwd)])
+        setParam([(ParamsEnum.peRepoPath):ansi(repoPath),
+                  (ParamsEnum.peRepoUser):ansi(repoUser),
+                  (ParamsEnum.peRepoPwd):qStr(ansi(repoPwd))
+        ])
         this
     }
 
@@ -667,16 +668,18 @@ class VanRunnerHelper extends OScriptHelper {
      */
     @NonCPS
     VanRunnerHelper setRepoAuth(String repoUser, String repoPwd = null) {
-        setParam([(ParamsEnum.peRepoUser):repoUser,
-                  (ParamsEnum.peRepoPwd):qStr(repoPwd)])
+        setParam([(ParamsEnum.peRepoUser):ansi(repoUser),
+                  (ParamsEnum.peRepoPwd):qStr(ansi(repoPwd))
+        ])
         this
     }
 
     VanRunnerHelper setRAS(String rasServer, String racUtilPath, String clusterAdminName = null, String clusterAdminPwd = null) {
         setParam([(ParamsEnum.peRASServer):rasServer,
                   (ParamsEnum.peRACUtility):racUtilPath,
-                  (ParamsEnum.peClusterAdminName):clusterAdminName,
-                  (ParamsEnum.peClusterAdminPwd):qStr(clusterAdminPwd)])
+                  (ParamsEnum.peClusterAdminName):ansi(clusterAdminName),
+                  (ParamsEnum.peClusterAdminPwd):qStr(ansi(clusterAdminPwd))
+        ])
         this
     }
 
