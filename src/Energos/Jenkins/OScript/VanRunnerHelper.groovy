@@ -707,7 +707,7 @@ class VanRunnerHelper extends OScriptHelper {
         String launchParam = 'ЗавершитьРаботуСистемы;'.toString()
         if (doUpdateMetadata)
             launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;'.toString())
-        setParam( ParamsEnum.peLaunchCommand, qStr(launchParam))
+        setParam( ParamsEnum.peLaunchCommand, qStr(utf8(launchParam)))
         testEcho('подготовили параметры запуска launchParam')
 
         notifyAbout(opName, getOP_LAUNCH_USER_INTERFACE(), getNOTIFY_TYPE_BEFORE(), null, doUpdateMetadata)
