@@ -573,7 +573,7 @@ class VanRunnerHelper extends OScriptHelper {
     @NonCPS
     def setParam(def paramKey, String paramValue, Boolean condition = true){
         if (condition==true) {
-            this.params.put paramKey, new String(paramValue.getBytes("UTF-8"), "windows-1251")
+            this.params.put paramKey, new String(paramValue.getBytes(), "windows-1251")
         }
         this
     }
