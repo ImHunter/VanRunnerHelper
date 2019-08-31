@@ -77,7 +77,7 @@ class OScriptHelper {
      * @param msg Сообщаемое сообщение
      */
     void echo(def msg){
-        String echoMsg = utf8("${msg}".toString())
+        String echoMsg = "${msg}".toString()
         if (script!=null)
             try {
                 script.echo(echoMsg)
