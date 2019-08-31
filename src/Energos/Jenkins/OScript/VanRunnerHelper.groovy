@@ -700,9 +700,9 @@ class VanRunnerHelper extends OScriptHelper {
         def retVal
         def opName = 'Запуск 1С:Предприятие'.concat( doUpdateMetadata ? ' (с обновлением метаданных)' : '')
 
-        String launchParam = 'ЗавершитьРаботуСистемы;'
+        String launchParam = 'ЗавершитьРаботуСистемы;'.toString()
         if (doUpdateMetadata)
-            launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;')
+            launchParam = launchParam.concat('ЗапуститьОбновлениеИнформационнойБазы;'.toString())
         setParam( ParamsEnum.peLaunchCommand, qStr(launchParam))
         testEcho('подготовили параметры запуска launchParam')
 
